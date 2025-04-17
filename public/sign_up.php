@@ -83,7 +83,7 @@
                                 src="./../assets/icons/eye-off.svg"
                                 alt="eyes-off"
                                 class="eye"
-                                id="show-password" />
+                                id="confirm-show-password" />
                         </div>
                         <!--Date of Birth -->
                         <div class="input-box">
@@ -107,22 +107,6 @@
         </section>
     </div>
 </body>
-<script>
-    let passwordIcon = document.getElementById("show-password");
-    let passwordInput = document.getElementById("password-field");
-
-    passwordIcon.onclick = function() {
-        if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            passwordIcon.src = "assets/icons/eye.svg";
-            passwordIcon.alt = "show password";
-        } else {
-            passwordInput.type = "password";
-            passwordIcon.src = "assets/icons/eye-off.svg";
-            passwordIcon.alt = "hide password";
-        }
-        console.log("Password visibility toggled");
-    };
-</script>
+<script src="../authentication/signUp.js" defer></script>
 
 </html>
