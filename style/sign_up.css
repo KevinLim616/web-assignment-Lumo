@@ -3,3 +3,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
   -webkit-appearance: none;
 }
+
+.sign-up-mascot {
+  z-index: 100;
+  height: 450px;
+  object-fit: contain;
+}
