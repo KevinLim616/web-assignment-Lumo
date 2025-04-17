@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lumo Login</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #0f0f1f;
+    }
+
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 1000px;
+      height: 600px;
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .left {
+      flex: 1;
+      background: #ffffff;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 30px;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      align-self: flex-start;
+    }
+
+    .logo span {
+      transform: rotate(-10deg);
+      display: inline-block;
+    }
+
+    .blobs {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .right {
+      flex: 1;
+      background: #1a1a1a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    label {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .icon {
+      position: absolute;
+      left: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 12px 12px 35px;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      background: transparent;
+      color: white;
+      font-size: 14px;
+    }
+
+    input::placeholder {
+      color: #aaa;
+    }
+
+    .eye {
+      position: absolute;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .forgot {
+      font-size: 12px;
+      color: #ccc;
+      text-align: right;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      text-decoration: none;
+    }
+
+    button {
+      padding: 12px;
+      background: #f8a7cb;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #000;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #f18dbb;
+    }
+
+    .signup-text {
+      font-size: 14px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .signup-text a {
+      color: white;
+      text-decoration: none;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="left">
+        <h1 class="logo">L<span>U</span>MO</h1>
+        <img src="your-image.png" alt="Blobs" class="blobs" />
+      </div>
+      <div class="right">
+        <div class="form-container">
+          <h2>Sign In</h2>
+          <form>
+            <label>
+              <i class="icon">📧</i>
+              <input type="email" placeholder="Email" required />
+            </label>
+
+            <label>
+              <i class="icon">🔒</i>
+              <input type="password" placeholder="Password" required />
+              <span class="eye">👁️</span>
+            </label>
+
+            <a href="#" class="forgot">Forgot password?</a>
+
+            <button type="submit">Sign In</button>
+
+            <p class="signup-text">
+              Don’t have an account?
+              <a href="#"><strong>Sign up now!</strong></a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
