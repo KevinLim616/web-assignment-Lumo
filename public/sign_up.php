@@ -25,7 +25,7 @@
                 <form
                     action="sign_up.php"
                     method="post"
-                    class="sign-in-form">
+                    class="sign-up-form">
                     <div class="inputs-container">
                         <!--name-->
                         <div class="input-box">

@@ -9,3 +9,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 450px;
   object-fit: contain;
 }
+
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 300px;
+  max-width: 316px;
+}
