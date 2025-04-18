@@ -1,3 +1,8 @@
+<?php
+include("../include/db/database.php");
+include("../authentication/sign_up_functions.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,6 +18,7 @@
 
     <title>Document</title>
 </head>
+
 
 <body>
     <div class="container">
@@ -89,7 +95,7 @@
                                 id="confirm-show-password" />
                         </div>
                         <!--Date of Birth -->
-                        <div class="input-box" id="date-field">
+                        <div class="input-box">
                             <img src="./../assets/icons/calendar.svg" alt="calendar" />
                             <label for="DOB">Date of Birth:</label>
                             <!--TODO: datepicker style-->
@@ -97,12 +103,12 @@
                                 type="date"
                                 name="DOB"
                                 class="input-field date-input"
-                                placeholder="Date of Birth" />
+                                placeholder="Date of Birth" id="date-field" />
                         </div>
 
                     </div>
 
-                    <input type="submit" value="Sign Up" class="button" name="login" />
+                    <input type="submit" value="Sign Up" class="button" name="sign-up" />
                 </form>
             </div>
         </section>
@@ -111,3 +117,15 @@
 <script src="../authentication/signUp.js" defer></script>
 
 </html>
+
+<?php
+if (isset($_POST["sign-up"])) {
+    $username = $_POST["name"];
+    $password =  $_POST["password"];
+    $email = $_POST["email"];
+    $date_of_birth = $_POST["DOB"];
+    signUp($username, $email, $password, $date_of_birth);
+}
+
+mysqli_close($conn);
+?>

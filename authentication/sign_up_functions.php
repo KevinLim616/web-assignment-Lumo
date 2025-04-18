@@ -2,61 +2,50 @@
 include("../include/db/database.php");
 
 //sign up function
-function signUp($username, $password, $email)
+function signUp($username, $email, $password, $date_of_birth)
 {
+    global $conn;
     //sanitize input
     $username = htmlspecialchars($username);
+    $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
+
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     //filter input
 
-    $sql = "INSERT INTO account (username, password, email) VALUES ('$username', '$password','$email')";
-    include("../include/db/database.php");
-    $result = mysqli_query($conn, $sql);
+    mysqli_begin_transaction($conn);
 
-    //if there are results
-    if ($result) {
-        echo "user created";
-    } else {
-        //if there are no results
-        echo "Error: user could not be created.";
-        // echo "Error: " . $conn->error;
+    try {
+        // 1. Insert into `account`
+        $stmt1 = $conn->prepare("INSERT INTO account (username, email, password) VALUES (?, ?, ?)");
+        $stmt1->bind_param("sss", $username, $email, $hashed_password);
+        $stmt1->execute();
+        // Get the newly inserted account's ID (if you have a foreign key in `user`)
+        $account_id = $conn->insert_id;
+        // 2. Insert into `user` (assuming you want to link with account_id)
+        $stmt2 = $conn->prepare("INSERT INTO users (Acc_id, date_of_birth) VALUES (?, ?)");
+        $stmt2->bind_param("is", $account_id, $date_of_birth);
+        $stmt2->execute();
+        // Commit the transaction
+        mysqli_commit($conn);
+
+        echo "User created";
+    } catch (Exception $error) {
+        // Rollback on error
+        mysqli_rollback($conn);
+        echo "Error: " . $error->getMessage();
     }
+
+    // $sql = "INSERT INTO account (username, email, password) VALUES ('$username', '$email','$hashed_password')";
+    // $user_sql =  "INSERT INTO user (date_of_birth) VALUES ('$date_of_birth')";
+    // $result = mysqli_query($conn, $sql);
+    // $result_user = mysqli_query($conn, $user_sql);
+
+    // //if there are results
+    // if ($result && $result_user) {
+    //     echo "user created";
+    // } else {
+    //     //if there are no results
+    //     echo "Error: user could not be created.";
+    //     // echo "Error: " . $conn->error;
+    // }
 }
-
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-    <form action="sign_up.php" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        <input type="submit" name="signUp" value="sign Up">
-    </form>
-</body>
-
-</html>
-
-<?php
-if (isset($_POST["signUp"])) {
-    $username = $_POST["username"];
-    $password =  $_POST["password"];
-    $email = $_POST["email"];
-    signUp($username, $password, $email);
-}
-
-mysqli_close($conn);
-?>
