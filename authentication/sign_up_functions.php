@@ -34,18 +34,4 @@ function signUp($username, $email, $password, $date_of_birth)
         mysqli_rollback($conn);
         echo "Error: " . $error->getMessage();
     }
-
-    // $sql = "INSERT INTO account (username, email, password) VALUES ('$username', '$email','$hashed_password')";
-    // $user_sql =  "INSERT INTO user (date_of_birth) VALUES ('$date_of_birth')";
-    // $result = mysqli_query($conn, $sql);
-    // $result_user = mysqli_query($conn, $user_sql);
-
-    // //if there are results
-    // if ($result && $result_user) {
-    //     echo "user created";
-    // } else {
-    //     //if there are no results
-    //     echo "Error: user could not be created.";
-    //     // echo "Error: " . $conn->error;
-    // }
 }

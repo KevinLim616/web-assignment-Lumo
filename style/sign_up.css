@@ -17,3 +17,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   height: 300px;
   max-width: 316px;
 }
+
+.input-box.error {
+  border-color: #f81f1f;
+}
+
+.input-box .error-message {
+  color: #f81f1f;
+  font-size: 12px;
+  height: 12px;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+}

@@ -12,10 +12,8 @@ include("../authentication/sign_up_functions.php");
     <link rel="stylesheet" href="../global.css">
     <link rel="stylesheet" href="../style/sign_in.css">
     <link rel="stylesheet" href="../style/sign_up.css">
-    <!-- datepicker -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+    <script src="../authentication/signUp.js" defer></script>
     <title>Document</title>
 </head>
 
@@ -34,10 +32,13 @@ include("../authentication/sign_up_functions.php");
                 <form
                     action="sign_up.php"
                     method="post"
-                    class="sign-up-form">
+                    class="sign-up-form"
+                    id="sign-up-form"
+                    novalidate>
                     <div class="inputs-container">
                         <!--name-->
-                        <div class="input-box">
+                        <div class="input-control"></div>
+                        <div class="input-box ">
                             <img src="./../assets/icons/user.svg" alt="user" />
                             <label for="name">Name:</label>
 
@@ -46,7 +47,9 @@ include("../authentication/sign_up_functions.php");
                                 name="name"
                                 class="input-field"
                                 placeholder="Name"
+
                                 id="name-field" />
+                            <div class="error-message"></div>
                         </div>
                         <!--email-->
                         <div class="input-box">
@@ -58,7 +61,9 @@ include("../authentication/sign_up_functions.php");
                                 name="email"
                                 class="input-field"
                                 placeholder="Email"
+
                                 id="mail-field" />
+                            <div class="error-message"></div>
                         </div>
                         <!--Password field-->
                         <div class="input-box">
@@ -70,12 +75,14 @@ include("../authentication/sign_up_functions.php");
                                 name="password"
                                 class="input-field"
                                 placeholder="Password"
+
                                 id="password-field" />
                             <img
                                 src="./../assets/icons/eye-off.svg"
                                 alt="eyes-off"
                                 class="eye"
                                 id="show-password" />
+                            <div class="error-message"></div>
                         </div>
                         <!--confirm Password -->
                         <div class="input-box">
@@ -87,23 +94,28 @@ include("../authentication/sign_up_functions.php");
                                 name="confirm password"
                                 class="input-field"
                                 placeholder="Confirm Password"
+
                                 id="confirm-password-field" />
                             <img
                                 src="./../assets/icons/eye-off.svg"
                                 alt="eyes-off"
                                 class="eye"
                                 id="confirm-show-password" />
+                            <div class="error-message"></div>
                         </div>
                         <!--Date of Birth -->
-                        <div class="input-box">
+                        <div class="input-box" onclick="document.getElementById('date-input').showPicker()">
                             <img src="./../assets/icons/calendar.svg" alt="calendar" />
                             <label for="DOB">Date of Birth:</label>
                             <!--TODO: datepicker style-->
                             <input
                                 type="date"
                                 name="DOB"
+                                id="date-input"
                                 class="input-field date-input"
+
                                 placeholder="Date of Birth" id="date-field" />
+                            <div class="error-message"></div>
                         </div>
 
                     </div>
@@ -114,7 +126,7 @@ include("../authentication/sign_up_functions.php");
         </section>
     </div>
 </body>
-<script src="../authentication/signUp.js" defer></script>
+
 
 </html>
 
