@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="../global.css">
     <link rel="stylesheet" href="../style/sign_in.css">
     <link rel="stylesheet" href="../style/sign_up.css">
+    <!-- datepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <title>Document</title>
 </head>
@@ -86,17 +89,15 @@
                                 id="confirm-show-password" />
                         </div>
                         <!--Date of Birth -->
-                        <div class="input-box">
+                        <div class="input-box" id="date-field">
                             <img src="./../assets/icons/calendar.svg" alt="calendar" />
                             <label for="DOB">Date of Birth:</label>
-                            <!-- TODO: remove date picker -->
-                            <!--TODO: custom datepicker-->
+                            <!--TODO: datepicker style-->
                             <input
                                 type="date"
                                 name="DOB"
                                 class="input-field date-input"
-                                placeholder="Date of Birth"
-                                id="date-field" />
+                                placeholder="Date of Birth" />
                         </div>
 
                     </div>

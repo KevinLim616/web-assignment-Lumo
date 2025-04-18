@@ -28,3 +28,7 @@ confirmPasswordIcon.onclick = function () {
   }
   console.log("Toggled");
 };
+
+flatpickr("#date-field", {
+  maxDate: "today",
+});
