@@ -31,17 +31,9 @@ confirmPasswordIcon.onclick = () => {
 
 //input validation
 const form = document.getElementById("sign-up-form");
-const username = document.getElementById("name-field");
-const email = document.getElementById("mail-field");
-const dateOfBirth = document.getElementById("date-input");
-const password = passwordInput;
-const confirmPassword = confirmPasswordInput;
-
-form.addEventListener("submit", (event) => {
-  event.preventDefault(); // Prevent form submission
-
-  validateInput();
-});
+const usernameInput = document.getElementById("name-field");
+const emailInput = document.getElementById("mail-field");
+const dateOfBirthInput = document.getElementById("date-input");
 
 const isValidEmail = (email) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -78,80 +70,127 @@ const setError = (element, message) => {
 };
 
 const setSuccess = (element) => {
-  const inputControl = element.parentElement;
+  const inputBox = element.parentElement;
+  const inputControl = inputBox.parentElement; //input-box -> input-control
   const errorMessage = inputControl.querySelector(".error-message");
   errorMessage.innerText = "";
   // inputControl.classList.add("success");
-  inputControl.classList.remove("error");
+  inputBox.classList.remove("error");
 };
 
-const validateInput = () => {
-  const usernameValue = username.value.trim();
-  const emailValue = email.value.trim();
-  const passwordValue = password.value.trim();
-  const confirmPasswordValue = confirmPassword.value.trim();
-  const dateOfBirthValue = dateOfBirth.value.trim();
+const validateUsername = () => {
+  const usernameValue = usernameInput.value.trim();
+  if (usernameValue === "") {
+    setError(usernameInput, "Username cannot be blank");
+    return false;
+  } else if (usernameValue.length < 8) {
+    setError(usernameInput, "Username must be at least 8 characters");
+    return false;
+  } else if (usernameValue.length > 30) {
+    setError(usernameInput, "Username must be less than 30 characters");
+    return false;
+  } else {
+    setSuccess(usernameInput);
+    return true;
+  }
+};
 
-  switch (usernameValue) {
-    case "":
-      setError(username, "Username cannot be blank");
-      break;
-    case usernameValue.length < 8:
-      setError(username, "Username must be at least 8 characters");
-      break;
-    case usernameValue.length > 30:
-      setError(username, "Username must be less than 30 characters");
-      break;
-    default:
-      setSuccess(username);
+const validateEmail = () => {
+  const emailValue = emailInput.value.trim();
+  if (emailValue === "") {
+    setError(emailInput, "Email cannot be empty");
+    return false;
+  } else if (!isValidEmail(emailValue)) {
+    setError(emailInput, "Please enter a valid emal");
+    return false;
+  } else {
+    setSuccess(emailInput);
+    return true;
   }
-  switch (emailValue) {
-    case "":
-      setError(email, "Email cannot be empty");
-      break;
-    case !isValidEmail(emailValue):
-      setError(email, "Please enter a valid email");
-      break;
-    default:
-      setSuccess(email);
+};
+
+const validatePassword = () => {
+  const passwordValue = passwordInput.value.trim();
+  if (passwordValue === "") {
+    setError(passwordInput, "Password cannot be empty");
+    return false;
+  } else if (passwordValue.length < 8) {
+    setError(passwordInput, "Password must be at least 8 characters");
+    return false;
+  } else if (passwordValue.length > 20) {
+    setError(passwordInput, "Password must be less than 20 characters");
+    return false;
+  } else if (!isStrongPassword(passwordValue)) {
+    setError(
+      passwordInput,
+      "Password must contain at least one uppercase and one number"
+    );
+    return false;
+  } else {
+    setSuccess(passwordInput);
+    return true;
   }
-  switch (passwordValue) {
-    case "":
-      setError(password, "Password cannot be empty");
-      break;
-    case passwordValue.length < 8:
-      setError(password, "Password must be at least 8 characters");
-      break;
-    case passwordValue.length > 20:
-      setError(password, "Password must be less than 20 characters");
-      break;
-    case !isStrongPassword(passwordValue):
-      setError(
-        password,
-        "Password must contain at least one uppercase and one number"
-      );
-      break;
-    default:
-      setSuccess(password);
+};
+
+const validateConfirmPassword = () => {
+  const confirmPasswordValue = confirmPasswordInput.value.trim();
+  const passwordValue = passwordInput.value.trim();
+  if (confirmPasswordValue === "") {
+    setError(confirmPasswordInput, "Please confirm your password");
+    return false;
+  } else if (confirmPasswordValue !== passwordValue) {
+    setError(confirmPasswordInput, "Password does not match");
+    return false;
+  } else {
+    setSuccess(confirmPasswordInput);
+    return true;
   }
-  switch (confirmPasswordValue) {
-    case "":
-      setError(confirmPassword, "Please confirm your password");
-      break;
-    case confirmPasswordValue !== passwordValue:
-      setError(confirmPassword, "Password does not match");
-      break;
-    default:
-      setSuccess(confirmPassword);
+};
+
+const validateBirthDate = () => {
+  const dateOfBirthValue = dateOfBirthInput.value.trim();
+  if (dateOfBirthValue === "") {
+    setError(dateOfBirthInput, "Please select your date of birth");
+    return false;
+  } else if (isValidAge(dateOfBirthValue) < 13) {
+    setError(dateOfBirthInput, "You must be at least 13 years old");
+    return false;
+  } else if (isValidAge(dateOfBirthValue) > 120) {
+    setError(dateOfBirthInput, "You are too old to sign up");
+    return false;
+  } else {
+    setSuccess(dateOfBirthInput);
+    return true;
   }
-  switch (dateOfBirthValue) {
-    case "":
-      setError(dateOfBirth, "This input field cannot be empty");
-      break;
-    case isValidAge(dateOfBirthValue) < 13:
-      setError(dateOfBirth, "You must be at least 13 years old");
-      break;
-    case isValidAge(dateOfBirthValue) > 120:
-      setError(dateOfBirth, "You are too old to sign up");
+};
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault(); // Prevent form submission
+
+  validateInput();
+});
+
+// listen for the action and trigger the function
+usernameInput.addEventListener("blur", validateUsername);
+emailInput.addEventListener("blur", validateEmail);
+passwordInput.addEventListener("blur", validatePassword);
+confirmPasswordInput.addEventListener("blur", validateConfirmPassword);
+dateOfBirthInput.addEventListener("blur", validateBirthDate);
+
+// check all the validations and submit if no problems
+const validateInput = () => {
+  const validUsername = validateUsername();
+  const validEmail = validateEmail();
+  const validPassword = validatePassword();
+  const validConfirmPassword = validateConfirmPassword();
+  const validBirthDate = validateBirthDate();
+  if (
+    validUsername &&
+    validEmail &&
+    validPassword &&
+    validConfirmPassword &&
+    validBirthDate
+  ) {
+    form.submit();
   }
 };
