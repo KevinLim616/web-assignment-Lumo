@@ -30,7 +30,7 @@ confirmPasswordIcon.onclick = () => {
 };
 
 //input validation
-const form = document.getElementById("sign-up-form");
+
 const usernameInput = document.getElementById("name-field");
 const emailInput = document.getElementById("mail-field");
 const dateOfBirthInput = document.getElementById("date-input");
@@ -164,10 +164,19 @@ const validateBirthDate = () => {
   }
 };
 
+const form = document.getElementById("sign-up-form");
 form.addEventListener("submit", (event) => {
-  event.preventDefault(); // Prevent form submission
+  const isValidForm = validateInput();
+  console.log(isValidForm);
 
-  validateInput();
+  if (!isValidForm) {
+    event.preventDefault(); // Prevent form submission
+  }
+
+  // if (isValidForm) {
+  //   form.submit(); dk why not submitting the data to database
+  //   console.log("submitted");
+  // }
 });
 
 // listen for the action and trigger the function
@@ -191,6 +200,6 @@ const validateInput = () => {
     validConfirmPassword &&
     validBirthDate
   ) {
-    form.submit();
+    return true;
   }
 };

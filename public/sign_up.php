@@ -19,6 +19,7 @@ include("../authentication/sign_up_functions.php");
 
 
 <body>
+
     <div class="container">
         <section class="left">
             <div style="display: flex;">
