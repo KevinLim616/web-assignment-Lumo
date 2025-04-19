@@ -68,10 +68,12 @@ const isValidAge = (dateOfBirth) => {
 };
 
 const setError = (element, message) => {
-  const inputControl = element.parentElement; //input-box
+  const inputBox = element.parentElement; //input-box
+  const inputControl = inputBox.parentElement; //input-box -> input-control
   const errorMessage = inputControl.querySelector(".error-message");
   errorMessage.innerText = message;
-  inputControl.classList.add("error");
+
+  inputBox.classList.add("error");
   // inputControl.classList.remove("success");
 };
 

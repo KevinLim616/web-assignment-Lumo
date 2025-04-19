@@ -1,0 +1,81 @@
+.input-box {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--white);
+  width: 350px;
+  padding: 0 10px;
+  position: relative;
+}
+.input-field {
+  border: none;
+  outline: none;
+  margin: 12px;
+  background-color: transparent;
+  position: relative;
+  display: block;
+  color: var(--white);
+}
+.inputs-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  gap: 4px;
+}
+
+.inputs-container a {
+  display: flex;
+  align-self: flex-end;
+}
+
+.sign-in-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 300px;
+}
+
+.input-box .eye {
+  position: absolute;
+  right: 10px;
+  top: 50;
+}
+
+.eye {
+  cursor: pointer;
+}
+
+label {
+  display: none;
+}
+
+.button {
+  margin-top: 8px;
+  background-color: var(--pink);
+  border: none;
+  border-radius: 4px;
+  font-size: 18px;
+  width: 380px;
+  padding: 6px;
+  font-family: "SF Pro Display", sans-serif;
+}
+
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  /* align-items: center; */
+  height: 90vh;
+  width: fit-content;
+}
+
+.input-box.error {
+  border-color: #f81f1f;
+}
+
+.input-control .error-message {
+  color: #f81f1f;
+  font-size: 12px;
+  height: 12px;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+}

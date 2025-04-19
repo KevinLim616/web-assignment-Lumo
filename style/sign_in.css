@@ -7,38 +7,6 @@ body {
   margin: 0;
 }
 
-.input-box {
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid var(--white);
-  width: 250px;
-  padding: 0 10px;
-  position: relative;
-  margin: 8px;
-}
-.input-field {
-  border: none;
-  outline: none;
-  margin: 12px;
-  background-color: transparent;
-  position: relative;
-  display: block;
-  color: var(--white);
-}
-
-.inputs-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  gap: 4px;
-}
-
-.inputs-container a {
-  display: flex;
-  align-self: flex-end;
-}
-
 .container {
   display: flex;
   width: 100%;
@@ -69,36 +37,6 @@ body {
 
 .sign-in-mascot {
   z-index: 100;
-}
-.sign-in-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 300px;
-}
-
-.input-box .eye {
-  position: absolute;
-  right: 10px;
-  top: 50;
-}
-
-.eye {
-  cursor: pointer;
-}
-
-label {
-  display: none;
-}
-
-.button {
-  background-color: var(--pink);
-  border: none;
-  border-radius: 4px;
-  font-size: 18px;
-  width: 100%;
-  padding: 6px;
-  font-family: "SF Pro Display", sans-serif;
 }
 
 .link {

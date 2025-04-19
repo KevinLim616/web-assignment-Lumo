@@ -10,7 +10,7 @@ include("../authentication/sign_up_functions.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../global.css">
-    <link rel="stylesheet" href="../style/sign_in.css">
+    <link rel="stylesheet" href="../style//form.css">
     <link rel="stylesheet" href="../style/sign_up.css">
 
     <script src="../authentication/signUp.js" defer></script>
@@ -28,94 +28,107 @@ include("../authentication/sign_up_functions.php");
         </section>
         <section class="right">
             <div class="form-container">
-                <h1>Sign Up</h1>
                 <form
                     action="sign_up.php"
                     method="post"
                     class="sign-up-form"
                     id="sign-up-form"
                     novalidate>
+                    <h1>Sign Up</h1>
                     <div class="inputs-container">
                         <!--name-->
-                        <div class="input-control"></div>
-                        <div class="input-box ">
-                            <img src="./../assets/icons/user.svg" alt="user" />
-                            <label for="name">Name:</label>
+                        <div class="input-control">
+                            <div class="input-box ">
+                                <img src="./../assets/icons/user.svg" alt="user" />
+                                <label for="name">Name:</label>
 
-                            <input
-                                type="text"
-                                name="name"
-                                class="input-field"
-                                placeholder="Name"
+                                <input
+                                    type="text"
+                                    name="name"
+                                    class="input-field"
+                                    placeholder="Name"
 
-                                id="name-field" />
+                                    id="name-field" />
+                            </div>
                             <div class="error-message"></div>
+
                         </div>
                         <!--email-->
-                        <div class="input-box">
-                            <img src="./../assets/icons/mail.svg" alt="email" />
-                            <label for="email">Email:</label>
+                        <div class="input-control">
+                            <div class="input-box">
+                                <img src="./../assets/icons/mail.svg" alt="email" />
+                                <label for="email">Email:</label>
 
-                            <input
-                                type="email"
-                                name="email"
-                                class="input-field"
-                                placeholder="Email"
+                                <input
+                                    type="email"
+                                    name="email"
+                                    class="input-field"
+                                    placeholder="Email"
 
-                                id="mail-field" />
+                                    id="mail-field" />
+                            </div>
                             <div class="error-message"></div>
                         </div>
                         <!--Password field-->
-                        <div class="input-box">
-                            <img src="./../assets/icons/lock.svg" alt="password" />
-                            <label for="password">Password:</label>
+                        <div class="input-control">
+                            <div class="input-box">
+                                <img src="./../assets/icons/lock.svg" alt="password" />
+                                <label for="password">Password:</label>
 
-                            <input
-                                type="password"
-                                name="password"
-                                class="input-field"
-                                placeholder="Password"
+                                <input
+                                    type="password"
+                                    name="password"
+                                    class="input-field"
+                                    placeholder="Password"
 
-                                id="password-field" />
-                            <img
-                                src="./../assets/icons/eye-off.svg"
-                                alt="eyes-off"
-                                class="eye"
-                                id="show-password" />
+                                    id="password-field" />
+                                <img
+                                    src="./../assets/icons/eye-off.svg"
+                                    alt="eyes-off"
+                                    class="eye"
+                                    id="show-password" />
+                            </div>
                             <div class="error-message"></div>
+
                         </div>
                         <!--confirm Password -->
-                        <div class="input-box">
-                            <img src="./../assets/icons/lock.svg" alt="password" />
-                            <label for="confirm password"> Confirm Password:</label>
+                        <div class="input-control">
+                            <div class="input-box">
+                                <img src="./../assets/icons/lock.svg" alt="password" />
+                                <label for="confirm password"> Confirm Password:</label>
 
-                            <input
-                                type="password"
-                                name="confirm password"
-                                class="input-field"
-                                placeholder="Confirm Password"
+                                <input
+                                    type="password"
+                                    name="confirm password"
+                                    class="input-field"
+                                    placeholder="Confirm Password"
 
-                                id="confirm-password-field" />
-                            <img
-                                src="./../assets/icons/eye-off.svg"
-                                alt="eyes-off"
-                                class="eye"
-                                id="confirm-show-password" />
+                                    id="confirm-password-field" />
+                                <img
+                                    src="./../assets/icons/eye-off.svg"
+                                    alt="eyes-off"
+                                    class="eye"
+                                    id="confirm-show-password" />
+                            </div>
                             <div class="error-message"></div>
+
                         </div>
                         <!--Date of Birth -->
-                        <div class="input-box" onclick="document.getElementById('date-input').showPicker()">
-                            <img src="./../assets/icons/calendar.svg" alt="calendar" />
-                            <label for="DOB">Date of Birth:</label>
-                            <!--TODO: datepicker style-->
-                            <input
-                                type="date"
-                                name="DOB"
-                                id="date-input"
-                                class="input-field date-input"
+                        <div class="input-control">
+                            <div class="input-box" onclick="document.getElementById('date-input').showPicker()">
+                                <img src="./../assets/icons/calendar.svg" alt="calendar" />
+                                <label for="DOB">Date of Birth:</label>
+                                <!--TODO: datepicker style-->
+                                <input
+                                    type="date"
+                                    name="DOB"
+                                    id="date-input"
+                                    class="input-field date-input"
 
-                                placeholder="Date of Birth" id="date-field" />
+                                    placeholder="Date of Birth" id="date-field" />
+                            </div>
                             <div class="error-message"></div>
+
                         </div>
 
                     </div>
