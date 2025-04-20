@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="global.css" />
   <link rel="stylesheet" href="./style/sign_in.css" />
   <link rel="stylesheet" href="./style//form.css">
-  <!-- <script src="authentication/signIn.js" defer></script> -->
+  <script src="authentication/signIn.js" defer type="module"></script>
   <title>Document</title>
 </head>
 
@@ -35,35 +35,42 @@ include("./include/db/database.php");
         <form
           action="index.php"
           method="post"
-          class="sign-in-form">
+          class="sign-in-form"
+          id="sign-in-form">
           <div class="inputs-container">
             <!--email field-->
-            <div class="input-box">
-              <img src="assets/icons/mail.svg" alt="email" />
-              <label for="email">Email:</label>
-              <input
-                type="email"
-                name="email"
-                class="input-field"
-                placeholder="Email"
-                id="mail-field" />
+            <div class="input-control">
+              <div class="input-box">
+                <img src="assets/icons/mail.svg" alt="email" />
+                <label for="email">Email:</label>
+                <input
+                  type="email"
+                  name="email"
+                  class="input-field"
+                  placeholder="Email"
+                  id="mail-field" />
+              </div>
+              <div class="error-message"></div>
             </div>
             <!--password field-->
-            <div class="input-box">
-              <img src="assets/icons/lock.svg" alt="password" />
-              <label for="password">Password:</label>
+            <div class="input-control">
+              <div class="input-box">
+                <img src="assets/icons/lock.svg" alt="password" />
+                <label for="password">Password:</label>
 
-              <input
-                type="password"
-                name="password"
-                class="input-field"
-                placeholder="Password"
-                id="password-field" />
-              <img
-                src="assets/icons/eye-off.svg"
-                alt="eyes-off"
-                class="eye"
-                id="show-password" />
+                <input
+                  type="password"
+                  name="password"
+                  class="input-field"
+                  placeholder="Password"
+                  id="password-field" />
+                <img
+                  src="assets/icons/eye-off.svg"
+                  alt="eyes-off"
+                  class="eye"
+                  id="show-password" />
+              </div>
+              <div class="error-message"></div>
             </div>
             <!--TODO-->
             <!-- warning message-->
