@@ -14,7 +14,7 @@
 <?php
 //import login functions from login_functions.php
 include("authentication/login_functions.php");
-include("./include/db/database.php");
+include __DIR__ . ("./include/db/database.php");
 // TODO : add sessions
 
 ?>
