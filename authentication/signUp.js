@@ -13,7 +13,6 @@ passwordIcon.onclick = () => {
     passwordIcon.src = "./../assets/icons/eye-off.svg";
     passwordIcon.alt = "hide password";
   }
-  console.log("Password visibility toggled");
 };
 
 confirmPasswordIcon.onclick = () => {
@@ -26,7 +25,6 @@ confirmPasswordIcon.onclick = () => {
     confirmPasswordIcon.src = "./../assets/icons/eye-off.svg";
     confirmPasswordInput.alt = "hide password";
   }
-  console.log("Toggled");
 };
 
 //input validation
@@ -143,12 +141,15 @@ const validateBirthDate = () => {
     return false;
   } else {
     setSuccess(dateOfBirthInput);
+    console.log(dateOfBirthValue);
     return true;
   }
 };
 
 const form = document.getElementById("sign-up-form");
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
+  event.preventDefault(); // Prevent form submission
+
   const isValidForm = validateInput([
     validateUsername,
     validateEmail,
@@ -156,10 +157,23 @@ form.addEventListener("submit", (event) => {
     validateConfirmPassword,
     validateBirthDate,
   ]);
-  console.log(isValidForm);
+  console.log("isValidForm:", isValidForm);
 
-  if (!isValidForm) {
-    event.preventDefault(); // Prevent form submission
+  if (isValidForm) {
+    const usernameValue = usernameInput.value.trim();
+    const emailValue = emailInput.value.trim();
+    const passwordValue = passwordInput.value.trim();
+    const dateOfBirthValue = dateOfBirthInput.value.trim();
+    const result = await handleSignUp(
+      usernameValue,
+      emailValue,
+      passwordValue,
+      dateOfBirthValue
+    );
+    if (result) {
+      // form.submit();
+      console.log("submitted");
+    }
   }
 
   // if (isValidForm) {
@@ -174,3 +188,38 @@ emailInput.addEventListener("blur", validateEmail);
 passwordInput.addEventListener("blur", validatePassword);
 confirmPasswordInput.addEventListener("blur", validateConfirmPassword);
 dateOfBirthInput.addEventListener("blur", validateBirthDate);
+
+const handleSignUp = async (username, email, password, dateOfBirth) => {
+  try {
+    const response = await fetch("../public/sign_up.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        mode: "signup",
+        username,
+        email,
+        password,
+        date_of_birth: dateOfBirth,
+      }),
+    });
+
+    const data = await response.text();
+    console.log("Server response:", data);
+
+    if (data === "email_exists") {
+      setError(emailInput, "Email is already registered");
+      return false;
+    } else if (data === "available") {
+      setSuccess(emailInput);
+      return true;
+    } else {
+      console.log("Unexpected response:", data);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error checking email:", error);
+    return false;
+  }
+};
