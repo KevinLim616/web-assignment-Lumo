@@ -13,7 +13,7 @@ include("../authentication/sign_up_functions.php");
     <link rel="stylesheet" href="../style//form.css">
     <link rel="stylesheet" href="../style/sign_up.css">
 
-    <script src="../authentication/signUp.js" defer></script>
+    <script src="../authentication/signUp.js" type="module" defer></script>
     <title>Document</title>
 </head>
 
