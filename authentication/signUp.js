@@ -35,10 +35,12 @@ const usernameInput = document.getElementById("name-field");
 const emailInput = document.getElementById("mail-field");
 const dateOfBirthInput = document.getElementById("date-input");
 
-const isValidEmail = (email) => {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(String(email).toLowerCase());
-};
+import {
+  setError,
+  setSuccess,
+  validateInput,
+  isValidEmail,
+} from "../utils/utils.js";
 
 const isStrongPassword = (password) => {
   const regex = /^(?=.*[A-Z])(?=.*\d).+$/;
@@ -57,25 +59,6 @@ const isValidAge = (dateOfBirth) => {
     return age - 1;
   }
   return age;
-};
-
-const setError = (element, message) => {
-  const inputBox = element.parentElement; //input-box
-  const inputControl = inputBox.parentElement; //input-box -> input-control
-  const errorMessage = inputControl.querySelector(".error-message");
-  errorMessage.innerText = message;
-
-  inputBox.classList.add("error");
-  // inputControl.classList.remove("success");
-};
-
-const setSuccess = (element) => {
-  const inputBox = element.parentElement;
-  const inputControl = inputBox.parentElement; //input-box -> input-control
-  const errorMessage = inputControl.querySelector(".error-message");
-  errorMessage.innerText = "";
-  // inputControl.classList.add("success");
-  inputBox.classList.remove("error");
 };
 
 const validateUsername = () => {
@@ -166,7 +149,13 @@ const validateBirthDate = () => {
 
 const form = document.getElementById("sign-up-form");
 form.addEventListener("submit", (event) => {
-  const isValidForm = validateInput();
+  const isValidForm = validateInput([
+    validateUsername,
+    validateEmail,
+    validatePassword,
+    validateConfirmPassword,
+    validateBirthDate,
+  ]);
   console.log(isValidForm);
 
   if (!isValidForm) {
@@ -185,21 +174,3 @@ emailInput.addEventListener("blur", validateEmail);
 passwordInput.addEventListener("blur", validatePassword);
 confirmPasswordInput.addEventListener("blur", validateConfirmPassword);
 dateOfBirthInput.addEventListener("blur", validateBirthDate);
-
-// check all the validations and submit if no problems
-const validateInput = () => {
-  const validUsername = validateUsername();
-  const validEmail = validateEmail();
-  const validPassword = validatePassword();
-  const validConfirmPassword = validateConfirmPassword();
-  const validBirthDate = validateBirthDate();
-  if (
-    validUsername &&
-    validEmail &&
-    validPassword &&
-    validConfirmPassword &&
-    validBirthDate
-  ) {
-    return true;
-  }
-};
