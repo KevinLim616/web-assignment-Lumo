@@ -1,5 +1,6 @@
 <?php
-include("../include/db/database.php");
+include __DIR__ . "/../include/db/database.php";
+
 
 //sign up function
 function signUp($username, $email, $password, $date_of_birth)
