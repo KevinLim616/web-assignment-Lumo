@@ -27,7 +27,6 @@ export const validateInput = (validators = []) => {
 
   for (const fn of validators) {
     const result = fn();
-    console.log(fn.name, result);
     if (!result) {
       isValid = false;
     }
