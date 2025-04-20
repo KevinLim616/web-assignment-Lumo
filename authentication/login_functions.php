@@ -1,12 +1,14 @@
 <?php
 //sql query
 //include database connection as global variable
+include __DIR__ . "/../include/db/database.php";
+
+
 function userExist($email, $password)
 {
     // select from account table where username and password match
     $sql = "SELECT * FROM account WHERE email = '$email' AND password = '$password'";
-    //database connection
-    include("../include/db/database.php");
+    global $conn;
     $result = mysqli_query($conn, $sql);
 
     //if there are results
@@ -26,7 +28,7 @@ function login($email, $password)
     $password = htmlspecialchars($password);
     //filter input
 
-    // Check if the email$email and password are correct
+    // Check if the email and password are correct
     //TODO: hash password
     if ($email == "admin@example.com" && $password == "password") {
         //redirect to admin page
@@ -34,6 +36,6 @@ function login($email, $password)
     } else if (userExist($email, $password) == true) { //search existed user in db
         echo "user logged in";
     } else {
-        echo "Invalid email$email or password.";
+        echo "Invalid email or password.";
     }
 }
