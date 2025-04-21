@@ -77,13 +77,13 @@ include __DIR__ . ("/include/db/database.php");
             <a href="#" class="link">forgot password?</a>
           </div>
 
-          <input type="submit" value="Sign In" class="button" name="login" />
+          <div class="sign-in-action">
+            <input type="submit" value="Sign In" class="button" name="login" />
+            <p class="link">
+              Don't have an account? <a href="#">Sign up now!</a>
+            </p>
+          </div>
         </form>
-        <div>
-          <p class="link">
-            Don't have an account? <a href="#">Sign up now!</a>
-          </p>
-        </div>
       </div>
     </section>
   </div>

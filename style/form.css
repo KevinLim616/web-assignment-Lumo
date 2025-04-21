@@ -33,6 +33,7 @@
   flex-direction: column;
   justify-content: space-between;
   height: 300px;
+  width: fit-content;
 }
 
 .input-box .eye {
