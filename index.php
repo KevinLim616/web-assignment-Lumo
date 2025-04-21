@@ -25,18 +25,18 @@ include __DIR__ . ("/include/db/database.php");
     <section class="left">
 
       <div style="display: flex;">
-        <img src="assets/img/LOGO.svg" alt="logo" width="150px" />
+        <img src="assets/img/LOGO.svg" alt="logo" width="100px" />
       </div>
       <img src="./assets/img/signinpage_mascot.png" alt="sign in mascot" class="sign-in-mascot">
     </section>
     <section class="right">
       <div class="form-container">
-        <h1>Sign In</h1>
         <form
           action="index.php"
           method="post"
           class="sign-in-form"
           id="sign-in-form">
+          <h1>Sign In</h1>
           <div class="inputs-container">
             <!--email field-->
             <div class="input-control">

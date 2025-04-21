@@ -14,6 +14,7 @@ body {
   display: flex;
   width: 100%;
   height: 100vh;
+  position: relative;
 }
 
 .left {
@@ -42,6 +43,25 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .sign-up-mascot {
   z-index: 100;
-  height: 450px;
-  object-fit: contain;
+  position: absolute;
+  transform: translateY(-50%);
+  z-index: 100;
+  width: 120%;
+  height: auto;
+  max-width: none;
+  top: 50%;
+  left: 8%;
+}
+
+.form-container {
+  display: flex;
+  justify-content: center;
+  max-height: 500px;
+  align-items: center;
+}
+
+.sign-up-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

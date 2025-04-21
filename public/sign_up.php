@@ -23,7 +23,7 @@ include("../authentication/sign_up_functions.php");
     <div class="container">
         <section class="left">
             <div style="display: flex;">
-                <img src="../assets/img/LOGO.svg" alt="logo" width="150px" />
+                <img src="../assets/img/LOGO.svg" alt="logo" width="100px" />
             </div>
             <img src="../assets/img/signuppage_mascot.png" alt="sign up mascot" class="sign-up-mascot">
         </section>
@@ -133,8 +133,12 @@ include("../authentication/sign_up_functions.php");
                         </div>
 
                     </div>
-
-                    <input type="submit" value="Sign Up" class="button" name="sign-up" />
+                    <div class="sign-up-action">
+                        <input type="submit" value="Sign Up" class="button" name="sign-up" />
+                        <p class="link">Already have an account?
+                            <a href="#">sign In here!</a>
+                        </p>
+                    </div>
                 </form>
             </div>
         </section>

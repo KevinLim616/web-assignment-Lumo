@@ -13,7 +13,13 @@ body {
   height: 100vh;
   position: relative;
 }
-
+.sign-in-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 80vh;
+  width: fit-content;
+}
 .left {
   display: flex;
   flex: 1;
@@ -33,7 +39,7 @@ body {
 }
 
 .form-container {
-  width: 50%;
+  width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,22 +50,11 @@ body {
   position: absolute;
   transform: translateY(-50%);
   z-index: 100;
-  width: 150%;
+  width: 120%;
   height: auto;
   max-width: none;
   top: 50%;
-  left: 20%;
-  max-width: 100%;
-}
-
-.link {
-  font-size: 14px;
-  font-weight: 200;
-}
-
-.link a {
-  font-style: italic;
-  font-weight: normal;
+  left: 10%;
 }
 
 .sign-in-action {
