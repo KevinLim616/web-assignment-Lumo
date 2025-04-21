@@ -136,7 +136,7 @@ include("../authentication/sign_up_functions.php");
                     <div class="sign-up-action">
                         <input type="submit" value="Sign Up" class="button" name="sign-up" />
                         <p class="link">Already have an account?
-                            <a href="#">sign In here!</a>
+                            <a href="../index.php">sign In here!</a>
                         </p>
                     </div>
                 </form>

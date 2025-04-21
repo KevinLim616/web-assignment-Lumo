@@ -80,7 +80,7 @@ include __DIR__ . ("/include/db/database.php");
           <div class="sign-in-action">
             <input type="submit" value="Sign In" class="button" name="login" />
             <p class="link">
-              Don't have an account? <a href="#">Sign up now!</a>
+              Don't have an account? <a href="./public/sign_up.php">Sign up now!</a>
             </p>
           </div>
         </form>
