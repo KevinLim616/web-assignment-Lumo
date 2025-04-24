@@ -1,0 +1,102 @@
+.side-bar {
+  background-color: var(--black);
+  height: 100%;
+  position: fixed;
+  width: 200px;
+  border-radius: 0 16px 16px 0;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 8px 0 8px 8px;
+}
+
+.feather {
+  color: var(--white);
+}
+
+.navigator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-svg {
+  color: var(--white);
+}
+
+ul {
+  list-style: none;
+}
+ul li {
+  margin-bottom: 16px;
+}
+
+a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--white);
+}
+
+.user-icon ul li span,
+.side-bar ul li a span {
+  font-size: 20px;
+}
+
+.side-bar ul li {
+  border-radius: 4px 0 0 4px;
+  padding: 4px;
+}
+
+.side-bar ul li.active {
+  background-color: var(--white);
+}
+.side-bar ul li.active a {
+  color: var(--black);
+}
+
+.side-bar ul li.active a .feather {
+  color: var(--black);
+}
+
+.feather-user {
+  color: var(--black);
+  border-radius: 24px;
+  background-color: var(--white);
+}
+
+.user-icon ul li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.side-bar ul li.inactive:hover {
+  background-color: #3d3e41;
+}
+
+.user-icon {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  bottom: 100%;
+  z-index: 1;
+  padding: 8px 16px;
+  display: none;
+}
+
+.popover:hover {
+  background-color: #f0f0f0;
+}
+.popover-item span {
+  cursor: pointer;
+}
+
+.popover.active {
+  display: block;
+}
