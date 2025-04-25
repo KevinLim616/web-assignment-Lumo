@@ -45,6 +45,9 @@ a {
   font-size: 20px;
 }
 
+.user-icon ul li span {
+  color: var(--white);
+}
 .side-bar ul li {
   border-radius: 4px 0 0 4px;
   padding: 4px;
