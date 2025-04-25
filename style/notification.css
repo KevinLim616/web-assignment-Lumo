@@ -1,20 +1,53 @@
-.notification-date {
-  color: #92969a;
-  font-size: 14px;
-}
-
-li {
-  margin: 8px 0;
-}
-
-  ul li::marker {
-    color: red;
-  }
-
 body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 1fr;
+  height: 100vh;
+  grid-template-areas: "sidebar main";
   margin-right: 0;
   margin-top: 0;
 }
+
+.side-bar {
+  grid-area: sidebar;
+}
+
+main {
+  grid-area: main;
+  overflow-y: auto;
+  padding: 0 0 0 20px;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.notification {
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.notification:hover {
+  background-color: #e3e3f5;
+}
+
+.notification-date {
+  color: #92969a;
+  font-size: 12px;
+}
+.notifications-container section ul {
+  padding: 0 0 0 32px;
+}
+
+.notifications-container section ul li {
+  margin: 8px 0;
+  list-style-type: disc;
+  font-family: "SF Pro Text", sans-serif;
+}
+.notifications-container section ul li::marker {
+  color: red;
+}
+
 h6 {
   font-weight: 300;
 }
@@ -27,15 +60,21 @@ p {
 .notification-details {
   background-color: #1a191a;
   color: whitesmoke;
-  height: 1000px;
-  width: 400px;
+  height: 100%;
+  width: 350px;
   padding-top: 24px;
   padding-left: 56px;
+  right: -100%;
+  position: absolute;
+  transition: right 0.5s ease-in;
 }
 
+.notification-details.active {
+  right: 0;
+}
 
 .notification-title h3 {
-  margin:0;
+  margin: 0;
   margin-bottom: 16px;
   font-size: 32px;
 }
