@@ -1,0 +1,46 @@
+.notification-date {
+  color: #92969a;
+  font-size: 14px;
+}
+
+li {
+  margin: 8px 0;
+}
+
+  ul li::marker {
+    color: red;
+  }
+
+body {
+  margin-right: 0;
+  margin-top: 0;
+}
+h6 {
+  font-weight: 300;
+}
+
+h6,
+p {
+  margin: 0 0;
+}
+
+.notification-details {
+  background-color: #1a191a;
+  color: whitesmoke;
+  height: 1000px;
+  width: 400px;
+  padding-top: 24px;
+  padding-left: 56px;
+}
+
+
+.notification-title h3 {
+  margin:0;
+  margin-bottom: 16px;
+  font-size: 32px;
+}
+
+.notification-description {
+  margin-top: 16px;
+  padding-left: 16px;
+}
