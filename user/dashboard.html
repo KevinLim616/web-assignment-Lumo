@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Dashboard</title>
+    <link rel="stylesheet" href="../style/list-group.css" />
+    <link rel="stylesheet" href="../style/calendar-style.css" />
+    <script
+      src="https://kit.fontawesome.com/88f05daeb4.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="main-layout" style="display: flex; padding-left: 50px">
+      <div class="left-panel" style="background-color: FFFEF8">
+        <div class="top-section">
+          <div class="today-container">
+            <div class="today-title">Today</div>
+            <div style="padding-left: 8px">
+              <div class="today-date">Mon 09 Jan 2025</div>
+              <div class="today-subtext">
+                Let's plan today's to do list! Intelly wishes you a good and
+                productive day.
+              </div>
+
+              <div
+                style="width: 100%; background-color: #fffef8; margin-top: -9px"
+              >
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-bottom: -17px;
+                  "
+                >
+                  <div style="display: flex; align-items: center">
+                    <h2 style="font-size: 40px">Tasks</h2>
+                  </div>
+                  <div>
+                    <button
+                      id="createBtn"
+                      style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding: 8px 47px;
+                        gap: 4px;
+                        width: 115px;
+                        height: 45px;
+                        background: #1a191a;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: large;
+                      "
+                    >
+                      +create
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    width: 100%;
+                    background-color: #fffef8;
+                    border-radius: 12px;
+                  "
+                >
+                  <form action="">
+                    <div class="tasks-grey-box">
+                      <div style="display: flex; align-items: center">
+                        <input type="checkbox" name="test" />
+
+                        <label for="test" class="task-label"
+                          >Eat brunch with friends</label
+                        >
+                      </div>
+
+                      <div style="display: flex">
+                        <p style="display: inline-block">11:30pm</p>
+                        <div class="icons">
+                          <img src="icon/Home.svg" width="30" height="24" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <form action="">
+                    <div class="tasks-grey-box">
+                      <div style="display: flex; align-items: center">
+                        <input type="checkbox" name="test2" />
+
+                        <label for="test2" class="task-label"
+                          >Draw design sketches</label
+                        >
+                      </div>
+
+                      <div style="display: flex">
+                        <p style="display: inline-block">1.00pm</p>
+                        <div class="icons">
+                          <img src="icon/Book.svg" width="30" height="24" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <form action="">
+                    <div class="tasks-grey-box">
+                      <div style="display: flex; align-items: center">
+                        <input type="checkbox" name="test3" />
+
+                        <label for="test3" class="task-label"
+                          >Online meeting</label
+                        >
+                      </div>
+
+                      <div style="display: flex">
+                        <p style="display: inline-block">2.00pm</p>
+                        <div class="icons">
+                          <img src="icon/Work.svg" width="30" height="24" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <form action="">
+                    <div class="tasks-grey-box">
+                      <div style="display: flex; align-items: center">
+                        <input type="checkbox" name="test4" />
+
+                        <label for="test4" class="task-label">Exercise</label>
+                      </div>
+
+                      <div style="display: flex">
+                        <p style="display: inline-block">3.30pm</p>
+                        <div class="icons">
+                          <img src="icon/Home.svg" width="30" height="24" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <form action="">
+                    <div class="tasks-grey-box">
+                      <div style="display: flex; align-items: center">
+                        <input type="checkbox" name="test5" />
+
+                        <label for="test5" class="task-label"
+                          >Pratice english</label
+                        >
+                      </div>
+
+                      <div style="display: flex">
+                        <p style="display: inline-block">6.00pm</p>
+                        <div class="icons">
+                          <img src="icon/Book.svg" width="30" height="24" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  <form action="">
+                    <div class="tasks-grey-box">
+                      <div style="display: flex; align-items: center">
+                        <input type="checkbox" name="test6" />
+
+                        <label for="test6" class="task-label"
+                          >Design logo</label
+                        >
+                      </div>
+
+                      <div style="display: flex">
+                        <p style="display: inline-block">9.00pm</p>
+                        <div class="icons">
+                          <img src="icon/Book.svg" width="30" height="24" />
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <form action="">
+              <div class="tasks">
+                <div class="flag-box">
+                  <h2 style="font-size: 40px; margin: 1px; margin-bottom: 19px">
+                    Flag
+                  </h2>
+
+                  <div style="display: flex; align-items: center">
+                    <input type="checkbox" id="flag1" name="flag1" />
+                    <label for="flag1" style="margin-left: 8px"
+                      >Save Ringgit 5,000 this year</label
+                    >
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="vertical-line"></div>
+      <div class="right-panel">
+        <div class="mood-log-container">
+          <div class="mood-log-header">
+            <h2 style="font-size: 36px">Daily Mood Log</h2>
+            <div class="today-subtext">
+              <p>Track your mood today and make every day more meaningful!</p>
+            </div>
+          </div>
+          <div class="mood-icons">
+            <img src="icon/Emoji.svg" />
+          </div>
+        </div>
+        <div class="calendar">
+          <div class="header">
+            <button id="arrowleft"><img src="icon/arrow%20left.svg" /></button>
+            <div class="monthYear" id="monthYear"></div>
+            <button id="arrowright">
+              <img src="icon/arrow%20right.svg" />
+            </button>
+          </div>
+          <div class="days">
+            <div class="day">MO</div>
+            <div class="day">TU</div>
+            <div class="day">WE</div>
+            <div class="day">TH</div>
+            <div class="day">FR</div>
+            <div class="day">SA</div>
+            <div class="day">SU</div>
+          </div>
+
+          <div class="dates" id="dates"></div>
+        </div>
+      </div>
+      <div id="popupModal" class="modal">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <input class="textplace" ; placeholder="Add Title" />
+
+          <div class="form-group">
+            <form>
+              <label><img src="icon/clock.svg" />Date:</label>
+              <input
+                type="Date"
+                name="date_user"
+                style="height: 25px; width: 99px"
+              />
+
+              <label>Time:</label>
+              <input
+                type="Time"
+                name="time_user"
+                style="height: 25px; width: 99px"
+              />
+            </form>
+          </div>
+
+          <img src="icon/align-left.svg" /><input
+            class="textdescription"
+            ;
+            placeholder="Description"
+          />
+
+          <div>
+            <img src="icon/grid.svg" /><label class="category">Category:</label>
+            <select style="width: 99px; height: 25px">
+              <option>Home</option>
+              <option>Work</option>
+              <option>Study</option>
+            </select>
+          </div>
+
+          <button class="save-btn">Save</button>
+        </div>
+      </div>
+    </div>
+    <script src="./modal.js" defer></script>
+
+    <script src="./calendar.js" defer></script>
+  </body>
+</html>
