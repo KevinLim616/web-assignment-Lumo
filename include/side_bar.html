@@ -42,72 +42,7 @@
             />
           </svg>
         </div>
-        <ul>
-          <li class="active">
-            <a href="#">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-grid"
-              >
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="7"></rect>
-                <rect x="14" y="14" width="7" height="7"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
-              </svg>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li class="inactive">
-            <a href="#">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#fffef8"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-calendar"
-              >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-              <span>Calendar</span>
-            </a>
-          </li>
-          <li class="inactive">
-            <a href="#">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="feather feather-bell"
-              >
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-              </svg>
-              <span>Notification</span>
-            </a>
-          </li>
-        </ul>
+        <ul></ul>
       </nav>
       <div>
         <div class="user-icon">
@@ -132,9 +67,13 @@
               </span>
               <!--TODO: switch to dynamic username-->
               <span>John Doe</span>
+              <!--TODO: popover animation-->
               <dialog class="popover" open>
                 <div class="popover-item">
-                  <span>Logout</span>
+                  <form action="" method="post" name="logout-form">
+                    <input type="submit" value="Logout" name="logout" />
+                    <label for="logout"></label>
+                  </form>
                 </div>
               </dialog>
             </li>

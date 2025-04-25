@@ -71,6 +71,10 @@ a {
   display: flex;
   align-items: center;
   gap: 8px;
+  cursor: default;
+}
+
+.user-icon ul li svg {
   cursor: pointer;
 }
 
@@ -99,4 +103,13 @@ a {
 
 .popover.active {
   display: block;
+}
+
+.popover-item form input {
+  border-style: none;
+  background-color: transparent;
+}
+
+.popover-item form label {
+  display: none;
 }
