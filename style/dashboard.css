@@ -1,0 +1,286 @@
+body {
+  display: grid;
+  grid-template-columns: 200px 2fr 1fr;
+  grid-template-rows: 1fr;
+  height: 100vh;
+  overflow: hidden;
+  grid-template-areas: "sidebar main calendar";
+}
+
+.side-bar {
+  grid-area: sidebar;
+}
+
+main {
+  grid-area: main;
+  background-color: #50ca91;
+
+  overflow-y: auto;
+}
+.right-panel {
+  grid-area: calendar;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* 内容靠右 */
+  padding: 20px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.left-panel {
+  background-color: #fffef8;
+}
+
+.today-container {
+  position: relative;
+  padding: 8px;
+}
+
+.today-title {
+  font-family: sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 60px;
+  line-height: 72px;
+  color: #000000;
+  padding: 2px;
+}
+
+.today-subtext p {
+  margin-top: 0;
+  font-size: 16px;
+  line-height: 19px;
+  color: #9b9c9e;
+}
+
+.mood-log-header h2 {
+  margin-bottom: 0;
+  margin-top: 16px;
+}
+
+.mood-log-subtext {
+  margin-bottom: 0;
+  margin-top: 8px;
+  color: #9b9e9c;
+  font-size: 16px;
+}
+
+.vertical-line {
+  height: 100%;
+  width: 1px;
+  background-color: #a9a9a9;
+}
+
+/* .left-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+} */
+
+.flag-box {
+  width: 95%;
+  height: 150px;
+  background: #000000;
+  border-radius: 20px 20px 0 0;
+  color: white;
+  padding: 16px;
+  margin-top: 30px;
+}
+
+.icons {
+  align-items: center;
+  display: flex;
+  margin: 4px;
+}
+
+.mood-log-container {
+  box-sizing: border-box;
+  width: 400px;
+  height: 229px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #fcfafa;
+  border: 0.75px solid #abaaa9;
+  border-radius: 15px;
+  padding: 16px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 40px;
+  width: 645px;
+  height: 412px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 37px;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: #e87fc8;
+  border: none;
+  padding: 8px 16px;
+  color: white;
+  border-radius: 10px;
+  float: right;
+  margin-top: 7px;
+}
+
+.textplace {
+  width: 590px;
+  height: 50px;
+  border: hidden;
+  margin-bottom: 20px;
+  padding: 10px;
+}
+
+.textdescription {
+  width: 590px;
+  height: 124px;
+  border: hidden;
+  justify-content: center;
+  margin-bottom: 60px;
+  padding: 10px;
+}
+.category {
+  margin-top: 25px;
+}
+
+.create-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: large;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+  padding: 8px;
+  gap: 4px;
+  cursor: pointer;
+  transition: 0.3s ease-out;
+}
+
+.create-button:hover {
+  opacity: 80%;
+}
+
+.tasks-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  min-height: 82vh;
+}
+
+.tasks-list {
+  flex: 1;
+  overflow-y: auto;
+
+  margin-bottom: 1rem;
+}
+.task-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f7f5f5;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+}
+.task-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 18px;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+.custom-checkbox input:checked ~ .checkmark::after {
+  content: "";
+  border-radius: 2px;
+  background-image: url("../assets/icons/check.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #50ca91;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.checkmark {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--black);
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+}
+
+.info span {
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+  font-size: 16px;
+}
+
+.mood-icon {
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  transition: transform 0.2s ease-out;
+}
+
+.mood-icons-container span:hover .mood-icon {
+  transform: scale(1.4);
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.mood-icons-container span:hover + span .mood-icon,
+.mood-icons-container span:has(+ span:hover) .mood-icon {
+  transform: scale(1.1);
+}
+
+.mood-icons-container {
+  display: flex;
+  padding: 8px;
+  justify-content: space-evenly;
+  background-color: #f1f2f2;
+  border-radius: 8px;
+}
