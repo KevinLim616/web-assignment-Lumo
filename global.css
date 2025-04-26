@@ -271,6 +271,11 @@ h5 {
   font-size: 24px;
 }
 
+h6 {
+  font-family: "SF Pro Text", sans-serif;
+  font-size: 14px;
+}
+
 p {
   font-family: "SF Pro Text", sans-serif;
   font-size: 20px;
@@ -286,4 +291,5 @@ a {
 body {
   background-color: var(--white);
   color: var(--black);
+  margin: 0;
 }
