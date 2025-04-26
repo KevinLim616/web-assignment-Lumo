@@ -23,7 +23,7 @@ include __DIR__ . ("./../utils/get_notifications.php")
     <div class="notifications-list">
       <h1 style="display: inline-block">Notification</h1>
 
-      <div class="notifications-container" style="display: flex">
+      <div class="notifications-container">
         <!--TODO: display dynamic notifications-->
         <!--TODO: give each notification a class and assign id-->
         <!--TODO: listens for "click" and display respective detail according to the id-->
