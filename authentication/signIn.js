@@ -59,3 +59,5 @@ form.addEventListener("submit", (event) => {
     event.preventDefault();
   }
 });
+
+// TODO: handleSignIn function
