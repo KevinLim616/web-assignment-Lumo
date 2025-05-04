@@ -65,10 +65,7 @@
             </div>
           </div>
 
-          <div
-            class="tasks-list"
-            style="width: 100%; background-color: #fffef8; border-radius: 12px"
-          >
+          <div class="tasks-list">
             <form action="">
               <!--Tasks box here-->
               <div class="task-box">
@@ -418,10 +415,40 @@
       <!--FIXME: Calendar here-->
       <div class="calendar">
         <div class="header">
-          <button id="arrowleft"><img src="icon/arrow%20left.svg" /></button>
+          <button id="arrowleft">
+            <svg
+              width="10"
+              height="16"
+              viewBox="0 0 10 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7.75 13.5L2.25 8L7.75 2.5"
+                stroke="#1E1E1E"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
           <div class="monthYear" id="monthYear"></div>
           <button id="arrowright">
-            <img src="icon/arrow%20right.svg" />
+            <svg
+              width="10"
+              height="16"
+              viewBox="0 0 10 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M2.25 13.5L7.75 8L2.25 2.5"
+                stroke="#1E1E1E"
+                stroke-width="4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
           </button>
         </div>
         <div class="days">
@@ -437,45 +464,115 @@
         <div class="dates" id="dates"></div>
       </div>
     </div>
+    <!--Modal Here-->
     <div id="popupModal" class="modal">
       <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <input class="textplace" ; placeholder="Add Title" />
+        <form action="" method="POST" id="task-form">
+          <div style="display: flex; flex-direction: column; gap: 24px">
+            <div class="modal-first-line">
+              <input
+                type="text"
+                class="textplace"
+                id="task-title"
+                name="title"
+                placeholder="Add Title"
+                required
+              />
+              <div class="close-btn">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#aaaaaa"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-x"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </div>
+            </div>
 
-        <div class="form-group">
-          <form>
-            <label><img src="icon/clock.svg" />Date:</label>
-            <input
-              type="Date"
-              name="date_user"
-              style="height: 25px; width: 99px"
-            />
+            <div class="form-group">
+              <div class="date-time-group">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#000000"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="clock-icon"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <label for="task-date">Date:</label>
+                <input type="date" id="task-date" name="date" required />
+                <label for="task-time">Time:</label>
+                <input type="time" id="task-time" name="time" required />
+              </div>
+            </div>
 
-            <label>Time:</label>
-            <input
-              type="Time"
-              name="time_user"
-              style="height: 25px; width: 99px"
-            />
-          </form>
-        </div>
+            <div class="description-group">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-align-left"
+              >
+                <line x1="17" y1="10" x2="3" y2="10"></line>
+                <line x1="21" y1="6" x2="3" y2="6"></line>
+                <line x1="21" y1="14" x2="3" y2="14"></line>
+                <line x1="17" y1="18" x2="3" y2="18"></line>
+              </svg>
+              <textarea rows="5" class="textdescription" name="description">
+          Description
+          </textarea
+              >
+            </div>
 
-        <img src="icon/align-left.svg" /><input
-          class="textdescription"
-          ;
-          placeholder="Description"
-        />
-
-        <div>
-          <img src="icon/grid.svg" /><label class="category">Category:</label>
-          <select style="width: 99px; height: 25px">
-            <option>Home</option>
-            <option>Work</option>
-            <option>Study</option>
-          </select>
-        </div>
-
-        <button class="save-btn">Save</button>
+            <div class="category-group">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-grid"
+              >
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <label for="category-select">Category:</label>
+              <select id="category-select" name="category">
+                <option value="home">Home</option>
+                <option value="work">Work</option>
+                <option value="study">Study</option>
+              </select>
+            </div>
+          </div>
+          <input type="submit" class="save-btn" value="Save" />
+        </form>
       </div>
     </div>
 

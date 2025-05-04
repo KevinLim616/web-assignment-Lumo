@@ -7,28 +7,37 @@ body {
   grid-template-areas: "sidebar main calendar";
 }
 
+.today-date {
+  font-family: "SF Pro Text";
+}
 .side-bar {
   grid-area: sidebar;
 }
 
 main {
   grid-area: main;
-  background-color: #50ca91;
-
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  border-right: 0.5px solid #9b9c9e;
 }
 .right-panel {
   grid-area: calendar;
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* 内容靠右 */
+  align-items: center; /* 内容靠右 */
   padding: 20px;
   height: 100vh;
+  justify-content: center;
   box-sizing: border-box;
 }
 
 .left-panel {
   background-color: #fffef8;
+  flex: 1;
 }
 
 .today-container {
@@ -37,7 +46,7 @@ main {
 }
 
 .today-title {
-  font-family: sans-serif;
+  font-family: "SF Pro Rounded", sans-serif;
   font-style: normal;
   font-weight: 600;
   font-size: 60px;
@@ -86,7 +95,12 @@ main {
   border-radius: 20px 20px 0 0;
   color: white;
   padding: 16px;
-  margin-top: 30px;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  bottom: 130px;
 }
 
 .icons {
@@ -107,6 +121,8 @@ main {
   border-radius: 15px;
   padding: 16px;
 }
+
+/* modal */
 
 .modal {
   display: none;
@@ -148,25 +164,65 @@ main {
 }
 
 .textplace {
-  width: 590px;
-  height: 50px;
   border: hidden;
   margin-bottom: 20px;
   padding: 10px;
 }
 
-.textdescription {
-  width: 590px;
-  height: 124px;
-  border: hidden;
-  justify-content: center;
-  margin-bottom: 60px;
-  padding: 10px;
+.description-group {
+  display: flex;
+  gap: 12px;
 }
+.textdescription {
+  width: 95%;
+  border: hidden;
+  justify-content: start;
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+.category-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.category-group label {
+  display: none;
+}
+
 .category {
   margin-top: 25px;
 }
 
+#task-title {
+  font-family: "SF Pro Display";
+  font-weight: 600;
+  color: var(--black);
+
+  font-size: 32px;
+}
+
+#task-title::-webkit-input-placeholder {
+  color: #9b9c9e;
+}
+
+.modal-first-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date-time-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: start;
+}
+
+.date-time-group label {
+  display: none;
+}
 .create-button {
   display: flex;
   align-items: center;
@@ -191,16 +247,22 @@ main {
   display: flex;
   flex-direction: column;
   height: 100%;
-
-  min-height: 82vh;
+  flex: 1;
+  min-height: fit-content;
+  position: relative;
 }
 
 .tasks-list {
   flex: 1;
   overflow-y: auto;
-
-  margin-bottom: 1rem;
+  background-color: #fffef8;
+  border-radius: 12px;
+  padding: 10px;
+  max-height: calc(
+    90vh - 350px
+  ); /* Adjust based on the height of other elements */
 }
+
 .task-box {
   display: flex;
   align-items: center;
@@ -226,6 +288,7 @@ main {
 .custom-checkbox input[type="checkbox"] {
   display: none;
 }
+
 .custom-checkbox input:checked ~ .checkmark::after {
   content: "";
   border-radius: 2px;

@@ -1,83 +1,82 @@
-.calendar{
-    margin-top: 14px;
-    width: 400px;
-    height: 504pxp;
-    background-color: white;
-    border: 0.75px solid #ABAAA9;
-    border-radius: 30px;
-    
-
+.calendar {
+  margin-top: 14px;
+  width: 1fr;
+  background-color: white;
+  border: 0.75px solid #abaaa9;
+  border-radius: 12px;
 }
 .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 42px;
-        padding:10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 42px;
+  padding: 10px;
 }
 
 .monthYear {
-    text-align: center;
-    font-weight: 600px;
-    width: 150px;
+  text-align: center;
+  font-weight: 600px;
+  width: 150px;
 }
 
 .header button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
 }
 
 .days {
-    padding: 10px;
-    display: grid;
-    grid-template-columns: repeat(7,1fr);
+  font-family: "SF Pro Text";
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
 }
 
-.day{
-    text-align: center;
-    width: 36.08px;
-    height: 17px;
-    padding: 5px;
-    background-color: #E9E9E9;
+.day {
+  text-align: center;
+  width: 36.08px;
+  height: 17px;
+  padding: 5px;
+  background-color: #e9e9e9;
 }
 
 .dates {
-    
-display: grid;
-    grid-template-columns: repeat(7,1fr);
+  font-family: "SF Pro Text";
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
 }
 
 .date {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 10px;
-    margin: auto;
-    cursor: pointer;
-    font-weight: 600;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  margin: auto;
+  cursor: pointer;
+  font-weight: 600;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  transition: 0.2s;
 }
 
 .date:hover,
 .date.active {
-    background: pink;
-    color:white;
+  background: pink;
+  color: white;
 }
 
 .date.inactive {
-    color: #e5e5e5;
+  color: #e5e5e5;
 }
 
 .date.inactive:hover {
-    color:white;
+  color: white;
 }
