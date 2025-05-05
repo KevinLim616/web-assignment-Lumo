@@ -175,10 +175,20 @@ main {
 }
 .textdescription {
   width: 95%;
-  border: hidden;
+  border: none;
+  border-radius: 12px;
   justify-content: start;
   padding: 10px;
   background-color: #f1f1f1;
+}
+
+#category-select,
+#task-time,
+#task-date {
+  border: none;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  padding: 8px;
 }
 
 .category-group {
