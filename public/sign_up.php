@@ -157,5 +157,5 @@ if (isset($_POST["sign-up"])) {
     signUp($username, $email, $password, $date_of_birth);
 }
 
-mysqli_close($conn);
+
 ?>

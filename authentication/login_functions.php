@@ -10,9 +10,9 @@ function userExist($email, $password)
     // select from account table where username and password match
     $sql = "SELECT * FROM account WHERE email = ? ";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $email);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
     $stmt->execute();
-    $result = $stmt->get_result();
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
     //if there are results

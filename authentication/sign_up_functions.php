@@ -25,42 +25,43 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 function userExist($email)
 {
     global $conn;
-    $sql = $conn->prepare("SELECT id FROM account WHERE email = ?");
-    $sql->bind_param("s", $email);
+    $sql = $conn->prepare("SELECT id FROM account WHERE email = :email");
+    $sql->bindParam(':email', $email, PDO::PARAM_STR);
     $sql->execute();
-    $sql->store_result();
-
-    return $sql->num_rows > 0;
+    return $sql->rowCount() > 0;
 }
 
-//sign up function
+// Sign up function
 function signUp($username, $email, $password, $date_of_birth)
 {
     global $conn;
 
-    $username = htmlspecialchars($username);
+    $username = trim($username);
     $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-    mysqli_begin_transaction($conn);
+    $conn->beginTransaction();
 
     try {
-        $stmt1 = $conn->prepare("INSERT INTO account (username, email, password) VALUES (?, ?, ?)");
-        $stmt1->bind_param("sss", $username, $email, $hashed_password);
+        $stmt1 = $conn->prepare("INSERT INTO account (username, email, password) VALUES (:username, :email, :password)");
+        $stmt1->bindParam(':username', $username, PDO::PARAM_STR);
+        $stmt1->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt1->bindParam(':password', $hashed_password, PDO::PARAM_STR);
         $stmt1->execute();
 
-        $account_id = $conn->insert_id;
+        $account_id = $conn->lastInsertId();
 
-        $stmt2 = $conn->prepare("INSERT INTO users (Acc_id, date_of_birth) VALUES (?, ?)");
-        $stmt2->bind_param("is", $account_id, $date_of_birth);
+        $stmt2 = $conn->prepare("INSERT INTO users (Acc_id, date_of_birth) VALUES (:acc_id, :dob)");
+        $stmt2->bindParam(':acc_id', $account_id, PDO::PARAM_INT);
+        $stmt2->bindParam(':dob', $date_of_birth, PDO::PARAM_STR);
         $stmt2->execute();
 
-        mysqli_commit($conn);
+        $conn->commit();
 
         return "user created";
     } catch (Exception $error) {
         // Rollback on error
-        mysqli_rollback($conn);
-        echo "Error: " . $error->getMessage();
+        $conn->rollBack();
+        return "Error: " . $error->getMessage();
     }
 }

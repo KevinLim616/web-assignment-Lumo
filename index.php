@@ -113,6 +113,4 @@ include __DIR__ . ("/include/db/database.php");
 if (isset($_POST["login"])) {
   login($_POST["email"], $_POST["password"]);
 }
-//change to pdo method
-mysqli_close($conn);
 ?>

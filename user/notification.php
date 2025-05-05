@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . ("./../utils/get_notifications.php")
+include __DIR__ . "./../utils/get_notifications.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,27 +17,24 @@ include __DIR__ . ("./../utils/get_notifications.php")
 
 <body>
   <!--navigation drawer-->
-  <?php include __DIR__ . ("./../include/side_bar.php") ?>
+  <?php include __DIR__ . "./../include/side_bar.php" ?>
   <main class="content-wrapper">
 
     <div class="notifications-list">
       <h1 style="display: inline-block">Notification</h1>
 
       <div class="notifications-container">
-        <!--TODO: display dynamic notifications-->
-        <!--TODO: give each notification a class and assign id-->
-        <!--TODO: listens for "click" and display respective detail according to the id-->
 
         <section style="display: flex">
           <ul>
             <?php
             if (!empty($notifications)) {
-              foreach ($notifications as $index => $notifications) {
-                $created_at = new DateTime($notifications['created_at']);
+              foreach ($notifications as $index => $notification) {
+                $created_at = new DateTime($notification['created_at']);
                 $formatted_date = $created_at->format("M d");
 
-                $title = htmlspecialchars($notifications['title']);
-                $full_message = htmlspecialchars($notifications['message']);
+                $title = htmlspecialchars($notification['title']);
+                $full_message = htmlspecialchars($notification['message']);
                 $formatted_date = htmlspecialchars($formatted_date);
                 $fixed_length = 70;
                 $display_text = "$title. ";
@@ -62,7 +59,7 @@ include __DIR__ . ("./../utils/get_notifications.php")
             } else {
               echo "<li>No notification</li>";
             }
-            $conn->close()
+
             ?>
 
           </ul>
