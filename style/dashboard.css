@@ -122,6 +122,12 @@ main {
   padding: 16px;
 }
 
+.date {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
 /* modal */
 
 .modal {
