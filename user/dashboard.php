@@ -1,17 +1,22 @@
+<?php
+include __DIR__ . "./../tasks/create_task.php";
+include __DIR__ . "./../tasks/get_tasks.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Dashboard</title>
   <link rel="stylesheet" href="../global.css" />
   <link rel="stylesheet" href="../style/dashboard.css" />
   <link rel="stylesheet" href="../style/calendar-style.css" />
+  <script src="./../tasks/tasks.js"></script>
 </head>
 
 <body>
-  <!--TODO: change to grid layout-->
-  <!--TODO: tidy up icon path-->
+
 
   <!--sidebar here-->
 
@@ -66,33 +71,37 @@
 
         <div class="tasks-list">
           <form action="">
+            <?php
+            $tasks = getTasks();
+            if (!empty($tasks)) {
+              foreach ($tasks as $task) {
+                $title = htmlspecialchars($task['title']);
+                $time = htmlspecialchars($task['time']);
+                $category = htmlspecialchars($task['category']);
+                $task_id = $task['id'];
+              }
+            }
+            ?>
             <!--Tasks box here-->
             <div class="task-box">
               <div class="task">
-                <label for="test" class="task-label custom-checkbox">
-                  <input type="checkbox" name="test" id="test" /><span
-                    class="checkmark"></span>
-                  Eat brunch with friends
+                <label for="task-<?php echo $task_id; ?>" class="task-label custom-checkbox">
+                  <input type="checkbox" name="task-<?php echo $task_id; ?>" id="task-<?php echo $task_id; ?>" data-task-id="<?php echo $task_id; ?>" onchange="updateTaskStatus(this)" />
+                  <span class="checkmark"></span>
+                  <?php echo $title; ?>
                 </label>
               </div>
 
               <div class="info">
-                <span>11:30pm</span>
-                <div class="icons">
+                <span class="task-time" data-time="<?php echo $time; ?>"></span>
+                <div class="icons" data-category="<?php echo $category; ?>">
                   <!--Home icon-->
-                  <svg
-                    width="30"
-                    height="24"
-                    viewBox="0 0 30 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M14.6026 6.38854L4.99999 14.2974V22.8333C4.99999 23.0543 5.08778 23.2663 5.24406 23.4226C5.40034 23.5789 5.61231 23.6667 5.83332 23.6667L11.6698 23.6516C11.8901 23.6505 12.101 23.5622 12.2563 23.406C12.4117 23.2499 12.4989 23.0385 12.4989 22.8182V17.8333C12.4989 17.6123 12.5867 17.4004 12.743 17.2441C12.8993 17.0878 13.1113 17 13.3323 17H16.6656C16.8866 17 17.0986 17.0878 17.2549 17.2441C17.4111 17.4004 17.4989 17.6123 17.4989 17.8333V22.8146C17.4986 22.9242 17.5199 23.0329 17.5616 23.1343C17.6034 23.2357 17.6647 23.3279 17.7421 23.4055C17.8195 23.4832 17.9115 23.5448 18.0128 23.5868C18.114 23.6289 18.2226 23.6505 18.3323 23.6505L24.1667 23.6667C24.3877 23.6667 24.5996 23.5789 24.7559 23.4226C24.9122 23.2663 25 23.0543 25 22.8333V14.2917L15.3995 6.38854C15.2866 6.29756 15.146 6.24795 15.001 6.24795C14.8561 6.24795 14.7155 6.29756 14.6026 6.38854ZM29.7708 11.7641L25.4167 8.175V0.960937C25.4167 0.795177 25.3508 0.636206 25.2336 0.518996C25.1164 0.401786 24.9574 0.335938 24.7917 0.335938H21.875C21.7092 0.335938 21.5503 0.401786 21.433 0.518996C21.3158 0.636206 21.25 0.795177 21.25 0.960937V4.74271L16.587 0.90625C16.1395 0.53801 15.5779 0.336674 14.9984 0.336674C14.4189 0.336674 13.8574 0.53801 13.4099 0.90625L0.226029 11.7641C0.162741 11.8164 0.11038 11.8806 0.0719388 11.9532C0.0334971 12.0257 0.00972777 12.1052 0.00198892 12.1869C-0.00574994 12.2686 0.00269334 12.3511 0.0268363 12.4296C0.0509793 12.5081 0.0903489 12.581 0.142695 12.6443L1.47082 14.2589C1.52302 14.3223 1.58724 14.3749 1.65978 14.4135C1.73232 14.4521 1.81177 14.4761 1.89358 14.484C1.97538 14.4919 2.05794 14.4835 2.13653 14.4595C2.21511 14.4354 2.28818 14.3961 2.35155 14.3438L14.6026 4.25313C14.7155 4.16215 14.8561 4.11254 15.001 4.11254C15.146 4.11254 15.2866 4.16215 15.3995 4.25313L27.651 14.3438C27.7143 14.3961 27.7872 14.4355 27.8657 14.4596C27.9442 14.4838 28.0267 14.4922 28.1084 14.4845C28.1901 14.4767 28.2696 14.4529 28.3421 14.4145C28.4147 14.3761 28.4789 14.3237 28.5312 14.2604L29.8594 12.6458C29.9117 12.5822 29.9509 12.5089 29.9747 12.4301C29.9986 12.3512 30.0066 12.2685 29.9984 12.1865C29.9902 12.1046 29.9658 12.0251 29.9268 11.9526C29.8877 11.8801 29.8347 11.816 29.7708 11.7641Z"
-                      fill="#FFA4DF" />
-                  </svg>
+                  <?php echo $svg_icon ?>
                 </div>
               </div>
             </div>
+
+
           </form>
         </div>
         <form action="">
@@ -424,7 +433,7 @@
   <!--Modal Here-->
   <div id="popupModal" class="modal">
     <div class="modal-content">
-      <form action="" method="POST" id="task-form">
+      <form action="dashboard.php" method="POST" id="task-form">
         <div style="display: flex; flex-direction: column; gap: 24px">
           <div class="modal-first-line">
             <input
@@ -518,7 +527,7 @@
             <select id="category-select" name="category">
               <option value="home">Home</option>
               <option value="work">Work</option>
-              <option value="study">Study</option>
+              <option value="school">school</option>
             </select>
           </div>
         </div>
@@ -533,3 +542,14 @@
 </body>
 
 </html>
+
+<?php
+if (isset($_POST["create-task"])) {
+  $title = $_POST["title"];
+  $date = $_POST["date"];
+  $time = $_POST["time"];
+  $description = $_POST["description"];
+  $category = $_POST["category"];
+  createTask($title, $date, $time, $description, $category);
+};
+?>
