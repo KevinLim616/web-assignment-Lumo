@@ -1,17 +1,21 @@
-const createBtn = document.getElementById('createBtn');
-    const popupModal = document.getElementById('popupModal');
-    const closeBtn = popupModal.querySelector('.close-btn');
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("popupModal");
+  const createBtn = document.getElementById("createBtn");
+  const closeBtn = document.querySelector(".close-btn");
 
-    createBtn.addEventListener('click', () => {
-      popupModal.style.display = 'block';
-    });
+  createBtn.addEventListener("click", () => {
+    modal.style.display = "block";
+  });
 
-    closeBtn.addEventListener('click', () => {
-      popupModal.style.display = 'none';
-    });
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+    document.getElementById("create-task-form").reset();
+  });
 
-    window.addEventListener('click', (e) => {
-      if (e.target === popupModal) {
-        popupModal.style.display = 'none';
-      }
-    });
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+      document.getElementById("create-task-form").reset();
+    }
+  });
+});

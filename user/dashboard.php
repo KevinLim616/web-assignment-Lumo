@@ -1,5 +1,4 @@
 <?php
-include __DIR__ . "./../tasks/create_task.php";
 include __DIR__ . "./../tasks/get_tasks.php";
 ?>
 <!DOCTYPE html>
@@ -12,7 +11,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <link rel="stylesheet" href="../global.css" />
   <link rel="stylesheet" href="../style/dashboard.css" />
   <link rel="stylesheet" href="../style/calendar-style.css" />
-  <script src="./../tasks/tasks.js"></script>
+  <script src="./../tasks/tasks.js" defer></script>
 </head>
 
 <body>
@@ -70,7 +69,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
         </div>
 
         <div class="tasks-list">
-          <form action="">
+          <form>
             <?php
             $tasks = getTasks();
             if (!empty($tasks)) {
@@ -79,29 +78,26 @@ include __DIR__ . "./../tasks/get_tasks.php";
                 $time = htmlspecialchars($task['time']);
                 $category = htmlspecialchars($task['category']);
                 $task_id = $task['id'];
+            ?>
+                <div class="task-box">
+                  <div class="task">
+                    <label for="task-<?php echo $task_id; ?>" class="task-label custom-checkbox">
+                      <input type="checkbox" name="task-<?php echo $task_id; ?>" id="task-<?php echo $task_id; ?>" data-task-id="<?php echo $task_id; ?>" onchange="updateTaskStatus(this)" />
+                      <span class="checkmark"></span>
+                      <?php echo $title; ?>
+                    </label>
+                  </div>
+                  <div class="info">
+                    <span class="task-time" data-time="<?php echo $time; ?>"></span>
+                    <div class="icons" data-category="<?php echo $category; ?>"></div>
+                  </div>
+                </div>
+            <?php
               }
+            } else {
+              echo "<p>No tasks available.</p>";
             }
             ?>
-            <!--Tasks box here-->
-            <div class="task-box">
-              <div class="task">
-                <label for="task-<?php echo $task_id; ?>" class="task-label custom-checkbox">
-                  <input type="checkbox" name="task-<?php echo $task_id; ?>" id="task-<?php echo $task_id; ?>" data-task-id="<?php echo $task_id; ?>" onchange="updateTaskStatus(this)" />
-                  <span class="checkmark"></span>
-                  <?php echo $title; ?>
-                </label>
-              </div>
-
-              <div class="info">
-                <span class="task-time" data-time="<?php echo $time; ?>"></span>
-                <div class="icons" data-category="<?php echo $category; ?>">
-                  <!--Home icon-->
-                  <?php echo $svg_icon ?>
-                </div>
-              </div>
-            </div>
-
-
           </form>
         </div>
         <form action="">
@@ -433,7 +429,8 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <!--Modal Here-->
   <div id="popupModal" class="modal">
     <div class="modal-content">
-      <form action="dashboard.php" method="POST" id="task-form">
+      <!--removed action="" because its handdled in task.js via ajax-->
+      <form method="POST" id="create-task-form">
         <div style="display: flex; flex-direction: column; gap: 24px">
           <div class="modal-first-line">
             <input
@@ -542,14 +539,3 @@ include __DIR__ . "./../tasks/get_tasks.php";
 </body>
 
 </html>
-
-<?php
-if (isset($_POST["create-task"])) {
-  $title = $_POST["title"];
-  $date = $_POST["date"];
-  $time = $_POST["time"];
-  $description = $_POST["description"];
-  $category = $_POST["category"];
-  createTask($title, $date, $time, $description, $category);
-};
-?>
