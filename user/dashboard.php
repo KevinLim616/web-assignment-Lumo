@@ -1,5 +1,5 @@
 <?php
-include __DIR__ . "./../tasks/get_tasks.php";
+// include __DIR__ . "./../tasks/get_tasks.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -548,19 +548,22 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <div class="task-drawer" id="task-details-drawer">
     <div class="drawer-content-container">
       <!--this is a checkbox-->
-      <span class="checkmark"></span>
+      <label class="task-label custom-checkbox">
+        <input type="checkbox" id="drawer-task-checkbox" />
+        <span class="drawer-checkmark"></span>
+      </label>
 
       <div class="drawer-content">
         <div class="drawer-header">
-          <h2>This is a task tittle</h2>
+          <h2 id="drawer-task-title"></h2>
         </div>
         <div class="drawer-body">
           <div class="task-info">
-            <div class="tag">today,1:00 PM</div>
-            <div class="tag">school</div>
+            <div class="tag" id="drawer-task-date-time">today,1:00 PM</div>
+            <div class="tag" id="drawer-task-category"></div>
           </div>
           <div class="task-description">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit aperiam voluptatum dolorem aut, quibusdam, rerum pariatur, architecto accusamus quia accusantium ducimus. Ratione atque quo animi adipisci quam tempore officia eveniet!</p>
+            <p id="drawer-task-description"></p>
           </div>
         </div>
 

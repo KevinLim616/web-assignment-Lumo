@@ -426,7 +426,7 @@ main {
   width: 90%;
 }
 
-.task-drawer div .checkmark {
+.drawer-checkmark {
   display: flex;
   min-width: 24px;
   min-height: 24px;
