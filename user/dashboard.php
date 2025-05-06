@@ -78,11 +78,22 @@ include __DIR__ . "./../tasks/get_tasks.php";
                 $time = htmlspecialchars($task['time']);
                 $category = htmlspecialchars($task['category']);
                 $task_id = $task['id'];
+                $date = htmlspecialchars($task['date']);
+                $description = htmlspecialchars($task['description']);
+                // Encode task details as JSON for the data attribute
+                $task_details = json_encode([
+                  'id' => $task_id,
+                  'title' => $title,
+                  'date' => $date,
+                  'time' => $time,
+                  'description' => $description,
+                  'category' => $category
+                ]);
             ?>
-                <div class="task-box">
+                <div class="task-box" data-task-details='<?php echo $task_details; ?>'>
                   <div class="task">
                     <label for="task-<?php echo $task_id; ?>" class="task-label custom-checkbox">
-                      <input type="checkbox" name="task-<?php echo $task_id; ?>" id="task-<?php echo $task_id; ?>" data-task-id="<?php echo $task_id; ?>" onchange="updateTaskStatus(this)" />
+                      <input type="checkbox" name="task-<?php echo $task_id; ?>" id="task-<?php echo $task_id; ?>" data-task-id="<?php echo $task_id; ?>" />
                       <span class="checkmark"></span>
                       <?php echo $title; ?>
                     </label>
@@ -532,6 +543,44 @@ include __DIR__ . "./../tasks/get_tasks.php";
       </form>
     </div>
   </div>
+  <!--Task details drawer-->
+
+  <div class="task-drawer" id="task-details-drawer">
+    <div class="drawer-content-container">
+      <!--this is a checkbox-->
+      <span class="checkmark"></span>
+
+      <div class="drawer-content">
+        <div class="drawer-header">
+          <h2>This is a task tittle</h2>
+        </div>
+        <div class="drawer-body">
+          <div class="task-info">
+            <div class="tag">today,1:00 PM</div>
+            <div class="tag">school</div>
+          </div>
+          <div class="task-description">
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit aperiam voluptatum dolorem aut, quibusdam, rerum pariatur, architecto accusamus quia accusantium ducimus. Ratione atque quo animi adipisci quam tempore officia eveniet!</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- <div id="task-details-drawer" class="task-drawer">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h2 id="task-title"></h2>
+      </div>
+      <div class="drawer-body">
+        <p><strong>Date:</strong> <span id="drawer-task-date"></span></p>
+        <p><strong>Time:</strong> <span id="drawer-task-time"></span></p>
+        <p><strong>Description:</strong> <span id="drawer-task-description"></span></p>
+        <p><strong>Category:</strong> <span id="drawer-task-category"></span></p>
+      </div>
+    </div>
+  </div> -->
 
   <script src="./modal.js" defer></script>
 
