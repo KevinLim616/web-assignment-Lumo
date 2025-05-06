@@ -287,6 +287,11 @@ main {
   margin-bottom: 10px;
   padding: 5px;
   border-radius: 8px;
+  cursor: pointer;
+}
+
+.task-box:hover {
+  opacity: 80%;
 }
 
 .task {
@@ -363,3 +368,75 @@ main {
   background-color: #f1f2f2;
   border-radius: 8px;
 }
+
+/* task-drawer */
+
+.task-drawer {
+  grid-area: calendar; /* Align with the right panel's grid area (for reference) */
+  position: fixed;
+  top: 0;
+  right: -35%; /* Start off-screen, matching the right panel's approximate width */
+  width: 35vw; /* Approximate width of the right panel (1/3 of viewport) */
+  height: 100%;
+  background-color: var(--black);
+  color: var(--white);
+  z-index: 10;
+  transition: right 0.3s ease-in-out;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.task-drawer.open {
+  right: 0;
+}
+
+.task-info {
+  display: flex;
+  gap: 4px;
+}
+
+.tag {
+  background-color: var(--blue);
+  padding: 6px 8px;
+  color: var(--black);
+  border-radius: 1000px;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+  font-size: 14px;
+}
+
+.task-description p {
+  font-size: 14px;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+  font-weight: normal;
+}
+
+.drawer-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-description {
+  width: 90%;
+}
+
+/* 
+
+
+
+.drawer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-header h2 {
+  margin: 0;
+}
+
+
+
+.drawer-body strong {
+  font-weight: 600;
+} */
