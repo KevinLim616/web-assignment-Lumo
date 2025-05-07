@@ -550,7 +550,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
       <!--this is a checkbox-->
       <label class="task-label custom-checkbox">
         <input type="checkbox" id="drawer-task-checkbox" />
-        <span class="drawer-checkmark"></span>
+        <span class="drawer-checkmark" id="custom-drawer-checkbox"></span>
       </label>
 
       <div class="drawer-content">

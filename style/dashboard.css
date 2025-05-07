@@ -437,6 +437,20 @@ main {
   margin-top: 8px;
 }
 
+/* FIXME: fix drawer checkbox */
+.custom-checkbox input:checked ~ .drawer-checkmark::after {
+  content: "";
+  border-radius: 2px;
+  background-image: url("../assets/icons/check.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: var(--white);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .drawer-content-container {
   display: flex;
   align-items: start;

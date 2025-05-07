@@ -15,6 +15,21 @@ const formatTime = (rawTime) => {
   return `${hours}:${minutes}`;
 };
 
+const updateTaskStatus = (checkbox) => {
+  const taskId = checkbox.getAttribute("data-task-id");
+  const drawer = document.getElementById("task-details-drawer");
+  const drawerTaskId = drawer.getAttribute("data-task-id");
+
+  // If drawer is open for this task, sync the drawer checkbox
+  if (drawer.classList.contains("open") && drawerTaskId === taskId) {
+    const drawerCheckbox = document.getElementById("drawer-task-checkbox");
+    drawerCheckbox.checked = checkbox.checked;
+  }
+
+  // TODO: Add logic to update task status in backend if needed
+  console.log(`Task ${taskId} status updated to ${checkbox.checked}`);
+};
+
 const appendTask = (task) => {
   const tasksList = document.querySelector(".tasks-list");
   const taskBox = document.createElement("div");
@@ -91,8 +106,20 @@ const openTaskDrawer = (taskBox) => {
 
   const taskDetails = JSON.parse(taskBox.getAttribute("data-task-details"));
   console.log(
-    `title:${taskDetails.title}, date:${taskDetails.date},${taskDetails.time}, category:${taskDetails.category}`
+    `id:${taskDetails.id}, title:${taskDetails.title}, date:${taskDetails.date},${taskDetails.time}, category:${taskDetails.category}`
   );
+
+  const taskId = taskDetails.id;
+  // Set drawer checkbox state to match task checkbox
+  const taskCheckbox = document.querySelector(
+    `input[data-task-id="${taskId}"]`
+  );
+  const drawerCheckbox = document.getElementById("drawer-task-checkbox");
+  drawerCheckbox.checked = taskCheckbox.checked;
+
+  // Store task ID in drawer for reference
+  drawer.setAttribute("data-task-id", taskId);
+
   const titleElement = document.getElementById("drawer-task-title");
   const dateTimeElement = document.getElementById("drawer-task-date-time");
   const descriptionElement = document.getElementById("drawer-task-description");
@@ -135,6 +162,21 @@ document.addEventListener("DOMContentLoaded", () => {
         openTaskDrawer(taskBox);
       }
     });
+  });
+
+  // Add event listener for drawer checkbox
+  const drawerCheckbox = document.getElementById("drawer-task-checkbox");
+  drawerCheckbox.addEventListener("change", () => {
+    const drawer = document.getElementById("task-details-drawer");
+    const taskId = drawer.getAttribute("data-task-id");
+    const taskCheckbox = document.querySelector(
+      `input[data-task-id="${taskId}"]`
+    );
+    if (taskCheckbox) {
+      taskCheckbox.checked = drawerCheckbox.checked;
+      // Trigger updateTaskStatus to handle any additional logic
+      updateTaskStatus(taskCheckbox);
+    }
   });
 
   //FIXME: Close drawer when clicking outside
