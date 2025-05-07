@@ -1,13 +1,24 @@
+import { svgIcons } from "../utils/svgIcons.js";
+
 const monthYearElement = document.getElementById("monthYear");
 const datesElement = document.getElementById("dates");
 const arrowleftElement = document.getElementById("arrowleft");
 const arrowrightElement = document.getElementById("arrowright");
 
 let currentDate = new Date();
+let moods = {}; //store moods for the current month
 
-const updateCalendar = () => {
+const updateCalendar = async () => {
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
+
+  try {
+    moods = await window.diary.fetchMoods(currentYear, currentMonth);
+    console.log(`Moods for ${currentYear}-${currentMonth + 1}:`, moods);
+  } catch (error) {
+    console.error("Failed to fetch moods: ", error);
+    moods = {};
+  }
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
   const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
@@ -32,15 +43,25 @@ const updateCalendar = () => {
   // 当前月日期
   for (let i = 1; i <= totalDays; i++) {
     const date = new Date(currentYear, currentMonth, i);
+    const dateString = date.toLocaleDateString("en-CA");
     const isToday = date.toDateString() === new Date().toDateString();
     const activeClass = isToday ? "active" : "";
+    const mood = moods[dateString];
+    console.log("const mood = ", mood);
+    let moodIcon = "";
+
+    if (mood && svgIcons[mood]) {
+      const svg = svgIcons[mood]("mood-icon", `mood-${dateString}`);
+      moodIcon = svg.outerHTML;
+    }
+
     datesHTML += `
     <div class="date ">
       <span class=${activeClass}>
         ${i}
       </span>
-      <div> 
-        image here
+      <div class="calendar-mood-container"> 
+        ${moodIcon}
       </div>
     </div>
         

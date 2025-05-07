@@ -1,29 +1,29 @@
 window.moods = {}; // Global store for mood data
 
 // Fetch moods for a given year and month
-// const fetchMoods = async (year, month) => {
-//   try {
-//     const response = await fetch(
-//       `../tasks/get_moods.php?year=${year}&month=${month + 1}`
-//     );
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     const data = await response.json();
-//     if (data.status === "success") {
-//       window.moods = data.moods; // Store moods globally
-//       return data.moods; // Return for immediate use
-//     } else {
-//       console.error("Failed to fetch moods:", data.message);
-//       window.moods = {};
-//       return {};
-//     }
-//   } catch (error) {
-//     console.error("Error fetching moods:", error);
-//     window.moods = {};
-//     return {};
-//   }
-// };
+const fetchMoods = async (year, month) => {
+  try {
+    const response = await fetch(
+      `../diary/get_moods.php?year=${year}&month=${month + 1}`
+    );
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    if (data.status === "success") {
+      window.moods = data.moods; // Store moods globally
+      return data.moods; // Return for immediate use
+    } else {
+      console.error("Failed to fetch moods:", data.message);
+      window.moods = {};
+      return {};
+    }
+  } catch (error) {
+    console.error("Error fetching moods:", error);
+    window.moods = {};
+    return {};
+  }
+};
 
 // Handle mood icon clicks
 document.addEventListener("DOMContentLoaded", () => {
@@ -75,10 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
           if (data.status === "success") {
             console.log("Mood saved", data.message);
             // Update global moods
-            // window.moods[today] = mood;
+            window.moods[today] = mood;
 
             // Dispatch event to notify calendar
-            // document.dispatchEvent(new Event("moodUpdated"));
+            document.dispatchEvent(new Event("moodUpdated"));
           } else {
             console.error("Failed to save mood:", data.message);
             alert("Failed to save mood: " + data.message);
@@ -93,6 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Expose fetchMoods for calendar.js
-// window.diary = {
-//     fetchMoods,
-//   };
+window.diary = {
+  fetchMoods,
+};
