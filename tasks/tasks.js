@@ -83,36 +83,6 @@ const insertIcons = () => {
   });
 };
 
-// Function to fetch tasks from the server and render them
-function fetchAndRenderTasks() {
-  const tasksList = document.querySelector(".tasks-list");
-  if (!tasksList) {
-    console.error("Tasks list not found in the DOM!");
-    return;
-  }
-
-  fetch("../tasks/get_tasks.php")
-    .then((res) => {
-      if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-      return res.json();
-    })
-    .then((tasks) => {
-      tasksList.innerHTML = ""; // Clear existing tasks
-      if (tasks.length === 0) {
-        tasksList.innerHTML = "<p>No tasks available.</p>";
-        return;
-      }
-      tasks.forEach(appendTask);
-      insertIcons();
-      updateTimeDisplay();
-    })
-    .catch((error) => {
-      console.error("Error fetching tasks:", error);
-      tasksList.innerHTML =
-        "<p>Error loading tasks. Please try again later.</p>";
-    });
-}
-
 // Function to open the task drawer and populate it with details
 const openTaskDrawer = (taskBox) => {
   const rightPanel = document.querySelector(".right-panel");
@@ -120,66 +90,18 @@ const openTaskDrawer = (taskBox) => {
   drawer.style.width = `${rightPanel.offsetWidth}px`;
 
   const taskDetails = JSON.parse(taskBox.getAttribute("data-task-details"));
-
-  // Populate drawer with task details
-
+  console.log(
+    `title:${taskDetails.title}, date:${taskDetails.date},${taskDetails.time}, category:${taskDetails.category}`
+  );
   const titleElement = document.getElementById("drawer-task-title");
   const dateTimeElement = document.getElementById("drawer-task-date-time");
   const descriptionElement = document.getElementById("drawer-task-description");
   const categoryElement = document.getElementById("drawer-task-category");
-  const checkboxElement = document.getElementById("drawer-task-checkbox");
-  if (
-    !titleElement ||
-    !dateTimeElement ||
-    !categoryElement ||
-    !descriptionElement ||
-    !checkboxElement
-  ) {
-    console.error("One or more drawer elements are missing:", {
-      titleElement,
-      dateTimeElement,
-      categoryElement,
-      descriptionElement,
-      checkboxElement,
-    });
-    return;
-  }
 
-  titleElement.textContent = taskDetails.title;
+  titleElement.textContent = taskDetails.title || "Untitled Task";
   dateTimeElement.textContent = `${taskDetails.date}, ${taskDetails.time}`;
+  descriptionElement.textContent = taskDetails.description || "No description";
   categoryElement.textContent = taskDetails.category;
-  descriptionElement.textContent = taskDetails.description;
-
-  //sync the checkbox state
-  const taskCheckBox = taskBox.querySelector("input[type='checkbox']");
-  const drawerCheckBox = document.getElementById("drawer-task-checkbox");
-  drawerCheckBox.checked = taskCheckBox.checked;
-
-  drawerCheckBox.onchange = () => {
-    taskCheckBox.checked = drawerCheckBox.checked;
-
-    const taskId = taskDetails.id;
-    const newStatus = drawerCheckBox.checked ? "completed" : "pending";
-    fetch("/tasks/update_task.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: taskId, status: newStatus }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.sucess) {
-          console.error("Failed to update task status:", data.error);
-          drawerCheckBox.checked = taskCheckBox.checked =
-            !drawerCheckBox.checked;
-        }
-      })
-      .catch((error) => {
-        console.error("Error updating task:", error);
-        drawerCheckBox.checked = taskCheckBox.checked = !drawerCheckBox.checked;
-      });
-  };
 
   // Show the drawer
   drawer.classList.add("open");
@@ -188,35 +110,34 @@ const openTaskDrawer = (taskBox) => {
 // Function to close the task drawer
 const closeTaskDrawer = () => {
   const drawer = document.getElementById("task-details-drawer");
-  if (drawer) {
-    drawer.classList.remove("open");
-  }
+  drawer.classList.remove("open");
 };
 
 //TODO: custom checkbox case
 document.addEventListener("DOMContentLoaded", () => {
-  fetchAndRenderTasks();
+  insertIcons();
+  updateTimeDisplay();
 
-  //   // Attach event listeners to existing checkboxes and task boxes
-  //   document
-  //     .querySelectorAll('input[type="checkbox"][data-task-id]')
-  //     .forEach((checkbox) => {
-  //       checkbox.addEventListener("change", () => updateTaskStatus(checkbox));
-  //     });
+  // Attach event listeners to existing checkboxes and task boxes
+  document
+    .querySelectorAll('input[type="checkbox"][data-task-id]')
+    .forEach((checkbox) => {
+      checkbox.addEventListener("change", () => updateTaskStatus(checkbox));
+    });
 
-  //   document.querySelectorAll(".task-box").forEach((taskBox) => {
-  //     taskBox.addEventListener("click", (e) => {
-  //       // Prevent opening drawer when clicking the checkbox
-  //       if (
-  //         e.target.type !== "checkbox" &&
-  //         !e.target.classList.contains("checkmark")
-  //       ) {
-  //         openTaskDrawer(taskBox);
-  //       }
-  //     });
-  //   });
+  document.querySelectorAll(".task-box").forEach((taskBox) => {
+    taskBox.addEventListener("click", (e) => {
+      // Prevent opening drawer when clicking the checkbox
+      if (
+        e.target.type !== "checkbox" &&
+        !e.target.classList.contains("checkmark")
+      ) {
+        openTaskDrawer(taskBox);
+      }
+    });
+  });
 
-  // Close drawer when clicking outside
+  //FIXME: Close drawer when clicking outside
   window.addEventListener("click", (e) => {
     const drawer = document.getElementById("task-details-drawer");
     if (e.target === drawer && drawer.classList.contains("open")) {
@@ -225,47 +146,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const createTaskForm = document.getElementById("create-task-form");
-  if (createTaskForm) {
-    createTaskForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const formData = new FormData(createTaskForm);
-      const submitBtn = createTaskForm.querySelector(".save-btn");
-      submitBtn.disabled = true;
+  createTaskForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-      fetch("/tasks/create_task_endpoint.php", {
-        method: "POST",
-        body: formData,
+    const formData = new FormData(createTaskForm);
+    const submitBtn = createTaskForm.querySelector(".save-btn");
+    submitBtn.disabled = true;
+
+    fetch("../tasks/create_task_endpoint.php", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        return res.json();
       })
-        .then((res) => {
-          if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-          return res.json();
-        })
-        .then((data) => {
-          if (data.status === "success") {
-            appendTask(data.task);
-            document.getElementById("popupModal").style.display = "none";
-            createTaskForm.reset();
-          } else {
-            console.error("Error:", data.message);
-            alert("Failed to create task: " + data.message);
-          }
-        })
-        .catch((error) => {
-          console.error("Fetch error:", error);
-          alert("An error occurred while creating the task: " + error.message);
-        })
-        .finally(() => {
-          submitBtn.disabled = false;
-        });
-    });
-  } else {
-    console.error("Create task form not found!");
-  }
+      .then((data) => {
+        if (data.status === "success") {
+          appendTask(data.task);
+          document.getElementById("popupModal").style.display = "none";
+          createTaskForm.reset();
+        } else {
+          console.error("Error:", data.message);
+          alert("Failed to create task: " + data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        alert("An error occurred while creating the task: " + error.message);
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+      });
+  });
 });
-
-function updateTaskStatus(checkbox) {
-  console.log(
-    "Update task status for task ID:",
-    checkbox.getAttribute("data-task-id")
-  );
-}

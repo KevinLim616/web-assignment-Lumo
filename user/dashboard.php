@@ -1,5 +1,5 @@
 <?php
-// include __DIR__ . "./../tasks/get_tasks.php";
+include __DIR__ . "./../tasks/get_tasks.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
