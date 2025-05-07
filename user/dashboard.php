@@ -146,7 +146,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
         </div>
       </div>
       <div class="mood-icons-container">
-        <span>
+        <span id="happy">
           <!--Happy icon-->
 
           <svg
@@ -548,22 +548,19 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <div class="task-drawer" id="task-details-drawer">
     <div class="drawer-content-container">
       <!--this is a checkbox-->
-      <label class="task-label custom-checkbox">
-        <input type="checkbox" id="drawer-task-checkbox" />
-        <span class="drawer-checkmark" id="custom-drawer-checkbox"></span>
-      </label>
+      <span class="checkmark"></span>
 
       <div class="drawer-content">
         <div class="drawer-header">
-          <h2 id="drawer-task-title"></h2>
+          <h2>This is a task tittle</h2>
         </div>
         <div class="drawer-body">
           <div class="task-info">
-            <div class="tag" id="drawer-task-date-time">today,1:00 PM</div>
-            <div class="tag" id="drawer-task-category"></div>
+            <div class="tag">today,1:00 PM</div>
+            <div class="tag">school</div>
           </div>
           <div class="task-description">
-            <p id="drawer-task-description"></p>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit aperiam voluptatum dolorem aut, quibusdam, rerum pariatur, architecto accusamus quia accusantium ducimus. Ratione atque quo animi adipisci quam tempore officia eveniet!</p>
           </div>
         </div>
 
@@ -586,7 +583,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
   </div> -->
 
   <script src="./modal.js" defer></script>
-
+  <script src="../diary/diary.js" defer></script>
   <script src="./calendar.js" defer></script>
 </body>
 
