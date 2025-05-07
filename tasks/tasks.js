@@ -26,8 +26,47 @@ const updateTaskStatus = (checkbox) => {
     drawerCheckbox.checked = checkbox.checked;
   }
 
+  const formData = new FormData();
+  formData.append("task_id", taskId);
+  formData.append("status", checkbox.checked ? "completed" : "pending");
+
   // TODO: Add logic to update task status in backend if needed
-  console.log(`Task ${taskId} status updated to ${checkbox.checked}`);
+  fetch("../tasks/update_task.php", {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data.status !== "success") {
+        console.error("Failed to update task status:", data.message);
+        //revert checkboox state
+        checkbox.checked = !checkbox.checked;
+        //Re-synce drawer checkbox if open
+        if (drawer.classList.contains("open") && drawerTaskId === taskId) {
+          document.getElementById("drawer-task-checkbox").checked =
+            checkbox.checked;
+        }
+        alert("Failed to update task status: " + data.message);
+      } else {
+        console.log(`✅ Task ${taskId} status updated to ${checkbox.checked}`);
+      }
+    })
+    .catch((error) => {
+      console.error("Error updating task status: ", error);
+      //revert checkboox state
+      checkbox.checked = !checkbox.checked;
+      //Re-synce drawer checkbox if open
+      if (drawer.classList.contains("open") && drawerTaskId === taskId) {
+        document.getElementById("drawer-task-checkbox").checked =
+          checkbox.checked;
+      }
+      alert("An error occurred while updating the task: " + error.message);
+    });
 };
 
 const appendTask = (task) => {
