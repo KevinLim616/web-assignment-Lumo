@@ -20,8 +20,9 @@ async function populateWeekMoods() {
   const weekGrid = document.getElementById("week-grid");
   weekGrid.innerHTML = ""; // Clear existing content
 
-  // Get the current date and the next 6 days
-  for (let i = 0; i < 7; i++) {
+  // Get the current date and the next 6 days i=7;i<7
+  //current day in the middle = i= -3; i<=3
+  for (let i = -3; i <= 3; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     const dateString = getLocalDateString(date);
