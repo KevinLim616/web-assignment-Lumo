@@ -548,19 +548,22 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <div class="task-drawer" id="task-details-drawer">
     <div class="drawer-content-container">
       <!--this is a checkbox-->
-      <span class="checkmark"></span>
+      <label class="task-label custom-checkbox">
+        <input type="checkbox" id="drawer-task-checkbox" />
+        <span class="drawer-checkmark" id="custom-drawer-checkbox"></span>
+      </label>
 
       <div class="drawer-content">
         <div class="drawer-header">
-          <h2>This is a task tittle</h2>
+          <h2 id="drawer-task-title"></h2>
         </div>
         <div class="drawer-body">
           <div class="task-info">
-            <div class="tag">today,1:00 PM</div>
-            <div class="tag">school</div>
+            <div class="tag" id="drawer-task-date-time">today,1:00 PM</div>
+            <div class="tag" id="drawer-task-category"></div>
           </div>
           <div class="task-description">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit aperiam voluptatum dolorem aut, quibusdam, rerum pariatur, architecto accusamus quia accusantium ducimus. Ratione atque quo animi adipisci quam tempore officia eveniet!</p>
+            <p id="drawer-task-description"></p>
           </div>
         </div>
 
@@ -568,19 +571,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
     </div>
   </div>
 
-  <!-- <div id="task-details-drawer" class="task-drawer">
-    <div class="drawer-content">
-      <div class="drawer-header">
-        <h2 id="task-title"></h2>
-      </div>
-      <div class="drawer-body">
-        <p><strong>Date:</strong> <span id="drawer-task-date"></span></p>
-        <p><strong>Time:</strong> <span id="drawer-task-time"></span></p>
-        <p><strong>Description:</strong> <span id="drawer-task-description"></span></p>
-        <p><strong>Category:</strong> <span id="drawer-task-category"></span></p>
-      </div>
-    </div>
-  </div> -->
+
 
   <script src="./modal.js" defer></script>
   <script src="../diary/diary.js" defer></script>
