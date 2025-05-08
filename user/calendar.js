@@ -1,5 +1,5 @@
 import { svgIcons } from "../utils/svgIcons.js";
-
+// import { getLocalDateString } from "../diary/diary.js";
 const monthYearElement = document.getElementById("monthYear");
 const datesElement = document.getElementById("dates");
 const arrowleftElement = document.getElementById("arrowleft");
@@ -7,6 +7,13 @@ const arrowrightElement = document.getElementById("arrowright");
 
 let currentDate = new Date();
 let moods = window.moods || {}; //use global window.moods
+
+function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
 const updateCalendar = async (forceFetch = false) => {
   const currentYear = currentDate.getFullYear();
@@ -46,7 +53,7 @@ const updateCalendar = async (forceFetch = false) => {
   // 当前月日期
   for (let i = 1; i <= totalDays; i++) {
     const date = new Date(currentYear, currentMonth, i);
-    const dateString = date.toISOString().split("T")[0];
+    const dateString = getLocalDateString(date);
     const isToday = date.toDateString() === new Date().toDateString();
     const activeClass = isToday ? "active" : "";
     const mood = moods[dateString];
@@ -59,7 +66,7 @@ const updateCalendar = async (forceFetch = false) => {
     }
 
     datesHTML += `
-    <div class="date ">
+    <div class="date" data-date='${dateString}'>
       <span class=${activeClass}>
         ${i}
       </span>
