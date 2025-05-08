@@ -6,18 +6,21 @@ const arrowleftElement = document.getElementById("arrowleft");
 const arrowrightElement = document.getElementById("arrowright");
 
 let currentDate = new Date();
-let moods = {}; //store moods for the current month
+let moods = window.moods || {}; //use global window.moods
 
-const updateCalendar = async () => {
+const updateCalendar = async (forceFetch = false) => {
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
 
-  try {
-    moods = await window.diary.fetchMoods(currentYear, currentMonth);
-    console.log(`Moods for ${currentYear}-${currentMonth + 1}:`, moods);
-  } catch (error) {
-    console.error("Failed to fetch moods: ", error);
-    moods = {};
+  // Fetch moods only on month change or initial load
+  if (forceFetch || Object.keys(moods).length === 0) {
+    try {
+      moods = await window.diary.fetchMoods(currentYear, currentMonth);
+      console.log(`Moods for ${currentYear}-${currentMonth + 1}:`, moods);
+    } catch (error) {
+      console.error("Failed to fetch moods: ", error);
+      moods = {};
+    }
   }
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
@@ -43,11 +46,11 @@ const updateCalendar = async () => {
   // 当前月日期
   for (let i = 1; i <= totalDays; i++) {
     const date = new Date(currentYear, currentMonth, i);
-    const dateString = date.toLocaleDateString("en-CA");
+    const dateString = date.toISOString().split("T")[0];
     const isToday = date.toDateString() === new Date().toDateString();
     const activeClass = isToday ? "active" : "";
     const mood = moods[dateString];
-    console.log("const mood = ", mood);
+
     let moodIcon = "";
 
     if (mood && svgIcons[mood]) {
@@ -78,14 +81,40 @@ const updateCalendar = async () => {
   datesElement.innerHTML = datesHTML;
 };
 
+const updateSingleMood = (date, mood) => {
+  const dateElement = datesElement.querySelector(`.date[data-date="${date}"]`);
+  if (dateElement) {
+    const moodContainer = dateElement.querySelector(".calendar-mood-container");
+    let moodIcon = "";
+    if (mood && svgIcons[mood]) {
+      const svg = svgIcons[mood]("mood-icon", `mood-${date}`);
+      moodIcon = svg.outerHTML;
+    }
+    moodContainer.innerHTML = moodIcon;
+    console.log(`updated mood for ${date}:${mood}`);
+  } else {
+    //FIXME: the calendar wont save icon to new day
+    // (the warning probably cause by this)
+
+    console.warn(`date element not found for ${date}`);
+  }
+};
+
 arrowleftElement.addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
-  updateCalendar();
+  updateCalendar(true);
 });
 
 arrowrightElement.addEventListener("click", () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
-  updateCalendar();
+  updateCalendar(true);
 });
 
-updateCalendar();
+document.addEventListener("moodUpdated", (event) => {
+  console.log("moodUpdated event received:", event.detail);
+  const { date, mood } = event.detail;
+  moods[date] = mood; //update local moods
+  updateSingleMood(date, mood); // update only the affected date
+});
+
+updateCalendar(true);

@@ -25,6 +25,13 @@ const fetchMoods = async (year, month) => {
   }
 };
 
+function getLocalDateString(date = new Date()) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 // Handle mood icon clicks
 document.addEventListener("DOMContentLoaded", () => {
   const moodIcons = document.querySelectorAll(
@@ -45,10 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   moodIcons.forEach((icon) => {
     icon.addEventListener("click", () => {
       const mood = icon.id; // Use id as mood value (e.g., "happy")
-      const today = new Date().toISOString().split("T")[0]; // e.g., "2025-05-07"
-
-      console.log("clicked", mood);
-      console.log(`Sending AJAX request - date: ${today}, mood: ${mood}`);
+      const today = getLocalDateString(); // e.g., "2025-05-07"
 
       const formData = new FormData();
       formData.append("date", today);
@@ -72,13 +76,17 @@ document.addEventListener("DOMContentLoaded", () => {
           return res.json();
         })
         .then((data) => {
+          console.log("Server response:", data);
           if (data.status === "success") {
             console.log("Mood saved", data.message);
             // Update global moods
             window.moods[today] = mood;
 
             // Dispatch event to notify calendar
-            document.dispatchEvent(new Event("moodUpdated"));
+            const event = new CustomEvent("moodUpdated", {
+              detail: { date: today, mood: mood },
+            });
+            document.dispatchEvent(event);
           } else {
             console.error("Failed to save mood:", data.message);
             alert("Failed to save mood: " + data.message);
