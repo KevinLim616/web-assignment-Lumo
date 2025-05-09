@@ -1,11 +1,11 @@
-.calendar {
+.mood-calendar {
   margin-top: 14px;
   width: 1fr;
   background-color: white;
   border: 0.75px solid #abaaa9;
   border-radius: 12px;
 }
-.header {
+.calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
