@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LUMO - Productivity App</title>
-
+  <link rel="stylesheet" href="../global.css">
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
     rel="stylesheet" />
@@ -151,6 +151,11 @@
       font-size: 0.85rem;
     }
 
+    .task-item span {
+      font-family: "SF Pro text", "Poppins", sans-serif;
+
+    }
+
     .task-icon {
       margin-left: auto;
       font-size: 0.9rem;
@@ -179,6 +184,13 @@
       border-radius: 1rem;
       width: 90px;
       height: 68px;
+      transition: 0.2s ease-in-out;
+    }
+
+    .card:hover {
+      cursor: pointer;
+      background-color: #ffc0e9;
+      opacity: 0.3;
     }
 
     .day-card {
