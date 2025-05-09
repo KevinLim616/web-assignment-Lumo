@@ -197,6 +197,20 @@
       height: 40px;
     }
 
+    .card.selected {
+      background-color: #ffc0e9;
+      opacity: 1;
+    }
+
+    .card.current-day {
+      background-color: #ffc0e9;
+      opacity: 0.7;
+    }
+
+    .current-day.selected {
+      opacity: 1;
+    }
+
     .emoji-img {
       margin-left: 2rem;
       align-self: end;
@@ -209,7 +223,7 @@
       border-radius: 1rem;
       padding: 1.5rem;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-      width: 1fr;
+      width: 100%;
       height: 80vh;
       margin-top: 1rem;
       margin-left: auto;

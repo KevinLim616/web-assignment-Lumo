@@ -15,8 +15,9 @@ function getLocalDateString(date = new Date()) {
 }
 
 // Fetch and populate moods for the week
-async function populateWeekMoods() {
+async function populateWeekMoods(selectedDate = new Date()) {
   const today = new Date();
+  const todayString = getLocalDateString(today);
   const weekGrid = document.getElementById("week-grid");
   weekGrid.innerHTML = ""; // Clear existing content
 
@@ -32,6 +33,7 @@ async function populateWeekMoods() {
 
     let moodIcon = "";
     // Fetch moods
+
     const moods = await window.diary.fetchMoods(
       date.getFullYear(),
       date.getMonth()
@@ -47,12 +49,28 @@ async function populateWeekMoods() {
 
     const card = document.createElement("div");
     card.className = "card shadow-sm";
+    card.dataset.date = dateString;
+
+    if (dateString === todayString) {
+      card.classList.add("current-day");
+    }
+    // Highlight the card if it matches the selected date
+    if (dateString === getLocalDateString(selectedDate)) {
+      card.classList.add("selected");
+    }
     card.innerHTML = `
           <div class="card-body day-card">
             <p class="day-name">${dayName}</p>
                 ${moodIcon}
           </div>
         `;
+
+    card.addEventListener("click", () => {
+      document
+        .querySelectorAll(".card")
+        .forEach((c) => c.classList.remove("selected"));
+      card.classList.add("selected");
+    });
     weekGrid.appendChild(card);
   }
 }
@@ -64,6 +82,7 @@ async function populateTasks() {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    //FIXME : change this to json
     const text = await response.text(); // Get raw response as text first
     console.log("Raw response:", text); // Log raw response for debugging
     const data = text ? JSON.parse(text) : [];
@@ -78,6 +97,40 @@ async function populateTasks() {
     if (error instanceof SyntaxError) {
       console.error("Invalid JSON response:", error);
     }
+  }
+}
+
+async function fetchDiaryEntry() {
+  try {
+    const today = new Date();
+    const dateString = getLocalDateString(today);
+    const response = await fetch(`../diary/get_diaries.php?date=${dateString}`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const text = await response.text();
+    console.log("Diary raw response:", text);
+    const data = text
+      ? JSON.parse(text)
+      : { title: "No Title", content: "No Content" };
+
+    const diaryEntry = document.querySelector(".diary-entry");
+    diaryEntry.innerHTML = `
+        <h3>${data.title}</h3>
+        <p>${data.content}</p>
+    `;
+
+    console.log(
+      `Date:${dateString}, Title: ${data.title}, Content: ${data.content} `
+    );
+  } catch (error) {
+    console.error("Error fetching diary entry:", error.message);
+    if (error instanceof SyntaxError) {
+      console.error("Invalid JSON response:", error);
+    }
+    const diaryEntry = document.querySelector(".diary-entry");
+    diaryEntry.innerHTML = `<h3>No Title</h3><p>No Content</p>`;
   }
 }
 
@@ -108,9 +161,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Update the week grid when the date changes
 
       populateWeekMoods();
-      populateTasks();
     },
   });
+  populateTasks();
+  fetchDiaryEntry();
 });
 // Update moods when calendar date changes (simplified)
 
