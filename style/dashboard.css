@@ -130,7 +130,76 @@ main {
 
 /* modal */
 
-.modal {
+.diary-modal {
+  display: block;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.diary-modal-container {
+  background-color: var(--white);
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 40px;
+  width: 645px;
+  height: 412px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.diary-modal-container form {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 24px;
+}
+
+.diary-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.diary-modal-container form div label {
+  display: none;
+}
+
+.diary-modal-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+}
+
+textarea#diary-content {
+  width: 100%;
+  flex-grow: 1;
+  border: none;
+  resize: none;
+  outline: none;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background-color: transparent;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+}
+
+input#diary-title {
+  font-family: "SF Pro Rounded";
+  border: none;
+  background-color: transparent;
+  outline: none;
+  font-size: 36px;
+}
+
+.task-modal {
   display: none;
   position: fixed;
   z-index: 999;
@@ -141,7 +210,7 @@ main {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.task-modal-content {
   background-color: white;
   margin: 10% auto;
   padding: 20px;

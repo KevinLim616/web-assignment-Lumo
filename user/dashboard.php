@@ -12,6 +12,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <link rel="stylesheet" href="../style/dashboard.css" />
   <link rel="stylesheet" href="../style/calendar-style.css" />
   <script src="./../tasks/tasks.js" defer></script>
+
 </head>
 
 <body>
@@ -390,8 +391,8 @@ include __DIR__ . "./../tasks/get_tasks.php";
       </div>
     </div>
     <!--FIXME: Calendar here-->
-    <div class="calendar">
-      <div class="header">
+    <div class="mood-calendar">
+      <div class="calendar-header">
         <button id="arrowleft">
           <svg
             width="10"
@@ -438,8 +439,8 @@ include __DIR__ . "./../tasks/get_tasks.php";
     </div>
   </div>
   <!--Modal Here-->
-  <div id="popupModal" class="modal">
-    <div class="modal-content">
+  <div id="popupModal" class="task-modal">
+    <div class="task-modal-content">
       <!--removed action="" because its handdled in task.js via ajax-->
       <form method="POST" id="create-task-form">
         <div style="display: flex; flex-direction: column; gap: 24px">
@@ -571,9 +572,26 @@ include __DIR__ . "./../tasks/get_tasks.php";
     </div>
   </div>
 
+  <!--Diary modal-->
+  <div class="diary-modal" id="diary-modal">
+    <div class="diary-modal-container">
+      <form action="" id="diary-content-form">
+        <div class="diary-modal-header">
+          <label for="diary-title">Diary Title</label>
+          <input type="text" id="diary-title" name="diary-title" placeholder="Add Title">
+          <span id="close-diary"></span>
+        </div>
+        <div class="diary-modal-content">
+          <label for="diary-content" id="diary-content-label">Content</label>
+          <textarea name="diary-content" id="diary-content" placeholder="Content...."></textarea>
+        </div>
+
+      </form>
+    </div>
+  </div>
 
 
-  <script src="./modal.js" defer></script>
+  <script src="./modal.js" defer type="module"></script>
   <script src="../diary/diary.js" defer type="module"></script>
   <script src="./calendar.js" defer type="module"></script>
 </body>
