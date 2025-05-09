@@ -32,8 +32,7 @@ function getLocalDateString(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
-// Handle mood icon clicks
-document.addEventListener("DOMContentLoaded", () => {
+export function handleMoodClick(selectedDate) {
   const moodIcons = document.querySelectorAll(
     ".mood-icons-container > span[id]"
   );
@@ -49,13 +48,30 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("Expected 5 mood icons, found:", moodIcons.length);
   }
 
+  const today = new Date();
+  const selected = new Date(selectedDate);
+
+  //set time to midnight for comparing only the dates
+  today.setHours(0, 0, 0, 0);
+  selected.setHours(0, 0, 0, 0);
+
   moodIcons.forEach((icon) => {
     icon.addEventListener("click", () => {
+      if (selected > today) {
+        console.log(
+          `Cannot change mood for future date: ${getLocalDateString(
+            selectedDate
+          )}`
+        );
+        alert("Warning: cannot set a mood for future date.");
+        return;
+      }
+
       const mood = icon.id; // Use id as mood value (e.g., "happy")
-      const today = getLocalDateString(); // e.g., "2025-05-07"
+      const dateString = getLocalDateString(selectedDate); // e.g., "2025-05-07"
 
       const formData = new FormData();
-      formData.append("date", today);
+      formData.append("date", dateString);
       formData.append("mood", mood);
 
       //Log FormData entries
@@ -80,11 +96,11 @@ document.addEventListener("DOMContentLoaded", () => {
           if (data.status === "success") {
             console.log("Mood saved", data.message);
             // Update global moods
-            window.moods[today] = mood;
+            window.moods[dateString] = mood;
 
             // Dispatch event to notify calendar
             const event = new CustomEvent("moodUpdated", {
-              detail: { date: today, mood: mood },
+              detail: { date: dateString, mood: mood },
             });
             document.dispatchEvent(event);
           } else {
@@ -98,6 +114,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
   });
+}
+
+// Handle mood icon clicks
+document.addEventListener("DOMContentLoaded", () => {
+  handleMoodClick();
 });
 
 // Expose fetchMoods for calendar.js
