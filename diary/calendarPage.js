@@ -7,6 +7,7 @@ document.querySelectorAll(".form-check-input").forEach((checkbox) => {
   });
 });
 
+//✅
 function getLocalDateString(date = new Date()) {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -14,34 +15,27 @@ function getLocalDateString(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
-// Fetch and populate moods for the week
+// Fetch and populate moods for the week ✅
 async function populateWeekMoods(selectedDate = new Date()) {
   const today = new Date();
   const todayString = getLocalDateString(today);
   const weekGrid = document.getElementById("week-grid");
-  weekGrid.innerHTML = ""; // Clear existing content
+  weekGrid.innerHTML = "";
 
-  // Get the current date and the next 6 days i=7;i<7
-  //current day in the middle = i= -3; i<=3
   for (let i = -3; i <= 3; i++) {
     const date = new Date(today);
     date.setDate(today.getDate() + i);
     const dateString = getLocalDateString(date);
-    const dayName = date.toLocaleString("en-US", {
-      weekday: "short",
-    });
+    const dayName = date.toLocaleString("en-US", { weekday: "short" });
 
     let moodIcon = "";
-    // Fetch moods
-
     const moods = await window.diary.fetchMoods(
       date.getFullYear(),
       date.getMonth()
     );
     const mood = moods[dateString] || "empty";
-    console.log(`${dayName},${mood}`); //Fri, sad
+    console.log(`${dayName},${mood}`);
 
-    //TODO: display relavant emoji from svgIcons.js
     if (mood && svgIcons[mood]) {
       const svg = svgIcons[mood]("mood-icon", `mood-${dateString}`);
       moodIcon = svg.outerHTML;
@@ -51,55 +45,99 @@ async function populateWeekMoods(selectedDate = new Date()) {
     card.className = "card shadow-sm";
     card.dataset.date = dateString;
 
-    if (dateString === todayString) {
-      card.classList.add("current-day");
-    }
-    // Highlight the card if it matches the selected date
-    if (dateString === getLocalDateString(selectedDate)) {
+    if (dateString === todayString) card.classList.add("current-day");
+    if (dateString === getLocalDateString(selectedDate))
       card.classList.add("selected");
-    }
+
     card.innerHTML = `
-          <div class="card-body day-card">
-            <p class="day-name">${dayName}</p>
-                ${moodIcon}
-          </div>
-        `;
+      <div class="card-body day-card">
+        <p class="day-name">${dayName}</p>
+        ${moodIcon}
+      </div>
+    `;
 
     card.addEventListener("click", () => {
       document
         .querySelectorAll(".card")
         .forEach((c) => c.classList.remove("selected"));
       card.classList.add("selected");
+      window.calA.setDate(date); // Update the calendar's selected date, triggering dateChanged
     });
+
     weekGrid.appendChild(card);
   }
 }
 
-// Fetch and populate tasks
-async function populateTasks() {
+// Fetch and populate tasks for a specific date
+async function populateTasks(selectedDate = new Date()) {
   try {
-    const response = await fetch("../tasks/get_tasks.php"); //fetch tasks
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    //FIXME : change this to json
-    const text = await response.text(); // Get raw response as text first
-    console.log("Raw response:", text); // Log raw response for debugging
-    const data = text ? JSON.parse(text) : [];
-    const taskList = document.getElementById("task-list");
-    // taskList.innerHTML = ""; // Clear existing tasks
+    const dateString = getLocalDateString(selectedDate);
+    const response = await fetch(`../tasks/get_tasks.php?date=${dateString}`);
+    console.log("Fetch response status:", response.status);
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const data = await response.json();
+    console.log("Parsed JSON data:", data);
 
+    const taskList = document.getElementById("task-list");
+    taskList.innerHTML = "";
+
+    if (!Array.isArray(data) || data.length === 0) {
+      taskList.innerHTML = "<p>No tasks for this date.</p>";
+      return;
+    }
+
+    // Group tasks by time
+    const tasksByTime = {};
     data.forEach((task) => {
-      appendTask(task); // Use the appendTask function from tasks.js
+      const time = task.time.split(":").slice(0, 2).join(":"); // e.g., "09:00" from "09:00:00"
+      if (!tasksByTime[time]) tasksByTime[time] = [];
+      tasksByTime[time].push(task);
     });
+
+    // Render tasks
+    for (const [time, tasks] of Object.entries(tasksByTime)) {
+      const formattedTime = `${time.slice(0, 2)}${time.slice(2)} ${
+        time < "12:00" ? "AM" : "PM"
+      }`;
+      taskList.innerHTML += `
+          <div class="task-time">
+            <h5>${formattedTime}</h5>
+          </div>
+        `;
+      tasks.forEach((task) => {
+        const iconClass = `task-${task.category.toLowerCase()}-icon`;
+        const iconSvg = svgIcons[task.category.toLowerCase()](
+          "task-icon",
+          `${task.category}-${task.id}`
+        );
+        taskList.innerHTML += `
+            <div class="task-item">
+              <input type="checkbox" class="form-check-input" ${
+                task.status === "completed" ? "checked" : ""
+              } data-task-id="${task.id}" />
+              <span>${task.title}</span>
+              <div class="task-icon ${iconClass}">
+                ${iconSvg.outerHTML}
+              </div>
+            </div>
+          `;
+      });
+    }
   } catch (error) {
     console.error("Error fetching tasks:", error.message);
     if (error instanceof SyntaxError) {
-      console.error("Invalid JSON response:", error);
+      const response = await fetch(
+        `../tasks/get_tasks.php?date=${getLocalDateString(selectedDate)}`
+      );
+      const text = await response.text();
+      console.log("Full response text:", text);
     }
+    document.getElementById("task-list").innerHTML =
+      "<p>Error loading tasks.</p>";
   }
 }
 
+//✅
 async function fetchDiaryEntry() {
   try {
     const today = new Date();
@@ -160,10 +198,13 @@ document.addEventListener("DOMContentLoaded", () => {
     dateChanged: (currentDate, filteredDateEvents) => {
       // Update the week grid when the date changes
 
-      populateWeekMoods();
+      populateWeekMoods(currentDate);
+      populateTasks(currentDate);
     },
   });
-  populateTasks();
+  window.calA = calA;
+
+  populateTasks(new Date());
   fetchDiaryEntry();
 });
 // Update moods when calendar date changes (simplified)
