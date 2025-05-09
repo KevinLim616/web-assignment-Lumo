@@ -574,7 +574,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
 
 
   <script src="./modal.js" defer></script>
-  <script src="../diary/diary.js" defer></script>
+  <script src="../diary/diary.js" defer type="module"></script>
   <script src="./calendar.js" defer type="module"></script>
 </body>
 
