@@ -72,7 +72,9 @@ async function populateWeekMoods(selectedDate = new Date()) {
 async function populateTasks(selectedDate = new Date()) {
   try {
     const dateString = getLocalDateString(selectedDate);
-    const response = await fetch(`../tasks/get_tasks.php?date=${dateString}`);
+    const url = `../tasks/get_tasks.php?date=${encodeURIComponent(dateString)}`;
+    console.log("Fetching tasks from URL:", url);
+    const response = await fetch(url);
     console.log("Fetch response status:", response.status);
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const data = await response.json();
@@ -204,10 +206,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   window.calA = calA;
 
-  populateTasks(new Date());
+  //   populateTasks(new Date());
   fetchDiaryEntry();
+  // Fallback if dateChanged doesn't fire
+  setTimeout(() => {
+    if (!document.getElementById("task-list").innerHTML) {
+      const initialDate = window.calA.getDate
+        ? window.calA.getDate()
+        : new Date();
+      populateTasks(initialDate);
+    }
+  }, 100);
 });
-// Update moods when calendar date changes (simplified)
 
 (function () {
   function c() {
