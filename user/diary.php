@@ -287,6 +287,38 @@
     .color-calendar.basic .calendar__days .calendar__day .calendar__day-box {
       color: rgb(0, 0, 0);
     }
+
+    .mood-icon {
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+      transition: transform 0.2s ease-out;
+    }
+
+    .mood-icons-container span:hover .mood-icon {
+      transform: scale(1.4);
+      z-index: 5;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    .mood-icons-container span:hover+span .mood-icon,
+    .mood-icons-container span:has(+ span:hover) .mood-icon {
+      transform: scale(1.1);
+    }
+
+    .diary-entry .empty-scene {
+      font-weight: 200;
+      color: #abbaa9;
+    }
+
+    .mood-icons-container {
+      display: flex;
+      padding: 8px;
+      max-width: 367px;
+      justify-content: space-evenly;
+      background-color: #f1f2f2;
+      border-radius: 8px;
+    }
   </style>
   <!--javascript here-->
   <script src="../diary/diary.js" defer></script>
