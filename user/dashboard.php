@@ -8,6 +8,12 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Dashboard</title>
+  <!--Quill.js-->
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.core.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.core.js"></script>
+
+
   <link rel="stylesheet" href="../global.css" />
   <link rel="stylesheet" href="../style/dashboard.css" />
   <link rel="stylesheet" href="../style/calendar-style.css" />
@@ -575,7 +581,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <!--Diary modal-->
   <div class="diary-modal" id="diary-modal">
     <div class="diary-modal-container">
-      <form action="" id="diary-content-form">
+      <form id="diary-content-form">
         <div class="diary-modal-header">
           <label for="diary-title">Diary Title</label>
           <input type="text" id="diary-title" name="diary-title" placeholder="Add Title">
@@ -584,9 +590,24 @@ include __DIR__ . "./../tasks/get_tasks.php";
         <div class="diary-modal-content">
           <label for="diary-content" id="diary-content-label">Content</label>
           <textarea name="diary-content" id="diary-content" placeholder="Content...."></textarea>
-        </div>
 
+          <!-- <div id="diary-content" class="quill-editor"></div>
+          <input type="hidden" name="diary-content" id="diary-content-hidden" />
+           -->
+        </div>
+        <div class="submit-container">
+          <label for="save-diary">Save</label>
+          <input type="submit" value="save" id="save-diary">
+
+        </div>
       </form>
+      <div class="toolbar">
+        <button type="button" class="ql-image" id="toolbar-image"></button>
+        <button type="button" class="ql-bold" id="toolbar-bold"></button>
+        <button type="button" class="ql-italic" id="toolbar-italic"></button>
+        <button type="button" class="ql-underline" id="toolbar-underline"></button>
+        <button type="button" id="toolbar-lock"></button>
+      </div>
     </div>
   </div>
 
@@ -594,6 +615,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <script src="./modal.js" defer type="module"></script>
   <script src="../diary/diary.js" defer type="module"></script>
   <script src="./calendar.js" defer type="module"></script>
+
 </body>
 
 </html>
