@@ -13,10 +13,16 @@
   padding: 10px;
 }
 
+.calendar-header button {
+  border: none;
+  background-color: transparent;
+}
+
 .monthYear {
   text-align: center;
   font-weight: 600px;
   width: 150px;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
 }
 
 .header button {

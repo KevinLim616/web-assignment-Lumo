@@ -131,7 +131,7 @@ main {
 /* modal */
 
 .diary-modal {
-  display: block;
+  display: none;
   position: fixed;
   z-index: 999;
   left: 0;
@@ -141,7 +141,7 @@ main {
   background-color: rgba(0, 0, 0, 0.4);
 }
 .diary-modal-container {
-  background-color: var(--white);
+  background-color: white;
   margin: 10% auto;
   padding: 20px;
   border-radius: 40px;
@@ -168,6 +168,32 @@ main {
 
 .diary-modal-container form div label {
   display: none;
+}
+
+.diary-modal-container form .submit-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+input#save-diary {
+  background-color: #e87fc8;
+  font-family: "SF Pro Text", "Poppins", sans-serif;
+  font-size: 16px;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 24px;
+  border: none;
+  box-sizing: border-box;
+  transition: 0.3s ease-in-out;
+}
+
+input#save-diary:hover {
+  opacity: 0.7;
+}
+
+input#save-diary:active {
+  opacity: 0.6;
 }
 
 .diary-modal-content {
@@ -197,6 +223,36 @@ input#diary-title {
   background-color: transparent;
   outline: none;
   font-size: 36px;
+}
+
+.toolbar {
+  background-color: #fff5fb;
+  border-radius: 8px;
+  width: fit-content;
+  padding: 12px 8px;
+  position: absolute;
+  bottom: 24px;
+  left: 34%;
+  -webkit-box-shadow: 7.5px 4.5px 28.5px 5px #d8d8d8;
+  -moz-box-shadow: 7.5px 4.5px 28.5px 5px #d8d8d8;
+  box-shadow: 7.5px 4.5px 28.5px 5px #d8d8d8;
+}
+
+.toolbar button {
+  border-style: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 4px;
+
+  border-radius: 4px;
+}
+
+.toolbar button:hover {
+  background-color: #f8c5e9;
+}
+
+.toolbar button:focus {
+  background-color: #e87fc8;
 }
 
 .task-modal {
