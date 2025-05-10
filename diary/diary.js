@@ -32,7 +32,19 @@ function getLocalDateString(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
+let currentSelectedDate = getLocalDateString(new Date()); //default to today
+
 export function handleMoodClick(selectedDate) {
+  if (selectedDate) {
+    currentSelectedDate = selectedDate; // Update the global selected date
+    console.log("Updated selected date to:", currentSelectedDate);
+  } else {
+    console.warn(
+      "No selectedDate provided to handleMoodClick, using current:",
+      currentSelectedDate
+    );
+  }
+
   const moodIcons = document.querySelectorAll(
     ".mood-icons-container > span[id]"
   );
@@ -48,19 +60,31 @@ export function handleMoodClick(selectedDate) {
     console.warn("Expected 5 mood icons, found:", moodIcons.length);
   }
 
-  const today = new Date();
-  const selected = new Date(selectedDate);
+  // Remove existing listeners to prevent duplicates (optional, depending on your setup)
+  moodIcons.forEach((icon) => {
+    const newIcon = icon.cloneNode(true);
+    icon.parentNode.replaceChild(newIcon, icon);
+  });
 
-  //set time to midnight for comparing only the dates
+  // Re-query after cloning to attach new listeners
+  const newMoodIcons = document.querySelectorAll(
+    ".mood-icons-container > span[id]"
+  );
+
+  const today = new Date();
+  const selected = new Date(currentSelectedDate);
+
+  // Set time to midnight for comparing only the dates
   today.setHours(0, 0, 0, 0);
   selected.setHours(0, 0, 0, 0);
 
-  moodIcons.forEach((icon) => {
+  newMoodIcons.forEach((icon) => {
     icon.addEventListener("click", () => {
+      console.log("Mood icon clicked, date:", currentSelectedDate);
       if (selected > today) {
         console.log(
           `Cannot change mood for future date: ${getLocalDateString(
-            selectedDate
+            currentSelectedDate
           )}`
         );
         alert("Warning: cannot set a mood for future date.");
@@ -68,13 +92,13 @@ export function handleMoodClick(selectedDate) {
       }
 
       const mood = icon.id; // Use id as mood value (e.g., "happy")
-      const dateString = getLocalDateString(selectedDate); // e.g., "2025-05-07"
+      const dateString = getLocalDateString(new Date(currentSelectedDate)); // e.g., "2025-05-10"
 
       const formData = new FormData();
       formData.append("date", dateString);
       formData.append("mood", mood);
 
-      //Log FormData entries
+      // Log FormData entries
       for (let [key, value] of formData.entries()) {
         console.log(`FormData ${key}: ${value}`);
       }
@@ -103,6 +127,7 @@ export function handleMoodClick(selectedDate) {
               detail: { date: dateString, mood: mood },
             });
             document.dispatchEvent(event);
+            window.showDiaryModal(currentSelectedDate); // Pass the current selected date
           } else {
             console.error("Failed to save mood:", data.message);
             alert("Failed to save mood: " + data.message);
@@ -115,13 +140,13 @@ export function handleMoodClick(selectedDate) {
     });
   });
 }
-
 // Handle mood icon clicks
 document.addEventListener("DOMContentLoaded", () => {
-  handleMoodClick();
+  handleMoodClick(currentSelectedDate);
 });
 
 // Expose fetchMoods for calendar.js
 window.diary = {
   fetchMoods,
+  handleMoodClick,
 };

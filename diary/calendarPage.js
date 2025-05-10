@@ -1,4 +1,5 @@
 import { svgIcons } from "../utils/svgIcons.js";
+import { handleMoodClick } from "./diary.js";
 // import { getLocalDateString } from "../user/calendar.js";
 // Make checkboxes interactive
 document.querySelectorAll(".form-check-input").forEach((checkbox) => {
@@ -413,6 +414,7 @@ async function fetchDiaryEntry(selectedDate = new Date()) {
         </span>
       </div>
         `;
+      handleMoodClick(selectedDate);
       console.log(`Date:${dateString}, Rendering alternative`);
       return;
     }
