@@ -170,10 +170,10 @@ form.addEventListener("submit", async (event) => {
       passwordValue,
       dateOfBirthValue
     );
-    if (result === "user created") {
-      // form.submit();
-      window.location.href = "../user/dashboard.php";
-    }
+    // if (result === "user created") {
+    //   // form.submit();
+    //   window.location.href = "../user/dashboard.php";
+    // }
   }
 
   // if (isValidForm) {
@@ -213,6 +213,8 @@ const handleSignUp = async (username, email, password, dateOfBirth) => {
       return false;
     } else if (data === "success") {
       setSuccess(emailInput);
+      window.location.href = "../user/dashboard.php";
+
       return true;
     } else {
       console.log("Unexpected response:", data);

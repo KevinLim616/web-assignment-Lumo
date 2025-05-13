@@ -130,11 +130,11 @@ if (isset($_SESSION['user'])) {
                         <div class="input-control">
                             <div class="input-box" onclick="document.getElementById('date-input').showPicker()">
                                 <img src="./../assets/icons/calendar.svg" alt="calendar" />
-                                <label for="DOB">Date of Birth:</label>
+                                <label for="date_of_birth">Date of Birth:</label>
                                 <!--TODO: datepicker style-->
                                 <input
                                     type="date"
-                                    name="DOB"
+                                    name="date_of_birth"
                                     id="date-input"
                                     class="input-field date-input"
 
@@ -165,7 +165,7 @@ if (isset($_POST["sign-up"])) {
     $username = trim($_POST["name"]);
     $password = $_POST["password"];
     $email = filter_var(trim(strtolower($_POST["email"])), FILTER_SANITIZE_EMAIL);
-    $date_of_birth = $_POST["DOB"];
+    $date_of_birth = $_POST["date_of_birth"];
     $result = signUp($username, $email, $password, $date_of_birth);
     if ($result !== "user created") {
         echo "<script>alert('$result');</script>";
