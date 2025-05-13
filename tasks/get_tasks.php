@@ -8,10 +8,11 @@ ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
-function getTasks($date = null, $user_id)
+function getTasks($user_id, $date = null)
 {
     global $conn;
     try {
+        error_log("get_tasks.php - Fetching tasks for user_id: " . $user_id);
         $sql = "SELECT id, title, date, time, description, category, status FROM task WHERE status = 'pending' AND user_id = :user_id ";
         $params = [':user_id' => $user_id];
         if ($date) {

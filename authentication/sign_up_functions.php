@@ -24,11 +24,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt->execute();
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            // Fetch the users.id using account.id
+            $stmt = $conn->prepare("SELECT id FROM users WHERE Acc_id = :account_id");
+            $stmt->bindParam(':account_id', $account['id'], PDO::PARAM_INT);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
             // Store user in session
             $_SESSION['user'] = [
-                'id' => $user['id'],
-                'email' => $user['email'],
-                'username' => $user['username'],
+                'id' => $account['id'],
+                'email' => $email,
+                'username' => $username,
                 'role' => 'user'
             ];
             $_SESSION['user_id'] = $user['id']; // Explicitly set user_id

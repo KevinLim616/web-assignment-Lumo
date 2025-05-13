@@ -93,7 +93,7 @@ if (!isset($_SESSION['user'])) {
             $user_id = $_SESSION['user_id'];
             $date = null;
             $tasks = getTasks($user_id, $date);
-            if (!empty($tasks)) {
+            if ($tasks) {
               foreach ($tasks as $task) {
                 $title = htmlspecialchars($task['title']);
                 $time = htmlspecialchars($task['time']);

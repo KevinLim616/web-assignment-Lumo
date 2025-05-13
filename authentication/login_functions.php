@@ -39,7 +39,7 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
             header("Location: ../admin/admin.php");
             exit;
         } else if ($user = loginUserExist($email, $password)) {
-
+            //this gets id from the account table
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'email' => $user['email'],
