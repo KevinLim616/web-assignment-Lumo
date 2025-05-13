@@ -440,9 +440,9 @@ async function fetchDiaryEntry(selectedDate = new Date()) {
     );
   } catch (error) {
     console.error("Error fetching diary entry:", error.message);
-    if (error instanceof SyntaxError) {
-      console.error("Invalid JSON response:", error);
-    }
+    // if (error instanceof SyntaxError) {
+    //   console.error("Invalid JSON response:", error);
+    // }
     const diaryEntry = document.querySelector(".diary-entry");
     diaryEntry.innerHTML = `<h3>No Title</h3><p>No Content</p>`;
   }

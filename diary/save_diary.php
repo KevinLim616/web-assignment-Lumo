@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 header("Content-Type: application/json");
 include __DIR__ . "/../include/db/database.php";
 
@@ -18,10 +17,9 @@ function saveDiary($title, $content, $date)
     global $conn;
     $user_id = $_SESSION['user_id'];
 
-
     // Validate date format (YYYY-MM-DD)
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date) || !strtotime($date)) {
-        error_log("Invalid date format: " . json_encode($date));
+        error_log("save_diary.php - Invalid date format: " . json_encode($date));
         throw new Exception('Invalid date format: ' . $date);
     }
 
@@ -29,7 +27,12 @@ function saveDiary($title, $content, $date)
     $sql = "SELECT id FROM diaries WHERE created_at = :date AND user_id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(":date", $date, PDO::PARAM_STR);
-    $stmt->execute();
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    if (!$stmt->execute()) {
+        error_log("save_diary.php - Failed to execute SELECT query: " . print_r($conn->errorInfo(), true));
+        throw new Exception('Failed to check existing diary entry');
+    }
+    error_log("save_diary.php - SELECT query executed, rows: " . $stmt->rowCount());
 
     if ($stmt->rowCount() > 0) {
         // Update existing entry
@@ -39,9 +42,10 @@ function saveDiary($title, $content, $date)
         $stmt->bindParam(":title", $title, PDO::PARAM_STR);
         $stmt->bindParam(":content", $content, PDO::PARAM_STR);
         $stmt->bindParam(":date", $date, PDO::PARAM_STR);
+        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     } else {
         // Insert new entry with default values
-        $mood = null; // Mood can be updated separately via save_mood.php
+        $mood = null;
         $image = null;
         $sql = "INSERT INTO diaries (title, content, created_at, image, mood, user_id) 
                 VALUES (:title, :content, :created_at, :image, :mood, :user_id)";
@@ -54,13 +58,20 @@ function saveDiary($title, $content, $date)
         $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
     }
 
-    return $stmt->execute();
+    if (!$stmt->execute()) {
+        error_log("save_diary.php - Failed to execute query: " . print_r($conn->errorInfo(), true));
+        throw new Exception('Failed to save diary: ' . print_r($conn->errorInfo(), true));
+    }
+    error_log("save_diary.php - Diary saved successfully for date: $date, user_id: $user_id");
+    return true;
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $title = $_POST["title"] ?? null;
     $content = $_POST["content"] ?? null;
     $date = $_POST["date"] ?? null;
+
+    error_log("save_diary.php - Received POST data: title=$title, date=$date, user_id=" . ($_SESSION['user_id'] ?? 'undefined'));
 
     if ($title && $content && $date) {
         try {

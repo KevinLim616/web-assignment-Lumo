@@ -15,6 +15,9 @@ if (!isset($_SESSION['user_id'])) {
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $date = isset($_GET['date']) ? $_GET['date'] : null;
+    $user_id = $_SESSION['user_id'];
+
+    error_log("get_diaries.php - Fetching diary for date: $date, user_id: $user_id");
 
     if ($date && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
         try {
@@ -25,9 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                     LIMIT 1";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":date", $date, PDO::PARAM_STR);
-            $stmt->execute();
-
+            $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+            if (!$stmt->execute()) {
+                error_log("get_diaries.php - Failed to execute query: " . print_r($conn->errorInfo(), true));
+                throw new Exception('Failed to execute diary query');
+            }
             $entry = $stmt->fetch(PDO::FETCH_ASSOC);
+            error_log("get_diaries.php - Diary fetched, entry: " . json_encode($entry));
             if ($entry) {
                 echo json_encode([
                     'status' => 'success',
