@@ -1,3 +1,18 @@
+<?php
+
+// MODIFIED: Updated include paths
+include __DIR__ . "/authentication/login_functions.php";
+include __DIR__ . "/include/db/database.php";
+
+// MODIFIED: Check for auto-login
+checkAutoLogin();
+
+if (isset($_SESSION['user'])) {
+  // MODIFIED: Redirect to user/dashboard.php
+  header("Location: user/dashboard.php");
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,16 +23,10 @@
   <link rel="stylesheet" href="./style/sign_in.css" />
   <link rel="stylesheet" href="./style//form.css">
   <script src="authentication/signIn.js" defer type="module"></script>
+
   <title>Document</title>
 </head>
 
-<?php
-//import login functions from login_functions.php
-include("authentication/login_functions.php");
-include __DIR__ . ("/include/db/database.php");
-// TODO : add sessions
-
-?>
 
 <body>
   <div class="container">

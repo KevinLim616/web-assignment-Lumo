@@ -170,9 +170,9 @@ form.addEventListener("submit", async (event) => {
       passwordValue,
       dateOfBirthValue
     );
-    if (result) {
+    if (result === "user created") {
       // form.submit();
-      console.log("submitted");
+      window.location.href = "../user/dashboard.php";
     }
   }
 
@@ -211,7 +211,7 @@ const handleSignUp = async (username, email, password, dateOfBirth) => {
     if (data === "email_exists") {
       setError(emailInput, "Email is already registered");
       return false;
-    } else if (data === "available") {
+    } else if (data === "success") {
       setSuccess(emailInput);
       return true;
     } else {

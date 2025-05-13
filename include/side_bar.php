@@ -21,7 +21,7 @@
       <div>
         <div class="user-icon">
           <ul>
-            <li>
+            <li class="logout">
               <span class="logout-pop">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -39,16 +39,16 @@
                 </svg>
               </span>
               <!--TODO: switch to dynamic username-->
-              <span>John Doe</span>
+              <span><?php echo htmlspecialchars($_SESSION['user']['username']); ?></span>
               <!--TODO: popover animation-->
-              <dialog class="popover" open>
+              <!-- <div class="popover" open>
                 <div class="popover-item">
                   <form action="" method="post" name="logout-form">
                     <input type="submit" value="Logout" name="logout" />
                     <label for="logout"></label>
                   </form>
                 </div>
-              </dialog>
+              </div> -->
             </li>
           </ul>
         </div>

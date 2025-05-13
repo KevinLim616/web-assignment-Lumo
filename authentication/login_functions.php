@@ -1,47 +1,94 @@
 <?php
-//sql query
-//include database connection as global variable
-include __DIR__ . "/../include/db/database.php";
+// MODIFIED: Prevent multiple inclusions
+if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
+    define('LOGIN_FUNCTIONS_INCLUDED', true);
 
 
-function userExist($email, $password)
-{
-    global $conn;
-    // select from account table where username and password match
-    $sql = "SELECT * FROM account WHERE email = ? ";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // MODIFIED: Use include_once
+    include_once __DIR__ . "/../include/db/database.php";
 
+    // MODIFIED: Renamed to avoid conflicts
+    function loginUserExist($email, $password)
+    {
+        global $conn;
+        $sql = "SELECT * FROM account WHERE email = :email";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    //if there are results
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
-        if (password_verify($password, $user['password'])) {
-            return true;
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
         }
-    } else {
-        //if there are no results
         return false;
     }
-}
 
-// Login
-function login($email, $password)
-{
-    //sanitize input
-    $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
-    //filter input
+    function login($email, $password)
 
-    // Check if the email and password are correct
-    //TODO: hash password
-    if ($email == "admin@example.com" && $password == "password") {
-        //redirect to admin page
-        header("Location: admin/admin.php");
-    } else if (userExist($email, $password)) { //search existed user in db
-        echo "user logged in";
-    } else {
-        echo "Invalid email or password.";
+    {
+        global $conn;
+        $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
+
+        if ($email == "admin@example.com" && $password == "password") {
+            $_SESSION['user'] = [
+                'id' => 0,
+                'email' => $email,
+                'username' => 'admin',
+                'role' => 'admin'
+            ];
+            header("Location: ../admin/admin.php");
+            exit;
+        } else if ($user = loginUserExist($email, $password)) {
+
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'email' => $user['email'],
+                'username' => $user['username'],
+                'role' => 'user'
+            ];
+
+            // NEW: Set auto-login cookie
+            $token = bin2hex(random_bytes(16));
+            $expires = time() + (7 * 24 * 60 * 60); // 7 days
+            setcookie('auth_token', $token, $expires, '/', '', true, true);
+
+            // NEW: Store token in database
+            $stmt = $conn->prepare("UPDATE account SET auth_token = :token WHERE id = :id");
+            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $user['id'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            echo "user logged in";
+            header("Location: ../web/user/dashboard.php");
+            exit;
+        } else {
+            echo "Invalid email or password.";
+        }
+    }
+
+    // MODIFIED: Check cookie for auto-login
+    function checkAutoLogin()
+    {
+        global $conn;
+        if (isset($_COOKIE['auth_token']) && !isset($_SESSION['user'])) {
+            $token = $_COOKIE['auth_token'];
+            $stmt = $conn->prepare("SELECT * FROM account WHERE auth_token = :token");
+            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                $_SESSION['user_id'] = $user['id'];
+
+                $_SESSION['user'] = [
+                    'id' => $user['id'],
+                    'email' => $user['email'],
+                    'username' => $user['username'],
+                    'role' => 'user'
+                ];
+                return true;
+            }
+        }
+        return false;
     }
 }

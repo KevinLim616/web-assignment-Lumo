@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 header('Content-Type: application/json');
 include __DIR__ . "/../include/db/database.php";
 
@@ -6,11 +8,15 @@ include __DIR__ . "/../include/db/database.php";
 function updateTaskStatus($task_id, $status)
 {
     global $conn;
+    $user_id = $_SESSION['user_id'];
 
-    $sql = "UPDATE task SET status = :status WHERE id = :taskId";
+
+    $sql = "UPDATE task SET status = :status WHERE id = :taskId AND user_id = :user_id";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(":status", $status, PDO::PARAM_STR);
     $stmt->bindParam(":taskId", $task_id, PDO::PARAM_INT);
+    $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+
     return $stmt->execute();
 }
 

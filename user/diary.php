@@ -1,3 +1,16 @@
+<?php
+session_start();
+include __DIR__ . "/../authentication/login_functions.php";
+
+// MODIFIED: Check for auto-login
+checkAutoLogin();
+
+if (!isset($_SESSION['user'])) {
+  header("Location: ../index.php");
+  exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,6 +19,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LUMO - Productivity App</title>
   <link rel="stylesheet" href="../global.css">
+  <script src="../include/sideBar.js" defer></script>
+  <link rel="stylesheet" href="../style/side_bar.css" />
+
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
     rel="stylesheet" />
@@ -24,30 +40,24 @@
       overflow-x: hidden;
       display: flex;
       align-items: stretch;
-      justify-content: center;
+      justify-content: space-between;
       position: relative;
     }
 
     .grid-container {
       display: grid;
-      grid-template-columns: minmax(250px, 1fr) minmax(400px, 2fr);
-      grid-template-areas: "calendar-section main-content";
+      grid-template-columns: 200px minmax(250px, 1fr) minmax(400px, 2fr);
+      grid-template-areas: "sidebar calendar-section main-content";
       width: 100%;
       max-width: 1200px;
       min-height: 100vh;
-      margin: 0 auto;
-      padding-left: 200px;
+      margin: 0;
+
     }
 
     .sidebar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 200px;
-      background-color: #1e1e2d;
-      color: white;
-      height: 100%;
-      z-index: 1;
+
+      grid-area: sidebar;
     }
 
     .calendar-section {
@@ -320,6 +330,7 @@
       border-radius: 8px;
     }
   </style>
+  <link rel="stylesheet" href="../style/side_bar.css" />
   <!--javascript here-->
   <script src="../diary/diary.js" defer></script>
   <!-- <script src="../tasks/tasks.js" defer></script> -->
@@ -328,26 +339,7 @@
 
 <body>
   <div class="grid-container">
-    <div class="sidebar">
-      <div class="logo">LUMO</div>
-      <nav>
-        <a class="nav-link" href="#">
-          <i class="fas fa-th-large"></i> Dashboard
-        </a>
-        <a class="nav-link" href="#">
-          <i class="far fa-calendar"></i> Calendar
-        </a>
-        <a class="nav-link" href="#">
-          <i class="far fa-bell"></i> Notification
-        </a>
-      </nav>
-      <div class="user-profile">
-        <div class="username-avatar">
-          <i class="far fa-user"></i>
-        </div>
-        <span>Username</span>
-      </div>
-    </div>
+    <?php include __DIR__ . "./../include/side_bar.php" ?>
 
     <div class="calendar-section">
       <h2>Calendar</h2>

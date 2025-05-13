@@ -1,5 +1,15 @@
 <?php
+session_start();
 include __DIR__ . "./../tasks/get_tasks.php";
+include __DIR__ . "./../authentication/login_functions.php";
+
+checkAutoLogin();
+
+if (!isset($_SESSION['user'])) {
+  header("Location: ../index.php");
+  exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +28,8 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <link rel="stylesheet" href="../style/dashboard.css" />
   <link rel="stylesheet" href="../style/calendar-style.css" />
   <script src="./../tasks/tasks.js" defer></script>
+  <script src="../include/sideBar.js" defer></script>
+  <link rel="stylesheet" href="../style/side_bar.css" />
 
 </head>
 
@@ -25,7 +37,7 @@ include __DIR__ . "./../tasks/get_tasks.php";
 
 
   <!--sidebar here-->
-
+  <?php include __DIR__ . "./../include/side_bar.php" ?>
   <!--main content here-->
   <main class="main-layout">
     <div class="left-panel">
@@ -78,7 +90,9 @@ include __DIR__ . "./../tasks/get_tasks.php";
         <div class="tasks-list">
           <form>
             <?php
-            $tasks = getTasks();
+            $user_id = $_SESSION['user_id'];
+            $date = null;
+            $tasks = getTasks($user_id, $date);
             if (!empty($tasks)) {
               foreach ($tasks as $task) {
                 $title = htmlspecialchars($task['title']);

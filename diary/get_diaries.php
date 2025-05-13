@@ -1,7 +1,17 @@
 <?php
+session_start();
 include __DIR__ . "./../include/db/database.php";
 
 header('Content-Type: application/json');
+// Check if user is authenticated
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(403);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Unauthorized: User not logged in'
+    ]);
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $date = isset($_GET['date']) ? $_GET['date'] : null;
@@ -11,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             $sql = "SELECT title, content 
                     FROM diaries 
                     WHERE DATE_FORMAT(created_at, '%Y-%m-%d') = :date 
+                    AND user_id = :user_id 
                     LIMIT 1";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":date", $date, PDO::PARAM_STR);

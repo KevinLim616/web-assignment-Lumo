@@ -141,14 +141,23 @@ const sideBar = () => {
   }
 };
 
+const logoutElement = document.querySelector(".user-icon ul li.logout");
+if (logoutElement) {
+  logoutElement.addEventListener("click", () => {
+    window.location.href = "../authentication/logout.php";
+  });
+} else {
+  console.error("Error: .user-icon ul li.logout element not found.");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   sideBar();
-  popButton.addEventListener("click", () => {
-    popover.classList.toggle("active");
-  });
-  document.addEventListener("click", (event) => {
-    if (!popover.contains(event.target) && !popButton.contains(event.target)) {
-      popover.classList.remove("active");
-    }
-  });
+  // popButton.addEventListener("click", () => {
+  //   popover.classList.toggle("active");
+  // });
+  // document.addEventListener("click", (event) => {
+  //   if (!popover.contains(event.target) && !popButton.contains(event.target)) {
+  //     popover.classList.remove("active");
+  //   }
+  // });
 });

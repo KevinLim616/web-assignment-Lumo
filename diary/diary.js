@@ -4,7 +4,10 @@ window.moods = {}; // Global store for mood data
 const fetchMoods = async (year, month) => {
   try {
     const response = await fetch(
-      `../diary/get_moods.php?year=${year}&month=${month + 1}`
+      `../diary/get_moods.php?year=${year}&month=${month + 1}`,
+      {
+        credentials: "same-origin",
+      }
     );
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

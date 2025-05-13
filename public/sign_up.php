@@ -1,6 +1,18 @@
 <?php
-include("../include/db/database.php");
-include("../authentication/sign_up_functions.php");
+session_start();
+// MODIFIED: Use include_once
+include_once __DIR__ . "/../include/db/database.php";
+include_once __DIR__ . "/../authentication/sign_up_functions.php";
+include_once __DIR__ . "/../authentication/login_functions.php";
+
+// NEW: Check for auto-login
+checkAutoLogin();
+
+if (isset($_SESSION['user'])) {
+    // MODIFIED: Redirect to user/dashboard.php
+    header("Location: ../user/dashboard.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -150,12 +162,14 @@ include("../authentication/sign_up_functions.php");
 
 <?php
 if (isset($_POST["sign-up"])) {
-    $username = $_POST["name"];
-    $password =  $_POST["password"];
-    $email = $_POST["email"];
+    $username = trim($_POST["name"]);
+    $password = $_POST["password"];
+    $email = filter_var(trim(strtolower($_POST["email"])), FILTER_SANITIZE_EMAIL);
     $date_of_birth = $_POST["DOB"];
-    signUp($username, $email, $password, $date_of_birth);
+    $result = signUp($username, $email, $password, $date_of_birth);
+    if ($result !== "user created") {
+        echo "<script>alert('$result');</script>";
+    }
 }
-
 
 ?>

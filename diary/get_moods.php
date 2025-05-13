@@ -1,12 +1,28 @@
 <?php
+ob_start(); // Start output buffering
+ini_set('display_errors', 0); // Disable error display
+ini_set('display_startup_errors', 0);
+error_reporting(E_ALL); // Log all errors
+session_start();
 include __DIR__ . "./../include/db/database.php";
 
 header('Content-Type: application/json');
 
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(403);
+    ob_end_clean();
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Unauthorized: User not logged in'
+    ]);
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $year = isset($_GET['year']) ? intval($_GET['year']) : null;
     $month = isset($_GET['month']) ? intval($_GET['month']) : null;
+
+    error_log("get_moods.php - Year: " . ($year ?? 'null') . ", Month: " . ($month ?? 'null') . ", User ID: " . ($_SESSION['user_id'] ?? 'undefined'));
 
     if ($year && $month && $month >= 1 && $month <= 12) {
         try {
@@ -18,10 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             $sql = "SELECT DATE_FORMAT(created_at, '%Y-%m-%d') AS date, mood 
                     FROM diaries 
                     WHERE created_at BETWEEN :startDate AND :endDate 
-                    AND mood IS NOT NULL";
+                    AND mood IS NOT NULL 
+                    AND user_id = :user_id";
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(":startDate", $startDate, PDO::PARAM_STR);
             $stmt->bindParam(":endDate", $endDate, PDO::PARAM_STR);
+            $stmt->bindParam(":user_id", $_SESSION['user_id'], PDO::PARAM_INT);
+
             $stmt->execute();
 
             $moods = [];
@@ -41,6 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             ]);
         }
     } else {
+        error_log("get_moods.php - Invalid year or month: Year=$year, Month=$month");
         http_response_code(400);
         echo json_encode([
             'status' => 'error',

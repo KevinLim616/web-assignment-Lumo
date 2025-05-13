@@ -1,5 +1,10 @@
 <?php
-include __DIR__ . "/../include/db/database.php";
+// MODIFIED: Prevent multiple inclusions
+
+
+
+// MODIFIED: Use include_once for database.php
+include_once __DIR__ . "/../include/db/database.php";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mode = $_POST['mode'] ?? '';
@@ -9,35 +14,73 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = $_POST['username'] ?? '';
     $dob = $_POST['date_of_birth'] ?? '';
 
-    if ($mode === "signup") {
-        if (userExist($email)) {
+    // MODIFIED: Handle sign-up form submission
+    if (isset($_POST['sign-up']) || $mode === "signup") {
+        // MODIFIED: Normalize email
+        $email = filter_var(trim(strtolower($email)), FILTER_SANITIZE_EMAIL);
+        if (signUpUserExist($email)) {
             echo "email_exists";
             exit;
         }
 
         // Proceed to sign up
         $result = signUp($username, $email, $password, $dob);
+        if ($result === "user created") {
+            // Fetch the newly created user
+            $stmt = $conn->prepare("SELECT id, username, email FROM account WHERE email = :email");
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            // Store user in session
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'email' => $user['email'],
+                'username' => $user['username'],
+                'role' => 'user'
+            ];
+
+            // NEW: Set auto-login cookie
+            $token = bin2hex(random_bytes(16));
+            $expires = time() + (7 * 24 * 60 * 60); // 7 days
+            setcookie('auth_token', $token, $expires, '/', '', true, true);
+
+            // NEW: Store token in database
+            $stmt = $conn->prepare("UPDATE account SET auth_token = :token WHERE id = :id");
+            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $user['id'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            // MODIFIED: Updated redirect path
+            // header("Location: ../user/dashboard.php");
+            ob_clean();
+            echo "success";
+            exit;
+        }
         echo $result;
         exit;
     }
 }
 
-function userExist($email)
+// MODIFIED: Renamed to avoid conflicts
+function signUpUserExist($email)
 {
     global $conn;
-    $sql = $conn->prepare("SELECT id FROM account WHERE email = :email");
-    $sql->bindParam(':email', $email, PDO::PARAM_STR);
-    $sql->execute();
-    return $sql->rowCount() > 0;
+    // Normalize email for comparison
+    $email = trim(strtolower($email));
+    $sql = "SELECT id FROM account WHERE LOWER(email) = :email";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
 }
 
-// Sign up function
 function signUp($username, $email, $password, $date_of_birth)
 {
     global $conn;
 
     $username = trim($username);
-    $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
+    $email = filter_var(trim(strtolower($email)), FILTER_SANITIZE_EMAIL);
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     $conn->beginTransaction();
@@ -60,7 +103,6 @@ function signUp($username, $email, $password, $date_of_birth)
 
         return "user created";
     } catch (Exception $error) {
-        // Rollback on error
         $conn->rollBack();
         return "Error: " . $error->getMessage();
     }

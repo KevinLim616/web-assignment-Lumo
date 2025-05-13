@@ -1,5 +1,18 @@
 <?php
+session_start();
+include __DIR__ . "/../authentication/login_functions.php";
 include __DIR__ . "./../utils/get_notifications.php";
+
+
+// MODIFIED: Check for auto-login
+checkAutoLogin();
+
+if (!isset($_SESSION['user'])) {
+  header("Location: ../index.php");
+  exit;
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

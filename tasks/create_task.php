@@ -1,5 +1,20 @@
 <?php
+
 include __DIR__ . "/../include/db/database.php";
+// Validate user session
+if (!isset($_SESSION['user_id'])) {
+    throw new Exception("Unauthorized: User not logged in");
+}
+
+// Validate user_id exists in users table
+$user_id = $_SESSION['user_id'];
+error_log("create_task.php - Validating user_id: " . $user_id);
+$stmt = $conn->prepare("SELECT id FROM users WHERE id = :user_id");
+$stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+$stmt->execute();
+if (!$stmt->fetch(PDO::FETCH_ASSOC)) {
+    throw new Exception("Invalid user_id: User does not exist in users table");
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $mode = $_POST["mode"] ?? "";
@@ -13,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 function createTask($title, $date, $time, $description, $category)
 {
     global $conn;
-
+    $user_id = $_SESSION['user_id'];
     $title = trim($title);
     $description = trim($description);
     $category = trim($category);
@@ -30,7 +45,8 @@ function createTask($title, $date, $time, $description, $category)
         throw new Exception("Invalid categories");
     }
 
-    $sql = "INSERT INTO task (title, date, time, description, category, status) VALUES (:title, :date, :time, :description, :category, :status)";
+    $sql = "INSERT INTO task (title, date, time, description, category, status, user_id) 
+            VALUES (:title, :date, :time, :description, :category, :status, :user_id)";
     $stmt = $conn->prepare($sql);
 
 
@@ -46,6 +62,8 @@ function createTask($title, $date, $time, $description, $category)
     $stmt->bindParam(':description', $description, PDO::PARAM_STR);
     $stmt->bindParam(':category', $category, PDO::PARAM_STR);
     $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+
 
     if ($stmt->execute()) {
         return true;

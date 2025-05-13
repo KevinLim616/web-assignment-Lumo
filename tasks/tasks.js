@@ -240,7 +240,13 @@ document.addEventListener("DOMContentLoaded", () => {
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error(`HTTP error! Status: ${res.status}`);
+          return res.text().then((text) => {
+            console.error("Raw response:", text);
+            throw new Error(
+              `HTTP error! Status: ${res.status}, Response: ${text}`
+            );
+          });
+          // throw new Error(`HTTP error! Status: ${res.status}`);
         }
         return res.json();
       })
