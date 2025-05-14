@@ -39,6 +39,11 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
             header("Location: ../admin/admin.php");
             exit;
         } else if ($user = loginUserExist($email, $password)) {
+            $stmt = $conn->prepare("SELECT id FROM users WHERE Acc_id = :account_id");
+            $stmt->bindParam(':account_id', $user['id'], PDO::PARAM_INT);
+            $stmt->execute();
+            $user_record = $stmt->fetch(PDO::FETCH_ASSOC);
+
             //this gets id from the account table
             $_SESSION['user'] = [
                 'id' => $user['id'],
@@ -46,7 +51,7 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
                 'username' => $user['username'],
                 'role' => 'user'
             ];
-
+            $_SESSION['user_id'] = $user_record['id']; // users.id
             // NEW: Set auto-login cookie
             $token = bin2hex(random_bytes(16));
             $expires = time() + (7 * 24 * 60 * 60); // 7 days
@@ -78,6 +83,12 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user) {
+
+                $stmt = $conn->prepare("SELECT id FROM users WHERE Acc_id = :account_id");
+                $stmt->bindParam(':account_id', $user['id'], PDO::PARAM_INT);
+                $stmt->execute();
+                $user_record = $stmt->fetch(PDO::FETCH_ASSOC);
+
                 $_SESSION['user_id'] = $user['id'];
 
                 $_SESSION['user'] = [
@@ -86,6 +97,9 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
                     'username' => $user['username'],
                     'role' => 'user'
                 ];
+
+                $_SESSION['user_id'] = $user_record['id']; // users.id
+                error_log("login_functions.php - Auto-login successful, account_id: " . $user['id'] . ", user_id: " . $user_record['id']);
                 return true;
             }
         }

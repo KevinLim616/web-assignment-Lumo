@@ -22,8 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt = $conn->prepare("SELECT id, username, email FROM account WHERE email = :email");
             $stmt->bindParam(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $account = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            if (!$account) {
+                error_log("sign_up_functions.php - Failed to fetch account for email: $email");
+                echo "error_fetching_account";
+                exit;
+            }
+            // MODIFIED: Added logging for account ID
+            error_log("sign_up_functions.php - Account ID: " . $account['id']);
             // Fetch the users.id using account.id
             $stmt = $conn->prepare("SELECT id FROM users WHERE Acc_id = :account_id");
             $stmt->bindParam(':account_id', $account['id'], PDO::PARAM_INT);
@@ -47,13 +54,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Store token in database
             $stmt = $conn->prepare("UPDATE account SET auth_token = :token WHERE id = :id");
             $stmt->bindParam(':token', $token, PDO::PARAM_STR);
-            $stmt->bindParam(':id', $user['id'], PDO::PARAM_INT);
+            $stmt->bindParam(':id', $account['id'], PDO::PARAM_INT);
             $stmt->execute();
 
             ob_clean();
             echo "success";
             exit;
         }
+        error_log("sign_up_functions.php - Signup failed: $result");
         echo $result;
         exit;
     }
