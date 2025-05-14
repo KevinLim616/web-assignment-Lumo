@@ -94,7 +94,7 @@ const validateNavigator = (navigator, index) => {
     );
     return false;
   }
-  const stringAttributes = ["name", "url", "icon", "alt"];
+  const stringAttributes = ["name", "url", "alt"];
   const invalidTypes = stringAttributes.filter(
     (attr) => typeof navigator[attr] !== "string"
   );
@@ -112,18 +112,34 @@ const validateNavigator = (navigator, index) => {
 
 const sideBar = () => {
   const navList = document.querySelector(".side-bar nav ul");
-  // Clear existing html
   navList.innerHTML = "";
+
+  const sideBarElement = document.querySelector(".side-bar");
+  const userRole = sideBarElement ? sideBarElement.dataset.role : "user";
+
+  let activeNavigators = navigators;
+  if (userRole === "admin") {
+    activeNavigators = [
+      {
+        ...navigators[0],
+        name: "Home",
+        url: "../admin/admin.php", // Ensure admin points to admin.php
+      },
+    ];
+  }
 
   const currentPath = window.location.pathname;
 
-  navigators.forEach((navigator, index) => {
+  activeNavigators.forEach((navigator, index) => {
     if (!validateNavigator(navigator, index)) {
       return;
     }
     const li = document.createElement("li");
-    const isActive = currentPath.includes(navigator.url.split("/").pop());
-    li.classList = isActive ? "active" : "inactive"; //first child is active by default
+    // Check if the current path exactly matches the navigator URL
+    const isActive =
+      currentPath === navigator.url ||
+      currentPath.endsWith(navigator.url.split("/").pop());
+    li.classList = isActive ? "active" : "inactive";
 
     const a = document.createElement("a");
     a.href = navigator.url;
@@ -137,10 +153,9 @@ const sideBar = () => {
     navList.appendChild(li);
   });
 
-  //check if any navigators were rendered
   if (navList.children.length === 0) {
     console.error(
-      "Warning: No navigators were redndered. Please check the navigators array for errors."
+      "Warning: No navigators were rendered. Please check the navigators array for errors."
     );
   }
 };
@@ -156,12 +171,4 @@ if (logoutElement) {
 
 document.addEventListener("DOMContentLoaded", () => {
   sideBar();
-  // popButton.addEventListener("click", () => {
-  //   popover.classList.toggle("active");
-  // });
-  // document.addEventListener("click", (event) => {
-  //   if (!popover.contains(event.target) && !popButton.contains(event.target)) {
-  //     popover.classList.remove("active");
-  //   }
-  // });
 });

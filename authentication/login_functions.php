@@ -42,7 +42,9 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
             }
 
             // MODIFIED: Set role based on email
-            $role = ($email === 'admin@example.com') ? 'admin' : 'user';
+            $role = (strtolower($email) === 'admin@example.com') ? 'admin' : 'user';
+            error_log("login_functions.php - Role assigned: $role for email: $email");
+
 
             $_SESSION['user'] = [
                 'id' => $user['id'], // account.id
@@ -65,7 +67,17 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
 
             echo "user logged in";
             // MODIFIED: Redirect based on role
-            $redirect = ($role === 'admin') ? '../web/admin/admin.php' : '../web/user/dashboard.php';
+            // if ($role === 'admin') {
+            //     header("Location: ../web/admin/admin.php");
+            // } else if ($role === 'user') {
+            //     header("Location: ../web/user/dashboard.php");
+            // }
+            $redirect = ($role === 'admin') ? 'admin/admin.php' : '../web/user/dashboard.php';
+            error_log("login_functions.php - Redirecting to: $redirect");
+
+            // ✅ Force PHP to write session data before redirect
+            session_write_close();
+
             header("Location: $redirect");
             exit;
         } else {
@@ -97,7 +109,8 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
                 }
 
                 // MODIFIED: Set role based on email
-                $role = ($user['email'] === 'admin@example.com') ? 'admin' : 'user';
+                $role = (strtolower($user['email']) === 'admin@example.com') ? 'admin' : 'user';
+                error_log("login_functions.php - Auto-login role assigned: $role for email: " . $user['email']);
 
                 $_SESSION['user'] = [
                     'id' => $user['id'], // account.id
