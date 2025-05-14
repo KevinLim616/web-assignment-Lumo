@@ -14,7 +14,7 @@ const popover = document.querySelector(".popover");
 const navigators = [
   {
     name: "Dashboard",
-    url: "#",
+    url: "../user/dashboard.php",
     icon: ` <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -36,7 +36,7 @@ const navigators = [
   },
   {
     name: "Calendar",
-    url: "#",
+    url: "../user/diary.php",
     icon: `<svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -58,7 +58,7 @@ const navigators = [
   },
   {
     name: "Notifications",
-    url: "#",
+    url: "../user/notification.php",
     icon: `<svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -115,12 +115,16 @@ const sideBar = () => {
   // Clear existing html
   navList.innerHTML = "";
 
+  const currentPath = window.location.pathname;
+
   navigators.forEach((navigator, index) => {
     if (!validateNavigator(navigator, index)) {
       return;
     }
     const li = document.createElement("li");
-    li.classList = index === 0 ? "active" : "inactive"; //first child is active by default
+    const isActive = currentPath.includes(navigator.url.split("/").pop());
+    li.classList = isActive ? "active" : "inactive"; //first child is active by default
+
     const a = document.createElement("a");
     a.href = navigator.url;
 
