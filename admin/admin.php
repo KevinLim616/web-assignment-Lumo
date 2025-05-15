@@ -37,7 +37,7 @@ if ($_SESSION['user']['role'] !== 'admin') {
 
     <link rel="stylesheet" href="../style/side_bar.css">
     <script src="../include/sideBar.js" defer></script>
-    <script src="./popover.js" defer></script>
+    <script src="./popover.js" type="module" defer></script>
     <script src="./adminModal.js" type="module" defer></script>
     <link rel="stylesheet" href="../style/admin.css">
 </head>

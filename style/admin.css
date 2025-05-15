@@ -185,7 +185,7 @@ button.action-btn {
   flex: 1;
   padding: 12px;
 }
-
+.message-modal,
 .announcement-modal {
   display: block;
   position: fixed;
@@ -232,7 +232,7 @@ button.action-btn {
   align-items: center;
   justify-content: flex-end;
 }
-
+input#send-message,
 input#post-announcement {
   background-color: #e87fc8;
   font-family: "SF Pro Text", "Poppins", sans-serif;
@@ -244,11 +244,11 @@ input#post-announcement {
   box-sizing: border-box;
   transition: 0.3s ease-in-out;
 }
-
+input#send-message:hover,
 input#post-announcement:hover {
   opacity: 0.7;
 }
-
+input#send-message:active,
 input#post-announcement:active {
   opacity: 0.6;
 }
@@ -259,7 +259,7 @@ input#post-announcement:active {
   flex-direction: column;
   padding: 0 10px;
 }
-
+textarea#message-content,
 textarea#announcement-content {
   width: 100%;
   flex-grow: 1;
@@ -273,7 +273,7 @@ textarea#announcement-content {
   font-size: 14px;
   font-family: "SF Pro Text", "Poppins", sans-serif;
 }
-
+input#message-title,
 input#announcement-title {
   font-family: "SF Pro Rounded";
   border: none;

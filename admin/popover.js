@@ -1,6 +1,92 @@
+import { svgIcons } from "../utils/svgIcons.js";
 // Remove any existing popovers before creating a new one
 function removeExistingPopovers() {
   document.querySelectorAll(".popover").forEach((p) => p.remove());
+}
+
+function createMessageModal(userId) {
+  // Remove existing modal if any
+  document.querySelectorAll(".message-modal").forEach((m) => m.remove());
+
+  const modal = document.createElement("div");
+  modal.className = "message-modal";
+  modal.id = "message-modal";
+
+  // Convert SVG element to string
+  const closeIconString = svgIcons["closeIcon"]("message-close").outerHTML;
+
+  modal.innerHTML = `
+    <div class="announcement-modal-container">
+      <form id="message-content-form">
+        <div class="announcement-modal-header">
+          <label for="message-title">Message Title</label>
+          <input type="text" id="message-title" name="message-title" placeholder="Title">
+          <span id="close-modal">${closeIconString}</span>
+        </div>
+        <div class="announcement-modal-content">
+          <label for="message-content" id="message-content-label">Message</label>
+          <textarea name="message-content" id="message-content" placeholder="Message...."></textarea>
+        </div>
+        <div class="submit-container">
+          <label for="send-message">Send</label>
+          <input type="submit" value="Send" id="send-message">
+        </div>
+      </form>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+  modal.style.display = "block";
+
+  // Handle form submission
+  const form = modal.querySelector("#message-content-form");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const title = modal.querySelector("#message-title").value.trim();
+    const content = modal.querySelector("#message-content").value.trim();
+
+    if (title === "" || content === "") {
+      alert("Please fill in both the title and message");
+      return;
+    }
+    console.log("Sending message with userId:", userId); // Debug log
+    fetch("post_announcement.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `title=${encodeURIComponent(title)}&content=${encodeURIComponent(
+        content
+      )}&user_id=${encodeURIComponent(userId)}`,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("Message sent successfully to user:", userId);
+          alert("Message sent successfully");
+          modal.remove();
+        } else {
+          console.error("Error:", data.error);
+          alert("Failed to send message: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        alert("An error occurred while sending the message");
+      });
+  });
+
+  // Handle close icon
+  modal.querySelector("#close-modal").addEventListener("click", () => {
+    modal.remove();
+  });
+
+  // Close modal when clicking outside
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
 }
 
 function createConfirmationModal(userId) {
@@ -143,7 +229,7 @@ function showPopover(event) {
   popover.querySelector(".send-message").addEventListener("click", (e) => {
     e.preventDefault();
     console.log("Send message to user:", userId);
-    // Add your send message logic here
+    createMessageModal(userId);
     hidePopover();
   });
 
