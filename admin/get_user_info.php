@@ -1,0 +1,74 @@
+
+<?php
+ob_start();
+error_reporting(E_ALL & ~E_NOTICE); // Show all errors except notices
+ini_set('display_errors', 0); // Ensure errors don't output to response
+
+session_start();
+
+header('Content-Type: application/json');
+include __DIR__ . "./../include/db/database.php";
+
+// Log entry point
+error_log("get_user_info.php - Script started");
+
+// Ensure only admins can access this script
+if (!isset($_SESSION['user']) || !is_array($_SESSION['user']) || empty($_SESSION['user']) || $_SESSION['user']['role'] !== 'admin') {
+    http_response_code(403);
+    echo json_encode(['error' => 'Unauthorized access']);
+    exit;
+}
+
+try {
+    $query = "SELECT 
+                    u.id AS user_id,
+                    a.username,
+                    a.CreatedTime,
+                    (SELECT COUNT(*) FROM task t WHERE t.user_id = u.id) AS task_count
+                FROM 
+                    users u
+                JOIN 
+                    account a ON u.Acc_id = a.id
+                ORDER BY 
+                    a.CreatedTime DESC
+
+    ";
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    error_log("Debug: " . print_r($users, true));
+    error_log("get_user_info.php - Query executed, rows returned: " . count($users));
+
+    // Check if any users were found
+    if (empty($users)) {
+        error_log("get_user_info.php - No users found in the database");
+        echo json_encode(['error' => 'No users found']);
+        exit;
+    }
+
+    // Format the data for the table
+    $user_data = [];
+    foreach ($users as $user) {
+        // Handle null createdTime
+        $createdTime = $user['CreatedTime'];
+        $formattedDate = date('d/m/Y', strtotime($createdTime));
+        $user_data[] = [
+            'id' => '#' . $user['user_id'], // Add # prefix to ID
+            'username' => htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'),
+            'CreatedTime' => date('d/m/Y', strtotime($user['CreatedTime'])), // Format as DD/MM/YYYY
+            'task_count' => $user['task_count'] ?? 0
+        ];
+    }
+    // Return JSON response
+
+    echo json_encode(['users' => $user_data, 'total' => count($user_data)]);
+    ob_end_flush(); // Ensure output is sent
+
+} catch (PDOException $error) {
+    error_log("get_user_info.php - Database error: " . $error->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'Database error']);
+}
+
+// ob_end_clean();
+exit;
