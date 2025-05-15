@@ -55,7 +55,8 @@ try {
         $createdTime = $user['CreatedTime'];
         $formattedDate = date('d/m/Y', strtotime($createdTime));
         $user_data[] = [
-            'id' => '#' . $user['user_id'], // Add # prefix to ID
+            'id' => $user['user_id'], // Send numeric ID without # prefix
+            'display_id' => '#' . $user['user_id'], // Separate field for display with # prefix
             'username' => htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'),
             'CreatedTime' => date('d/m/Y', strtotime($user['CreatedTime'])), // Format as DD/MM/YYYY
             'task_count' => $user['task_count'] ?? 0
