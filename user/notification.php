@@ -57,7 +57,7 @@ if (!isset($_SESSION['user'])) {
                   if (strlen($full_message) > $remaining_length) {
                     $display_message = substr($full_message, 0, $remaining_length - 3) . "...";
                   } else {
-                    $display_message = str_pad($full_message, $remaining_length, "");
+                    $display_message = str_pad($full_message, $remaining_length, " ");
                   }
                   $display_text .= $display_message;
                 } else {
