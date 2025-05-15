@@ -134,3 +134,54 @@ button.action-btn {
 .popover ul li a:hover {
   background-color: #f0f0f0;
 }
+
+/* confirmation modal */
+
+.confirmation-modal {
+  display: block;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.confirmation-modal-container {
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 20px;
+  width: 450px;
+  height: 250px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.btn-container {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+#cancel-btn {
+  box-sizing: border-box;
+  border: 1px #9b9c9e solid;
+  border-radius: 8px;
+  flex: 1;
+  background-color: transparent;
+  padding: 12px;
+}
+
+#delete-btn {
+  box-sizing: border-box;
+  border: none;
+  background-color: #ffd4f0;
+  color: #a30d11;
+  border-radius: 8px;
+  flex: 1;
+  padding: 12px;
+}
