@@ -97,7 +97,7 @@ a {
   display: none;
 }
 
-.popover:hover {
+/* .popover:hover {
   background-color: #f0f0f0;
 }
 .popover-item span {
@@ -115,4 +115,4 @@ a {
 
 .popover-item form label {
   display: none;
-}
+} */
