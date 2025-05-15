@@ -29,6 +29,8 @@ try {
                     users u
                 JOIN 
                     account a ON u.Acc_id = a.id
+                WHERE 
+                    u.Acc_id != 1 AND u.id != 11
                 ORDER BY 
                     a.CreatedTime DESC
 
