@@ -2,6 +2,69 @@
 function removeExistingPopovers() {
   document.querySelectorAll(".popover").forEach((p) => p.remove());
 }
+
+function createConfirmationModal(userId) {
+  // Ensure userId is numeric
+  const numericUserId = parseInt(userId, 10);
+  if (isNaN(numericUserId)) {
+    console.error("Invalid userId:", userId);
+    alert("Invalid user ID");
+    return;
+  }
+  // Remove existing modal if any
+  document.querySelectorAll(".confirmation-modal").forEach((m) => m.remove());
+
+  const modal = document.createElement("div");
+  modal.className = "confirmation-modal";
+  modal.id = "delete-modal";
+  modal.innerHTML = `
+    <div class="confirmation-modal-container">
+      <div>
+        <h2>Delete User?</h2>
+        <p>This action can't be undone</p>
+      </div>
+      <div class='btn-container'>
+        <button id="cancel-btn">Cancel</button>
+        <button id="delete-btn" data-user-id="${userId}">Delete</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Show modal by adding a class or style (assuming CSS handles visibility)
+  modal.style.display = "block";
+
+  // Handle cancel button
+  modal.querySelector("#cancel-btn").addEventListener("click", () => {
+    modal.remove();
+  });
+
+  // Handle delete confirmation
+  modal.querySelector("#delete-btn").addEventListener("click", () => {
+    fetch("./user_control.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: `user_id=${encodeURIComponent(userId)}`,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("User deleted successfully");
+          modal.remove();
+          location.reload();
+        } else {
+          console.error("Error:", data.error);
+          alert("Failed to delete user: " + data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        alert("An error occurred while deleting the user");
+      });
+  });
+}
 function showPopover(event) {
   removeExistingPopovers(); // Ensure only one popover is open at a time
 
@@ -86,11 +149,13 @@ function showPopover(event) {
 
   popover.querySelector(".delete-user").addEventListener("click", (e) => {
     e.preventDefault();
-    if (confirm("Are you sure you want to delete this user?")) {
-      console.log("Delete user:", userId);
-      // Add your delete user logic here
-      hidePopover();
-    }
+    createConfirmationModal(userId);
+    hidePopover();
+    // if (confirm("Are you sure you want to delete this user?")) {
+    //   console.log("Delete user:", userId);
+    //   // Add your delete user logic here
+    //   hidePopover();
+    // }
   });
 }
 

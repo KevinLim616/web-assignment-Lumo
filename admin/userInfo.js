@@ -34,9 +34,9 @@ function renderTable() {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-                    <td>${user.id}</td>
+                    <td>${user.display_id}</td>
                     <td>${user.username}</td>
-                    <td>${user.created_at}</td>
+                    <td>${user.CreatedTime}</td>
                     <td>${user.task_count}</td>
                     <td><span class="read-receipt read">Read</span></td>
                     <td><button class="action-btn" data-dropdown-id="${user.id}"><i class="bi bi-three-dots-vertical"></i></button></td>
