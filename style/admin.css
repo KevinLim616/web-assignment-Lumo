@@ -1,0 +1,136 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  height: 100vh;
+  grid-template-areas: "sidebar main";
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.main {
+  grid-area: main;
+  max-width: 1000px;
+  margin: 0;
+  padding: 40px 20px;
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 36px;
+}
+
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 4px;
+}
+
+.stats-box {
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 15px 20px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stats-box .stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.stats-box .stat-bottom {
+  font-size: 1rem;
+}
+
+.btn-announcement {
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 10px 20px;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.pagination {
+  margin-top: 20px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #f4b4ef;
+  border: none;
+  color: white;
+}
+
+.status-read {
+  background-color: #e3fff2;
+  color: #38c993;
+  padding: 2px 10px 2px 10px;
+  border-radius: 24px;
+  display: inline-block;
+}
+
+.status-delivered {
+  background-color: #e3fff2;
+  color: #38c993;
+  padding: 2px 12px 2px 12px;
+  border-radius: 24px;
+  display: inline-block;
+}
+
+h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.page-button {
+  border: none;
+  background-color: transparent;
+}
+
+button.action-btn {
+  border: none;
+  background-color: transparent;
+}
+.popover {
+  position: absolute;
+  background: var(--white);
+  border: none;
+  box-sizing: border-box;
+  -webkit-box-shadow: 3px 3px 9px 2.5px #dddddd;
+  -moz-box-shadow: 3px 3px 9px 2.5px #dddddd;
+  box-shadow: 3px 3px 9px 2.5px #dddddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 5px 0;
+  z-index: 1000;
+  min-width: 150px;
+  min-height: fit-content;
+  display: block;
+}
+.popover ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.popover ul li a {
+  display: block;
+  padding: 5px 10px;
+  color: #000;
+  text-decoration: none;
+}
+
+.popover ul li a:hover {
+  background-color: #f0f0f0;
+}
