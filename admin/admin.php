@@ -38,6 +38,7 @@ if ($_SESSION['user']['role'] !== 'admin') {
     <link rel="stylesheet" href="../style/side_bar.css">
     <script src="../include/sideBar.js" defer></script>
     <script src="./popover.js" defer></script>
+    <script src="./adminModal.js" type="module" defer></script>
     <link rel="stylesheet" href="../style/admin.css">
 </head>
 
@@ -48,7 +49,7 @@ if ($_SESSION['user']['role'] !== 'admin') {
         <div class="main">
             <div style="display: flex; justify-content: space-between">
                 <h2 class="header-title">Welcome, Admin.</h2>
-                <button class="btn btn-announcement">Post Announcement</button>
+                <button class="btn btn-announcement" id="post-announcement">Post Announcement</button>
             </div>
 
             <div class="stats-header">
