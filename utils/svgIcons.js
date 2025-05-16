@@ -13,6 +13,24 @@ function createSVG(html, className = "", id = "") {
 }
 
 export const svgIcons = {
+  arrowLeft: (className = "", id = "") => {
+    return createSVG(
+      `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      `,
+      className,
+      id
+    );
+  },
+  hambergerIcon: (className = "", id = "") => {
+    return createSVG(
+      `
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+`,
+      className,
+      id
+    );
+  },
   imageIcon: (className = "", id = "") => {
     return createSVG(
       `
