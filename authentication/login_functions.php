@@ -67,11 +67,7 @@ if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
 
             echo "user logged in";
             // MODIFIED: Redirect based on role
-            // if ($role === 'admin') {
-            //     header("Location: ../web/admin/admin.php");
-            // } else if ($role === 'user') {
-            //     header("Location: ../web/user/dashboard.php");
-            // }
+
             $redirect = ($role === 'admin') ? 'admin/admin.php' : '../web/user/dashboard.php';
             error_log("login_functions.php - Redirecting to: $redirect");
 

@@ -4,18 +4,22 @@ let allUsers = [];
 
 async function fetchUsers() {
   try {
-    const response = await fetch("./get_user_info.php");
+    // Add cache-busting to avoid stale responses
+    const response = await fetch("./get_user_info.php?_=" + Date.now());
     if (!response.ok) {
       throw new Error("Failed to fetch user data");
     }
     const data = await response.json();
     if (data.error) {
-      console.error("Error:", data.error);
+      console.error("Error from server:", data.error);
       return;
     }
-    console.log(data);
-    allUsers = data.users;
-    document.getElementById("total-members").textContent = data.total;
+    // Log raw data for debugging
+    console.log("Raw JSON response:", data);
+    allUsers = data.users || [];
+    // Log allUsers to confirm structure
+    console.log("allUsers array:", allUsers);
+    document.getElementById("total-members").textContent = data.total || 0;
     renderTable();
   } catch (error) {
     console.error("Fetch error:", error);
@@ -31,14 +35,31 @@ function renderTable() {
   const paginatedUsers = allUsers.slice(start, end);
 
   paginatedUsers.forEach((user) => {
+    // Log each user object for debugging
+    console.log("User object:", user);
     const row = document.createElement("tr");
+
+    // Map notification status to display text and class
+    let statusClass = "";
+    let statusText = user.notification_status || "No Notifications";
+    switch (user.notification_status) {
+      case "Read":
+        statusClass = "read";
+        break;
+      case "Delivered":
+        statusClass = "delivered";
+        break;
+      default:
+        statusClass = "no-notifications";
+        statusText = "No Notifications";
+    }
 
     row.innerHTML = `
                     <td>${user.display_id}</td>
                     <td>${user.username}</td>
                     <td>${user.CreatedTime}</td>
                     <td>${user.task_count}</td>
-                    <td><span class="read-receipt read">Read</span></td>
+                    <td><span class="read-receipt ${statusClass}">${statusText}</span></td>
                     <td><button class="action-btn" data-dropdown-id="${user.id}"><i class="bi bi-three-dots-vertical"></i></button></td>
                 `;
     tbody.appendChild(row);

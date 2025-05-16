@@ -14,8 +14,9 @@ if (!isset($_SESSION['user']) || !is_array($_SESSION['user']) || empty($_SESSION
     exit;
 }
 
-$user_id = (int)$_SESSION['user']['id'];
+$user_id = (int)$_SESSION['user_id'];
 error_log("get_notifications.php - Fetching notifications for user_id: $user_id");
+error_log("get_notifications.php - Session user data: " . print_r($_SESSION['user'], true));
 
 try {
     // Query to fetch notifications for the user from user_notifications, joined with notifications

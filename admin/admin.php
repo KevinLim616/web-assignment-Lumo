@@ -36,7 +36,7 @@ if ($_SESSION['user']['role'] !== 'admin') {
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
 
     <link rel="stylesheet" href="../style/side_bar.css">
-    <script src="../include/sideBar.js" defer></script>
+    <script src="../include/sideBar.js" defer type="module"></script>
     <script src="./popover.js" type="module" defer></script>
     <script src="./adminModal.js" type="module" defer></script>
     <link rel="stylesheet" href="../style/admin.css">

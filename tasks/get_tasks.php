@@ -1,6 +1,7 @@
 <?php
 ob_start();
 
+session_start();
 
 include __DIR__ . "./../include/db/database.php";
 

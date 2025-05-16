@@ -73,12 +73,17 @@
   color: white;
 }
 
-.status-read {
+.read-receipt {
   background-color: #e3fff2;
   color: #38c993;
   padding: 2px 10px 2px 10px;
   border-radius: 24px;
   display: inline-block;
+}
+
+.read-receipt.delivered {
+  background-color: #fffbe3;
+  color: #c99b38;
 }
 
 .status-delivered {

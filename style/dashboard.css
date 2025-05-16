@@ -594,3 +594,330 @@ input#diary-title {
 }
 
 */
+/* Phones */
+@media (max-width: 600px) {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  main {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    border-right: none;
+  }
+
+  .left-panel {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .tasks-wrapper {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "main";
+  }
+
+  .right-panel {
+    display: none;
+  }
+
+  .side-bar {
+    display: none;
+  }
+  .main-layout {
+    height: auto;
+    border: none;
+  }
+
+  main {
+    height: auto;
+    border-right: none;
+  }
+
+  .today-title {
+    padding-left: 16px;
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .today-date {
+    padding-left: 16px;
+  }
+
+  .today-subtext {
+    padding-left: 16px;
+  }
+
+  .today-subtext p {
+    font-size: 12px;
+    line-height: 14px;
+  }
+
+  .tasks-wrapper h2 {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .task-label {
+    padding-left: 16px;
+    font-size: 14px;
+  }
+
+  .info span {
+    padding-right: 16px;
+    font-size: 12px;
+  }
+
+  .create-button {
+    font-size: small;
+    padding: 4px;
+    margin-right: 16px;
+  }
+
+  .create-button img,
+  .create-button span {
+    width: 12px;
+    height: 12px;
+  }
+
+  .tasks-list {
+    max-height: none;
+    height: auto;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 350px;
+    height: auto;
+    min-height: 400px;
+    padding: 10px;
+  }
+
+  #task-title {
+    font-size: 24px;
+  }
+
+  .modal-first-line svg {
+    width: 16px;
+    height: 16px;
+  }
+  .modal-first-line {
+    display: flex;
+  }
+
+  .date-time-group svg,
+  .description-group svg,
+  .category-group svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .textdescription {
+    font-size: 12px;
+  }
+
+  .date-time-group {
+    flex-wrap: wrap;
+  }
+
+  .category-group {
+    flex-wrap: wrap;
+  }
+
+  .date-time-group input,
+  .category-group select {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  #task-date,
+  #task-time {
+    overflow: hidden;
+  }
+
+  .flag-box {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    align-self: stretch;
+    box-sizing: border-box;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+  }
+  .form-group,
+  .description-group,
+  .category-group {
+    gap: 8px;
+  }
+
+  .textplace {
+    width: 85%;
+    font-size: 20px;
+    padding: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  main {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    border-right: none;
+  }
+
+  .left-panel {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  .tasks-wrapper {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+
+  body {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas: "main";
+  }
+
+  .right-panel {
+    display: none;
+  }
+
+  .side-bar {
+    display: none;
+  }
+
+  .mood-log-container {
+    width: 100%;
+    height: auto;
+  }
+
+  .today-title {
+    padding-left: 20px;
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  .today-date {
+    padding-left: 20px;
+  }
+
+  .today-subtext {
+    padding-left: 20px;
+  }
+
+  .today-subtext p {
+    font-size: 14px;
+    line-height: 17px;
+  }
+
+  .tasks-wrapper h2 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .task-label {
+    padding-left: 20px;
+    font-size: 16px;
+  }
+
+  .info span {
+    padding-right: 20px;
+    font-size: 14px;
+  }
+
+  .create-button {
+    font-size: medium;
+    padding: 6px;
+    margin-right: 20px;
+  }
+
+  .create-button img,
+  .create-button span {
+    width: 16px;
+    height: 16px;
+  }
+
+  .tasks-list {
+    max-height: calc(70vh - 250px);
+  }
+
+  .modal-content {
+    width: 80%;
+    max-width: 500px;
+    height: auto;
+    min-height: 400px;
+    padding: 15px;
+  }
+
+  #task-title {
+    font-size: 28px;
+  }
+
+  .modal-first-line svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .date-time-group svg,
+  .description-group svg,
+  .category-group svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .textdescription {
+    font-size: 14px;
+  }
+
+  .date-time-group input,
+  .category-group select {
+    font-size: 14px;
+    padding: 6px;
+  }
+
+  .save-btn {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .flag-box {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    align-self: stretch;
+    box-sizing: border-box;
+    border-left: 2px solid #000000;
+    border-right: 2px solid #000000;
+  }
+
+  .task-modal-content {
+    width: 400px;
+    max-width: 300px; /* Reduced from 350px */
+    height: auto; /* Dynamic height */
+    min-height: 350px; /* Reduced from 400px */
+    margin: 20% auto; /* Adjusted to center better on small screens */
+    padding: 10px;
+  }
+}

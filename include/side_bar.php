@@ -56,7 +56,7 @@ if (!isset($_SESSION['user']) || !is_array($_SESSION['user']) || empty($_SESSION
             </svg>
           </span>
           <!--TODO: switch to dynamic username-->
-          <span><?php echo htmlspecialchars(isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin' ? 'Admin' : ($_SESSION['user']['username'])); ?></span>
+          <span class="username"><?php echo htmlspecialchars(isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin' ? 'Admin' : ($_SESSION['user']['username'])); ?></span>
           <!--TODO: popover animation-->
           <!-- <div class="popover" open>
                 <div class="popover-item">

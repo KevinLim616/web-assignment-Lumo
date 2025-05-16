@@ -28,7 +28,7 @@ if (!isset($_SESSION['user'])) {
   <link rel="stylesheet" href="../style/dashboard.css" />
   <link rel="stylesheet" href="../style/calendar-style.css" />
   <script src="./../tasks/tasks.js" defer></script>
-  <script src="../include/sideBar.js" defer></script>
+  <script src="../include/sideBar.js" defer type="module"></script>
   <link rel="stylesheet" href="../style/side_bar.css" />
 
 </head>
@@ -43,6 +43,7 @@ if (!isset($_SESSION['user'])) {
     <div class="left-panel">
       <div class="today-title">Today</div>
       <div style="padding-left: 8px">
+        <!-- TODO: change current date -->
         <div class="today-date">Mon 09 Jan 2025</div>
         <div class="today-subtext">
           <p>
@@ -630,6 +631,30 @@ if (!isset($_SESSION['user'])) {
   <script src="../diary/diary.js" defer type="module"></script>
   <script src="./calendar.js" defer type="module"></script>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const todayDateElement = document.querySelector(".today-date");
+      if (!todayDateElement) {
+        console.error("Today date element not found (class='today-date').");
+        return;
+      }
+
+      const today = new Date();
+      const options = {
+        weekday: "short", // e.g., "Fri"
+        day: "2-digit", // e.g., "16"
+        month: "short", // e.g., "May"
+        year: "numeric" // e.g., "2025"
+      };
+      const formattedDate = today
+        .toLocaleDateString("en-US", options)
+        .replace(/,/, "") // Remove comma (e.g., "Fri, 16 May 2025" -> "Fri 16 May 2025")
+        .replace(/(\d+) (\w+) (\d+)/, "$1 $2 $3"); // Ensure format: "Fri 16 May 2025"
+
+      todayDateElement.innerHTML = formattedDate;
+
+    });
+  </script>
 </body>
 
 </html>

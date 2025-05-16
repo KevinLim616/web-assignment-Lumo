@@ -1,12 +1,16 @@
-
 <?php
-ob_start();
 error_reporting(E_ALL & ~E_NOTICE); // Show all errors except notices
 ini_set('display_errors', 0); // Ensure errors don't output to response
 
 session_start();
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
+
+// Ensure no output before JSON
+if (ob_get_level()) {
+    ob_end_clean();
+}
+
 include __DIR__ . "./../include/db/database.php";
 
 // Log entry point
@@ -24,7 +28,15 @@ try {
                     u.id AS user_id,
                     a.username,
                     a.CreatedTime,
-                    (SELECT COUNT(*) FROM task t WHERE t.user_id = u.id) AS task_count
+                    (SELECT COUNT(*) FROM task t WHERE t.user_id = u.id) AS task_count,
+                    COALESCE(
+                        (SELECT un.status 
+                         FROM user_notifications un 
+                         WHERE un.user_id = u.id 
+                         ORDER BY un.received_at DESC 
+                         LIMIT 1),
+                        'No Notifications'
+                    ) AS notification_status
                 FROM 
                     users u
                 JOIN 
@@ -32,13 +44,11 @@ try {
                 WHERE 
                     u.Acc_id != 1 AND u.id != 11
                 ORDER BY 
-                    a.CreatedTime DESC
-
-    ";
+                    a.CreatedTime DESC";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    error_log("Debug: " . print_r($users, true));
+    error_log("Debug: Raw users from DB: " . print_r($users, true));
     error_log("get_user_info.php - Query executed, rows returned: " . count($users));
 
     // Check if any users were found
@@ -59,19 +69,30 @@ try {
             'display_id' => '#' . $user['user_id'], // Separate field for display with # prefix
             'username' => htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8'),
             'CreatedTime' => date('d/m/Y', strtotime($user['CreatedTime'])), // Format as DD/MM/YYYY
-            'task_count' => $user['task_count'] ?? 0
+            'task_count' => $user['task_count'] ?? 0,
+            'notification_status' => $user['notification_status']
         ];
     }
-    // Return JSON response
+    // Log user_data before encoding
+    error_log("Debug: user_data before JSON encode: " . print_r($user_data, true));
 
-    echo json_encode(['users' => $user_data, 'total' => count($user_data)]);
-    ob_end_flush(); // Ensure output is sent
+    // Prepare response
+    $response = ['users' => $user_data, 'total' => count($user_data)];
 
+    // Log JSON string
+    $json_output = json_encode($response, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+    error_log("Debug: JSON output: " . $json_output);
+
+    // Output JSON
+    echo $json_output;
 } catch (PDOException $error) {
     error_log("get_user_info.php - Database error: " . $error->getMessage());
     http_response_code(500);
     echo json_encode(['error' => 'Database error']);
+} catch (JsonException $error) {
+    error_log("get_user_info.php - JSON encode error: " . $error->getMessage());
+    http_response_code(500);
+    echo json_encode(['error' => 'JSON encoding error']);
 }
 
-// ob_end_clean();
 exit;

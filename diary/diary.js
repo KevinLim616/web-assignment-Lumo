@@ -1,3 +1,4 @@
+import { showDiaryModal } from "../user/modal.js";
 window.moods = {}; // Global store for mood data
 
 // Fetch moods for a given year and month
@@ -130,7 +131,7 @@ export function handleMoodClick(selectedDate) {
               detail: { date: dateString, mood: mood },
             });
             document.dispatchEvent(event);
-            window.showDiaryModal(currentSelectedDate); // Pass the current selected date
+            showDiaryModal(currentSelectedDate); // Pass the current selected date
           } else {
             console.error("Failed to save mood:", data.message);
             alert("Failed to save mood: " + data.message);

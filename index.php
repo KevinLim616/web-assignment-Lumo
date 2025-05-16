@@ -34,7 +34,7 @@ if (isset($_SESSION['user'])) {
     <section class="left">
 
       <div style="display: flex;">
-        <img src="assets/img/LOGO.svg" alt="logo" width="100px" />
+        <img src="assets/img/LOGO.svg" alt="logo" width="100px" class="logo" />
       </div>
       <img src="./assets/img/signinpage_mascot.png" alt="sign in mascot" class="sign-in-mascot">
     </section>

@@ -19,8 +19,8 @@ if (!isset($_SESSION['user'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LUMO - Productivity App</title>
   <link rel="stylesheet" href="../global.css">
-  <script src="../include/sideBar.js" defer></script>
-  <link rel="stylesheet" href="../style/side_bar.css" />
+  <script src="../include/sideBar.js" defer type="module"></script>
+
 
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
@@ -329,10 +329,137 @@ if (!isset($_SESSION['user'])) {
       background-color: #f1f2f2;
       border-radius: 8px;
     }
+
+    .diary-modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .diary-modal-container {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 40px;
+      width: 645px;
+      height: 412px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .diary-modal-container form {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      gap: 24px;
+    }
+
+    .diary-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .diary-modal-container form div label {
+      display: none;
+    }
+
+    .diary-modal-container form .submit-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    input#save-diary {
+      background-color: #e87fc8;
+      font-family: "SF Pro Text", "Poppins", sans-serif;
+      font-size: 16px;
+      padding: 8px 16px;
+      cursor: pointer;
+      border-radius: 24px;
+      border: none;
+      box-sizing: border-box;
+      transition: 0.3s ease-in-out;
+    }
+
+    input#save-diary:hover {
+      opacity: 0.7;
+    }
+
+    input#save-diary:active {
+      opacity: 0.6;
+    }
+
+    .diary-modal-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 10px;
+    }
+
+    textarea#diary-content {
+      width: 100%;
+      flex-grow: 1;
+      border: none;
+      resize: none;
+      outline: none;
+      overflow-y: auto;
+      box-sizing: border-box;
+      background-color: transparent;
+      padding: 8px 12px;
+      font-size: 14px;
+      font-family: "SF Pro Text", "Poppins", sans-serif;
+    }
+
+    input#diary-title {
+      font-family: "SF Pro Rounded";
+      border: none;
+      background-color: transparent;
+      outline: none;
+      font-size: 36px;
+    }
+
+    .toolbar {
+      background-color: #fff5fb;
+      border-radius: 8px;
+      width: fit-content;
+      padding: 12px 8px;
+      position: absolute;
+      bottom: 24px;
+      left: 34%;
+      -webkit-box-shadow: 7.5px 4.5px 28.5px 5px #d8d8d8;
+      -moz-box-shadow: 7.5px 4.5px 28.5px 5px #d8d8d8;
+      box-shadow: 7.5px 4.5px 28.5px 5px #d8d8d8;
+    }
+
+    .toolbar button {
+      border-style: none;
+      background-color: transparent;
+      cursor: pointer;
+      padding: 4px;
+
+      border-radius: 4px;
+    }
+
+    .toolbar button:hover {
+      background-color: #f8c5e9;
+    }
+
+    .toolbar button:focus {
+      background-color: #e87fc8;
+    }
   </style>
   <link rel="stylesheet" href="../style/side_bar.css" />
   <!--javascript here-->
-  <script src="../diary/diary.js" defer></script>
+  <script src="../diary/diary.js" defer type="module"></script>
+
   <!-- <script src="../tasks/tasks.js" defer></script> -->
   <script src="../utils/svgIcons.js" defer type="module"></script>
 </head>
@@ -857,10 +984,41 @@ if (!isset($_SESSION['user'])) {
       </div>
     </main>
   </div>
+  <!--Diary modal-->
+  <div class="diary-modal" id="diary-modal">
+    <div class="diary-modal-container">
+      <form id="diary-content-form">
+        <div class="diary-modal-header">
+          <label for="diary-title">Diary Title</label>
+          <input type="text" id="diary-title" name="diary-title" placeholder="Add Title">
+          <span id="close-diary"></span>
+        </div>
+        <div class="diary-modal-content">
+          <label for="diary-content" id="diary-content-label">Content</label>
+          <textarea name="diary-content" id="diary-content" placeholder="Content...."></textarea>
 
+          <!-- <div id="diary-content" class="quill-editor"></div>
+          <input type="hidden" name="diary-content" id="diary-content-hidden" />
+           -->
+        </div>
+        <div class="submit-container">
+          <label for="save-diary">Save</label>
+          <input type="submit" value="save" id="save-diary">
+
+        </div>
+      </form>
+      <div class="toolbar">
+        <button type="button" class="ql-image" id="toolbar-image"></button>
+        <button type="button" class="ql-bold" id="toolbar-bold"></button>
+        <button type="button" class="ql-italic" id="toolbar-italic"></button>
+        <button type="button" class="ql-underline" id="toolbar-underline"></button>
+        <button type="button" id="toolbar-lock"></button>
+      </div>
+    </div>
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/color-calendar/dist/bundle.js"></script>
-
+  <script src='../user/modal.js' defer type="module"></script>
   <script src="../diary/calendarPage.js" defer type="module"></script>
   <!-- prettier-ignore -->
 </body>

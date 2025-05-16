@@ -1,4 +1,36 @@
 import { svgIcons } from "../utils/svgIcons.js";
+
+export const showDiaryModal = (selectedDate) => {
+  const diaryModal = document.getElementById("diary-modal");
+  // if (!diaryModal) {
+  //   console.error(
+  //     "Diary modal element not found (id='diary-modal'). Ensure it exists in the HTML."
+  //   );
+  //   alert("Error: Diary modal not found. Please contact support.");
+  //   return;
+  // }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let currentSelectedDate = selectedDate; // Store locally
+  if (selectedDate) {
+    const selected = new Date(selectedDate);
+    selected.setHours(0, 0, 0, 0);
+    if (selected > today) {
+      console.log(`Cannot open diary for future date: ${selectedDate}`);
+      alert("Warning: cannot open diary for future date.");
+      return;
+    }
+    console.log("Diary modal triggered for date:", selectedDate);
+  } else {
+    console.warn(
+      "No date provided to showDiaryModal; using current date:",
+      currentSelectedDate
+    );
+  }
+  diaryModal.style.display = "block";
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   const modal = document.getElementById("popupModal");
   const diaryModal = document.getElementById("diary-modal");
@@ -11,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const toolbarItalic = document.getElementById("toolbar-italic");
   const toolbarUnderline = document.getElementById("toolbar-underline");
   const toolbarLock = document.getElementById("toolbar-lock");
-  const diaryContentHidden = document.getElementById("diary-content-hidden");
+
   const diaryContent = document.getElementById("diary-content");
 
   const diaryForm = document.getElementById("diary-content-form");
@@ -32,68 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
     svgIcons["lockIcon"]("toolbar-icon", "toolbar-lock-icon")
   );
 
-  // // Initialize Quill with theme
-  // const quill = new Quill("#diary-content", {
-  //   placeholder: "Content...",
-
-  //   modules: {
-  //     toolbar: false, // Use custom toolbar
-  //   },
-  // });
-
-  // // Toolbar Functions using Quill
-  // toolbarImage.addEventListener("click", () => {
-  //   const fileInput = document.createElement("input");
-  //   fileInput.type = "file";
-  //   fileInput.accept = "image/*";
-  //   fileInput.onchange = (e) => {
-  //     const file = e.target.files[0];
-  //     if (file) {
-  //       console.log("Image selected:", file.name);
-  //       const range = quill.getSelection();
-  //       if (range) {
-  //         const imageUrl = URL.createObjectURL(file);
-  //         quill.insertEmbed(range.index, "image", imageUrl);
-  //       }
-  //     }
-  //   };
-  //   fileInput.click();
-  // });
-
-  // toolbarBold.addEventListener("click", () => {
-  //   quill.format("bold", !quill.getFormat().bold);
-  //   quill.focus();
-  // });
-
-  // toolbarItalic.addEventListener("click", () => {
-  //   quill.format("italic", !quill.getFormat().italic);
-  //   quill.focus();
-  // });
-
-  // toolbarUnderline.addEventListener("click", () => {
-  //   quill.format("underline", !quill.getFormat().underline);
-  //   quill.focus();
-  // });
-
-  // let isLocked = false;
-  // toolbarLock.addEventListener("click", () => {
-  //   isLocked = !isLocked;
-  //   if (isLocked) {
-  //     quill.disable();
-  //     diaryModal.classList.add("locked");
-  //     toolbarLock.querySelector("svg").style.stroke = "#dc3545";
-  //   } else {
-  //     quill.enable();
-  //     diaryModal.classList.remove("locked");
-  //     toolbarLock.querySelector("svg").style.stroke = "#6c757d";
-  //   }
-  // });
-
-  // // Sync Quill content with hidden input for form submission
-  // quill.on("text-change", () => {
-  //   diaryContentHidden.value = quill.root.innerHTML;
-  // });
-
   createBtn.addEventListener("click", () => {
     modal.style.display = "block";
   });
@@ -108,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   closeDiaryBtn.addEventListener("click", () => {
     diaryModal.style.display = "none";
-    document.getElementById("diary-content-form").reset();
+    document.getElementById("diary-content-form")?.reset();
   });
 
   window.addEventListener("click", (e) => {
@@ -124,28 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   let currentSelectedDate = null;
-  // Expose showDiaryModal function for diary.js
-  window.showDiaryModal = (selectedDate) => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    currentSelectedDate = selectedDate; //store globally
-    if (selectedDate) {
-      const selected = new Date(selectedDate);
-      selected.setHours(0, 0, 0, 0);
-      if (selected > today) {
-        console.log(`Cannot open diary for future date: ${selectedDate}`);
-        alert("Warning: cannot open diary for future date.");
-        return;
-      }
-      console.log("Diary modal triggered for date:", selectedDate);
-    } else {
-      console.warn(
-        "No date provided to showDiaryModal; using current date:",
-        currentSelectedDate
-      );
-    }
-    diaryModal.style.display = "block";
-  };
 
   // Handle diary form submission
   diaryForm.addEventListener("submit", (e) => {
