@@ -23,8 +23,8 @@ if (!isset($_SESSION['user'])) {
   <link rel="stylesheet" href="../global.css" />
   <link rel="stylesheet" href="../style/side_bar.css" />
   <link rel="stylesheet" href="../style/notification.css" />
-  <script src="../include/sideBar.js" defer></script>
-  <script src="../user/notification.js" defer></script>
+  <script src="../include/sideBar.js" defer type="module"></script>
+  <script src="../user/notification.js" type="module" defer></script>
   <title>Notification</title>
 </head>
 
@@ -81,15 +81,19 @@ if (!isset($_SESSION['user'])) {
     </div>
     <!--notification detail-->
     <div class="notification-details">
-      <!--child 1-->
-      <div class="notification-title">
-        <h3></h3>
-        <h6></h6>
-      </div>
-      <!--child 2-->
+      <div class="notification-details-container">
 
-      <div class="notification-description">
-        <p></p>
+
+        <!--child 1-->
+        <div class="notification-title">
+          <h3></h3>
+          <h6></h6>
+        </div>
+        <!--child 2-->
+
+        <div class="notification-description">
+          <p></p>
+        </div>
       </div>
     </div>
 

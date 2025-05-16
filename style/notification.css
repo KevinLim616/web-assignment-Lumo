@@ -67,6 +67,14 @@ p {
   right: -100%;
   position: absolute;
   transition: right 0.5s ease-in;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.arrow-icon {
+  padding-top: 8px;
+  padding-right: 16px;
+  display: flex;
 }
 
 .notification-details.active {
@@ -82,4 +90,56 @@ p {
 .notification-description {
   margin-top: 16px;
   padding-left: 16px;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  body {
+    display: grid; /* Change to block layout on mobile */
+    grid-template-columns: 56px 1fr;
+    grid-template-areas: "hamburger main";
+    height: auto;
+  }
+  .hamburger-icon {
+    grid-area: hamburger;
+  }
+  main {
+    grid-area: main;
+    padding: 10px;
+    margin-left: 0; /* Remove left padding to avoid push-off */
+    width: 100%; /* Ensure main content takes full width */
+  }
+
+  .notifications-container section ul {
+    padding: 0 0 0 20px;
+  }
+
+  .notifications-container section ul li {
+    margin: 6px 0;
+  }
+
+  .notification-details {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    right: -100vw;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .notification-details.active {
+    right: 0;
+  }
+
+  .notification-title h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .notification-description {
+    padding-left: 8px;
+    font-size: 14px;
+  }
 }
