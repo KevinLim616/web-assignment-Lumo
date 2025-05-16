@@ -1,47 +1,125 @@
 <?php
-//sql query
-//include database connection as global variable
-include __DIR__ . "/../include/db/database.php";
+// MODIFIED: Prevent multiple inclusions
+if (!defined('LOGIN_FUNCTIONS_INCLUDED')) {
+    define('LOGIN_FUNCTIONS_INCLUDED', true);
 
+    // MODIFIED: Use include_once
+    include_once __DIR__ . "/../include/db/database.php";
 
-function userExist($email, $password)
-{
-    global $conn;
-    // select from account table where username and password match
-    $sql = "SELECT * FROM account WHERE email = ? ";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    // MODIFIED: Renamed to avoid conflicts
+    function loginUserExist($email, $password)
+    {
+        global $conn;
+        $sql = "SELECT * FROM account WHERE email = :email";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
-    //if there are results
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
-        if (password_verify($password, $user['password'])) {
-            return true;
+        if ($user && password_verify($password, $user['password'])) {
+            return $user;
         }
-    } else {
-        //if there are no results
         return false;
     }
-}
 
-// Login
-function login($email, $password)
-{
-    //sanitize input
-    $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
-    //filter input
+    function login($email, $password)
+    {
+        global $conn;
+        $email = filter_var(trim($email), FILTER_SANITIZE_EMAIL);
 
-    // Check if the email and password are correct
-    //TODO: hash password
-    if ($email == "admin@example.com" && $password == "password") {
-        //redirect to admin page
-        header("Location: admin/admin.php");
-    } else if (userExist($email, $password)) { //search existed user in db
-        echo "user logged in";
-    } else {
-        echo "Invalid email or password.";
+        // MODIFIED: Removed hardcoded admin check; use loginUserExist for all users
+        if ($user = loginUserExist($email, $password)) {
+            // Fetch users.id using account.id
+            $stmt = $conn->prepare("SELECT id FROM users WHERE Acc_id = :account_id");
+            $stmt->bindParam(':account_id', $user['id'], PDO::PARAM_INT);
+            $stmt->execute();
+            $user_record = $stmt->fetch(PDO::FETCH_ASSOC);
+            // NEW: Check if user record exists
+            if (!$user_record) {
+                error_log("login_functions.php - No user found for account_id: " . $user['id']);
+                echo "error_fetching_user";
+                exit;
+            }
+
+            // MODIFIED: Set role based on email
+            $role = (strtolower($email) === 'admin@example.com') ? 'admin' : 'user';
+            error_log("login_functions.php - Role assigned: $role for email: $email");
+
+
+            $_SESSION['user'] = [
+                'id' => $user['id'], // account.id
+                'email' => $user['email'],
+                'username' => $user['username'],
+                'role' => $role
+            ];
+            $_SESSION['user_id'] = $user_record['id']; // users.id
+
+            // Set auto-login cookie
+            $token = bin2hex(random_bytes(16));
+            $expires = time() + (7 * 24 * 60 * 60); // 7 days
+            setcookie('auth_token', $token, $expires, '/', '', true, true);
+
+            // Store token in database
+            $stmt = $conn->prepare("UPDATE account SET auth_token = :token WHERE id = :id");
+            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $user['id'], PDO::PARAM_INT);
+            $stmt->execute();
+
+            echo "user logged in";
+            // MODIFIED: Redirect based on role
+
+            $redirect = ($role === 'admin') ? 'admin/admin.php' : '../web/user/dashboard.php';
+            error_log("login_functions.php - Redirecting to: $redirect");
+
+            // ✅ Force PHP to write session data before redirect
+            session_write_close();
+
+            header("Location: $redirect");
+            exit;
+        } else {
+            echo "Invalid email or password.";
+        }
+    }
+
+    // MODIFIED: Check cookie for auto-login
+    function checkAutoLogin()
+    {
+        global $conn;
+        if (isset($_COOKIE['auth_token']) && !isset($_SESSION['user'])) {
+            $token = $_COOKIE['auth_token'];
+            $stmt = $conn->prepare("SELECT * FROM account WHERE auth_token = :token");
+            $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+            $stmt->execute();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user) {
+                // Fetch users.id using account.id
+                $stmt = $conn->prepare("SELECT id FROM users WHERE Acc_id = :account_id");
+                $stmt->bindParam(':account_id', $user['id'], PDO::PARAM_INT);
+                $stmt->execute();
+                $user_record = $stmt->fetch(PDO::FETCH_ASSOC);
+                // NEW: Check if user record exists
+                if (!$user_record) {
+                    error_log("login_functions.php - No user found for account_id: " . $user['id']);
+                    return false;
+                }
+
+                // MODIFIED: Set role based on email
+                $role = (strtolower($user['email']) === 'admin@example.com') ? 'admin' : 'user';
+                error_log("login_functions.php - Auto-login role assigned: $role for email: " . $user['email']);
+
+                $_SESSION['user'] = [
+                    'id' => $user['id'], // account.id
+                    'email' => $user['email'],
+                    'username' => $user['username'],
+                    'role' => $role
+                ];
+                $_SESSION['user_id'] = $user_record['id']; // users.id
+                // MODIFIED: Fixed duplicate user_id setting and added logging
+                error_log("login_functions.php - Auto-login successful, account_id: " . $user['id'] . ", user_id: " . $user_record['id']);
+                return true;
+            }
+        }
+        return false;
     }
 }

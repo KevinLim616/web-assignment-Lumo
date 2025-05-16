@@ -1,5 +1,15 @@
 <?php
+session_start();
 include __DIR__ . "./../tasks/get_tasks.php";
+include __DIR__ . "./../authentication/login_functions.php";
+
+checkAutoLogin();
+
+if (!isset($_SESSION['user'])) {
+  header("Location: ../index.php");
+  exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,22 +18,32 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Dashboard</title>
+  <!--Quill.js-->
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.core.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.core.js"></script>
+
+
   <link rel="stylesheet" href="../global.css" />
   <link rel="stylesheet" href="../style/dashboard.css" />
   <link rel="stylesheet" href="../style/calendar-style.css" />
   <script src="./../tasks/tasks.js" defer></script>
+  <script src="../include/sideBar.js" defer type="module"></script>
+  <link rel="stylesheet" href="../style/side_bar.css" />
+
 </head>
 
 <body>
 
 
   <!--sidebar here-->
-
+  <?php include __DIR__ . "./../include/side_bar.php" ?>
   <!--main content here-->
   <main class="main-layout">
     <div class="left-panel">
       <div class="today-title">Today</div>
       <div style="padding-left: 8px">
+        <!-- TODO: change current date -->
         <div class="today-date">Mon 09 Jan 2025</div>
         <div class="today-subtext">
           <p>
@@ -71,8 +91,10 @@ include __DIR__ . "./../tasks/get_tasks.php";
         <div class="tasks-list">
           <form>
             <?php
-            $tasks = getTasks();
-            if (!empty($tasks)) {
+            $user_id = $_SESSION['user_id'];
+            $date = null;
+            $tasks = getTasks($user_id, $date);
+            if ($tasks) {
               foreach ($tasks as $task) {
                 $title = htmlspecialchars($task['title']);
                 $time = htmlspecialchars($task['time']);
@@ -390,8 +412,8 @@ include __DIR__ . "./../tasks/get_tasks.php";
       </div>
     </div>
     <!--FIXME: Calendar here-->
-    <div class="calendar">
-      <div class="header">
+    <div class="mood-calendar">
+      <div class="calendar-header">
         <button id="arrowleft">
           <svg
             width="10"
@@ -438,8 +460,8 @@ include __DIR__ . "./../tasks/get_tasks.php";
     </div>
   </div>
   <!--Modal Here-->
-  <div id="popupModal" class="modal">
-    <div class="modal-content">
+  <div id="popupModal" class="task-modal">
+    <div class="task-modal-content">
       <!--removed action="" because its handdled in task.js via ajax-->
       <form method="POST" id="create-task-form">
         <div style="display: flex; flex-direction: column; gap: 24px">
@@ -548,19 +570,22 @@ include __DIR__ . "./../tasks/get_tasks.php";
   <div class="task-drawer" id="task-details-drawer">
     <div class="drawer-content-container">
       <!--this is a checkbox-->
-      <span class="checkmark"></span>
+      <label class="task-label custom-checkbox">
+        <input type="checkbox" id="drawer-task-checkbox" />
+        <span class="drawer-checkmark" id="custom-drawer-checkbox"></span>
+      </label>
 
       <div class="drawer-content">
         <div class="drawer-header">
-          <h2>This is a task tittle</h2>
+          <h2 id="drawer-task-title"></h2>
         </div>
         <div class="drawer-body">
           <div class="task-info">
-            <div class="tag">today,1:00 PM</div>
-            <div class="tag">school</div>
+            <div class="tag" id="drawer-task-date-time">today,1:00 PM</div>
+            <div class="tag" id="drawer-task-category"></div>
           </div>
           <div class="task-description">
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit aperiam voluptatum dolorem aut, quibusdam, rerum pariatur, architecto accusamus quia accusantium ducimus. Ratione atque quo animi adipisci quam tempore officia eveniet!</p>
+            <p id="drawer-task-description"></p>
           </div>
         </div>
 
@@ -568,23 +593,68 @@ include __DIR__ . "./../tasks/get_tasks.php";
     </div>
   </div>
 
-  <!-- <div id="task-details-drawer" class="task-drawer">
-    <div class="drawer-content">
-      <div class="drawer-header">
-        <h2 id="task-title"></h2>
-      </div>
-      <div class="drawer-body">
-        <p><strong>Date:</strong> <span id="drawer-task-date"></span></p>
-        <p><strong>Time:</strong> <span id="drawer-task-time"></span></p>
-        <p><strong>Description:</strong> <span id="drawer-task-description"></span></p>
-        <p><strong>Category:</strong> <span id="drawer-task-category"></span></p>
+  <!--Diary modal-->
+  <div class="diary-modal" id="diary-modal">
+    <div class="diary-modal-container">
+      <form id="diary-content-form">
+        <div class="diary-modal-header">
+          <label for="diary-title">Diary Title</label>
+          <input type="text" id="diary-title" name="diary-title" placeholder="Add Title">
+          <span id="close-diary"></span>
+        </div>
+        <div class="diary-modal-content">
+          <label for="diary-content" id="diary-content-label">Content</label>
+          <textarea name="diary-content" id="diary-content" placeholder="Content...."></textarea>
+
+          <!-- <div id="diary-content" class="quill-editor"></div>
+          <input type="hidden" name="diary-content" id="diary-content-hidden" />
+           -->
+        </div>
+        <div class="submit-container">
+          <label for="save-diary">Save</label>
+          <input type="submit" value="save" id="save-diary">
+
+        </div>
+      </form>
+      <div class="toolbar">
+        <button type="button" class="ql-image" id="toolbar-image"></button>
+        <button type="button" class="ql-bold" id="toolbar-bold"></button>
+        <button type="button" class="ql-italic" id="toolbar-italic"></button>
+        <button type="button" class="ql-underline" id="toolbar-underline"></button>
+        <button type="button" id="toolbar-lock"></button>
       </div>
     </div>
-  </div> -->
+  </div>
 
-  <script src="./modal.js" defer></script>
-  <script src="../diary/diary.js" defer></script>
+
+  <script src="./modal.js" defer type="module"></script>
+  <script src="../diary/diary.js" defer type="module"></script>
   <script src="./calendar.js" defer type="module"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const todayDateElement = document.querySelector(".today-date");
+      if (!todayDateElement) {
+        console.error("Today date element not found (class='today-date').");
+        return;
+      }
+
+      const today = new Date();
+      const options = {
+        weekday: "short", // e.g., "Fri"
+        day: "2-digit", // e.g., "16"
+        month: "short", // e.g., "May"
+        year: "numeric" // e.g., "2025"
+      };
+      const formattedDate = today
+        .toLocaleDateString("en-US", options)
+        .replace(/,/, "") // Remove comma (e.g., "Fri, 16 May 2025" -> "Fri 16 May 2025")
+        .replace(/(\d+) (\w+) (\d+)/, "$1 $2 $3"); // Ensure format: "Fri 16 May 2025"
+
+      todayDateElement.innerHTML = formattedDate;
+
+    });
+  </script>
 </body>
 
 </html>

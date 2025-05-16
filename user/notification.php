@@ -1,5 +1,18 @@
 <?php
+session_start();
+include __DIR__ . "/../authentication/login_functions.php";
 include __DIR__ . "./../utils/get_notifications.php";
+
+
+// MODIFIED: Check for auto-login
+checkAutoLogin();
+
+if (!isset($_SESSION['user'])) {
+  header("Location: ../index.php");
+  exit;
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,8 +23,8 @@ include __DIR__ . "./../utils/get_notifications.php";
   <link rel="stylesheet" href="../global.css" />
   <link rel="stylesheet" href="../style/side_bar.css" />
   <link rel="stylesheet" href="../style/notification.css" />
-  <script src="../include/sideBar.js" defer></script>
-  <script src="../user/notification.js" defer></script>
+  <script src="../include/sideBar.js" defer type="module"></script>
+  <script src="../user/notification.js" type="module" defer></script>
   <title>Notification</title>
 </head>
 
@@ -27,6 +40,10 @@ include __DIR__ . "./../utils/get_notifications.php";
 
         <section style="display: flex">
           <ul>
+            <li class="notification" data-title="🎉 Welcome to Lumo!" data-message='Thanks for signing up! Start tracking your goals and moods today.' data-date=''>🎉 Welcome to Lumo!Thanks for signing up! Start tracking your...
+              <span></span>
+            </li>
+            <li class="notification" data-title="🧠 Time for Reflection" data-message='It’s been a challenging week, but you’ve made it through. Take a moment to breathe, reflect on your small wins, and prepare for the new week ahead.' data-date=''>🧠 Time for Reflection. It’s been a challenging week, but you’ve...</li>
             <?php
             if (!empty($notifications)) {
               foreach ($notifications as $index => $notification) {
@@ -44,7 +61,7 @@ include __DIR__ . "./../utils/get_notifications.php";
                   if (strlen($full_message) > $remaining_length) {
                     $display_message = substr($full_message, 0, $remaining_length - 3) . "...";
                   } else {
-                    $display_message = str_pad($full_message, $remaining_length, "");
+                    $display_message = str_pad($full_message, $remaining_length, " ");
                   }
                   $display_text .= $display_message;
                 } else {
@@ -68,15 +85,19 @@ include __DIR__ . "./../utils/get_notifications.php";
     </div>
     <!--notification detail-->
     <div class="notification-details">
-      <!--child 1-->
-      <div class="notification-title">
-        <h3></h3>
-        <h6></h6>
-      </div>
-      <!--child 2-->
+      <div class="notification-details-container">
 
-      <div class="notification-description">
-        <p></p>
+
+        <!--child 1-->
+        <div class="notification-title">
+          <h3></h3>
+          <h6></h6>
+        </div>
+        <!--child 2-->
+
+        <div class="notification-description">
+          <p></p>
+        </div>
       </div>
     </div>
 

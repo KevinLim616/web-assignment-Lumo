@@ -170,10 +170,10 @@ form.addEventListener("submit", async (event) => {
       passwordValue,
       dateOfBirthValue
     );
-    if (result) {
-      // form.submit();
-      console.log("submitted");
-    }
+    // if (result === "user created") {
+    //   // form.submit();
+    //   window.location.href = "../user/dashboard.php";
+    // }
   }
 
   // if (isValidForm) {
@@ -211,8 +211,10 @@ const handleSignUp = async (username, email, password, dateOfBirth) => {
     if (data === "email_exists") {
       setError(emailInput, "Email is already registered");
       return false;
-    } else if (data === "available") {
+    } else if (data === "success") {
       setSuccess(emailInput);
+      window.location.href = "../user/dashboard.php";
+
       return true;
     } else {
       console.log("Unexpected response:", data);

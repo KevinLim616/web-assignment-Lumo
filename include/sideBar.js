@@ -1,20 +1,39 @@
+import { svgIcons } from "../utils/svgIcons.js";
 const popButton = document.querySelector(".logout-pop");
 const popover = document.querySelector(".popover");
+const hamburgerIcon = document.createElement("div");
+hamburgerIcon.className = "hamburger-icon";
+hamburgerIcon.appendChild(svgIcons.hambergerIcon());
+document.body.prepend(hamburgerIcon);
 
-// popButton.addEventListener("click", () => {
-//   popover.classList.toggle("active");
-// });
+// Toggle sidebar on hamburger click
+const sideBarElement = document.querySelector(".side-bar"); // Renamed to avoid conflict with function name
+hamburgerIcon.addEventListener("click", () => {
+  if (sideBarElement) {
+    sideBarElement.classList.toggle("active");
+  } else {
+    console.error("Error: .side-bar element not found in the DOM.");
+  }
+});
 
-// document.addEventListener("click", (event) => {
-//   if (!popover.contains(event.target) && !popButton.contains(event.target)) {
-//     popover.classList.remove("active");
-//   }
-// });
+// Close sidebar on mobile when clicking outside
+document.addEventListener("click", (event) => {
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  if (
+    isMobile &&
+    sideBarElement &&
+    sideBarElement.classList.contains("active") &&
+    !sideBarElement.contains(event.target) &&
+    !hamburgerIcon.contains(event.target)
+  ) {
+    sideBarElement.classList.remove("active");
+  }
+});
 
 const navigators = [
   {
     name: "Dashboard",
-    url: "#",
+    url: "../user/dashboard.php",
     icon: ` <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -36,7 +55,7 @@ const navigators = [
   },
   {
     name: "Calendar",
-    url: "#",
+    url: "../user/diary.php",
     icon: `<svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -58,7 +77,7 @@ const navigators = [
   },
   {
     name: "Notifications",
-    url: "#",
+    url: "../user/notification.php",
     icon: `<svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -94,7 +113,7 @@ const validateNavigator = (navigator, index) => {
     );
     return false;
   }
-  const stringAttributes = ["name", "url", "icon", "alt"];
+  const stringAttributes = ["name", "url", "alt"];
   const invalidTypes = stringAttributes.filter(
     (attr) => typeof navigator[attr] !== "string"
   );
@@ -112,15 +131,35 @@ const validateNavigator = (navigator, index) => {
 
 const sideBar = () => {
   const navList = document.querySelector(".side-bar nav ul");
-  // Clear existing html
   navList.innerHTML = "";
 
-  navigators.forEach((navigator, index) => {
+  const sideBarElement = document.querySelector(".side-bar");
+  const userRole = sideBarElement ? sideBarElement.dataset.role : "user";
+
+  let activeNavigators = navigators;
+  if (userRole === "admin") {
+    activeNavigators = [
+      {
+        ...navigators[0],
+        name: "Home",
+        url: "../admin/admin.php", // Ensure admin points to admin.php
+      },
+    ];
+  }
+
+  const currentPath = window.location.pathname;
+
+  activeNavigators.forEach((navigator, index) => {
     if (!validateNavigator(navigator, index)) {
       return;
     }
     const li = document.createElement("li");
-    li.classList = index === 0 ? "active" : "inactive"; //first child is active by default
+    // Check if the current path exactly matches the navigator URL
+    const isActive =
+      currentPath === navigator.url ||
+      currentPath.endsWith(navigator.url.split("/").pop());
+    li.classList = isActive ? "active" : "inactive";
+
     const a = document.createElement("a");
     a.href = navigator.url;
 
@@ -133,22 +172,22 @@ const sideBar = () => {
     navList.appendChild(li);
   });
 
-  //check if any navigators were rendered
   if (navList.children.length === 0) {
     console.error(
-      "Warning: No navigators were redndered. Please check the navigators array for errors."
+      "Warning: No navigators were rendered. Please check the navigators array for errors."
     );
   }
 };
 
+const logoutElement = document.querySelector(".user-icon ul li.logout");
+if (logoutElement) {
+  logoutElement.addEventListener("click", () => {
+    window.location.href = "../authentication/logout.php";
+  });
+} else {
+  console.error("Error: .user-icon ul li.logout element not found.");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   sideBar();
-  popButton.addEventListener("click", () => {
-    popover.classList.toggle("active");
-  });
-  document.addEventListener("click", (event) => {
-    if (!popover.contains(event.target) && !popButton.contains(event.target)) {
-      popover.classList.remove("active");
-    }
-  });
 });

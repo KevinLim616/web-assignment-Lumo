@@ -1,3 +1,5 @@
+import { svgIcons } from "../utils/svgIcons.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const notifications = document.querySelectorAll(".notification");
   const notificationDetails = document.querySelector(".notification-details");
@@ -27,6 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
+  // Create and add arrow icon for notification details drawer
+  const arrowIcon = document.createElement("div");
+  arrowIcon.className = "arrow-icon";
+  arrowIcon.appendChild(svgIcons.arrowLeft());
+  notificationDetails.insertBefore(arrowIcon, notificationDetails.firstChild);
+
   notifications.forEach((notification) => {
     notification.addEventListener("click", () => {
       const title = notification.getAttribute("data-title");
@@ -38,5 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       notificationDetails.classList.add("active");
     });
+  });
+  // Close drawer when arrow icon is clicked
+  arrowIcon.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent click from bubbling up
+    if (notificationDetails.classList.contains("active")) {
+      notificationDetails.classList.remove("active");
+    }
   });
 });

@@ -51,12 +51,40 @@ emailInput.addEventListener("blur", validateEmail);
 passwordInput.addEventListener("blur", validatePassword);
 const form = document.getElementById("sign-in-form");
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   const isValidForm = validateInput([validateEmail, validatePassword]);
   console.log(isValidForm);
   if (!isValidForm) {
     console.log("Invalid form");
     event.preventDefault();
+  }
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+
+  try {
+    const response = await fetch("index.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        email,
+        password,
+        login: "true",
+      }),
+    });
+
+    const data = await response.text();
+    if (data.includes("user logged in")) {
+      // MODIFIED: Updated redirect path
+      window.location.href = "user/dashboard.php";
+    } else {
+      setError(emailInput, "Invalid email or password");
+      setError(passwordInput, "Invalid email or password");
+    }
+  } catch (error) {
+    console.error("Login error:", error);
+    setError(emailInput, "An error occurred. Please try again.");
   }
 });
 
