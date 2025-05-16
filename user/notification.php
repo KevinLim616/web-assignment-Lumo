@@ -40,6 +40,10 @@ if (!isset($_SESSION['user'])) {
 
         <section style="display: flex">
           <ul>
+            <li class="notification" data-title="🎉 Welcome to Lumo!" data-message='Thanks for signing up! Start tracking your goals and moods today.' data-date=''>🎉 Welcome to Lumo!Thanks for signing up! Start tracking your...
+              <span></span>
+            </li>
+            <li class="notification" data-title="🧠 Time for Reflection" data-message='It’s been a challenging week, but you’ve made it through. Take a moment to breathe, reflect on your small wins, and prepare for the new week ahead.' data-date=''>🧠 Time for Reflection. It’s been a challenging week, but you’ve...</li>
             <?php
             if (!empty($notifications)) {
               foreach ($notifications as $index => $notification) {

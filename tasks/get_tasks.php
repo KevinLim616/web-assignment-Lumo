@@ -1,7 +1,8 @@
 <?php
-ob_start();
-
-session_start();
+// Start session only if not already active
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 include __DIR__ . "./../include/db/database.php";
 
@@ -14,7 +15,7 @@ function getTasks($user_id, $date = null)
     global $conn;
     try {
         error_log("get_tasks.php - Fetching tasks for user_id: " . $user_id);
-        $sql = "SELECT id, title, date, time, description, category, status FROM task WHERE status = 'pending' AND user_id = :user_id ";
+        $sql = "SELECT id, title, date, time, description, category, status FROM task WHERE status = 'pending' AND user_id = :user_id";
         $params = [':user_id' => $user_id];
         if ($date) {
             $sql .= " AND DATE(date) = :date";
@@ -38,7 +39,7 @@ function getTasks($user_id, $date = null)
 }
 
 if (basename($_SERVER['SCRIPT_FILENAME']) === 'get_tasks.php') {
-    header('Content-Type: application/json');
+    header('Content-Type: application/json; charset=utf-8');
     if (!isset($_SESSION['user_id'])) {
         http_response_code(403);
         echo json_encode(['error' => 'Unauthorized']);
@@ -50,7 +51,6 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'get_tasks.php') {
     error_log("Received date: " . ($date ?: 'null'));
 
     $tasks = getTasks($user_id, $date);
-    ob_end_clean();
     echo json_encode($tasks);
     exit;
 }
