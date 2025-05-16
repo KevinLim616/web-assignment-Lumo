@@ -1,15 +1,34 @@
+import { svgIcons } from "../utils/svgIcons.js";
 const popButton = document.querySelector(".logout-pop");
 const popover = document.querySelector(".popover");
+const hamburgerIcon = document.createElement("div");
+hamburgerIcon.className = "hamburger-icon";
+hamburgerIcon.appendChild(svgIcons.hambergerIcon());
+document.body.prepend(hamburgerIcon);
 
-// popButton.addEventListener("click", () => {
-//   popover.classList.toggle("active");
-// });
+// Toggle sidebar on hamburger click
+const sideBarElement = document.querySelector(".side-bar"); // Renamed to avoid conflict with function name
+hamburgerIcon.addEventListener("click", () => {
+  if (sideBarElement) {
+    sideBarElement.classList.toggle("active");
+  } else {
+    console.error("Error: .side-bar element not found in the DOM.");
+  }
+});
 
-// document.addEventListener("click", (event) => {
-//   if (!popover.contains(event.target) && !popButton.contains(event.target)) {
-//     popover.classList.remove("active");
-//   }
-// });
+// Close sidebar on mobile when clicking outside
+document.addEventListener("click", (event) => {
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  if (
+    isMobile &&
+    sideBarElement &&
+    sideBarElement.classList.contains("active") &&
+    !sideBarElement.contains(event.target) &&
+    !hamburgerIcon.contains(event.target)
+  ) {
+    sideBarElement.classList.remove("active");
+  }
+});
 
 const navigators = [
   {

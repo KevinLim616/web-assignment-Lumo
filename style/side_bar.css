@@ -97,6 +97,54 @@ a {
   display: none;
 }
 
+/* Mobile styles */
+@media (max-width: 768px) {
+  .side-bar {
+    width: fit-content;
+    z-index: 1000;
+    transform: translateX(-200px);
+    transition: transform 0.3s ease-in-out;
+    height: 100%;
+  }
+
+  .side-bar.active {
+    transform: translateX(0);
+  }
+
+  .side-bar nav ul {
+    display: none;
+  }
+
+  .side-bar.active nav ul {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hamburger-icon {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 64px;
+    left: 16px;
+    z-index: 1000;
+    cursor: pointer;
+    padding: 8px;
+    background-color: var(--black);
+    border-radius: 100px;
+  }
+
+  .logo-svg {
+    display: none;
+  }
+
+  .user-icon ul li span {
+    display: none;
+  }
+
+  .user-icon ul li {
+    justify-content: center;
+  }
+}
 /* .popover:hover {
   background-color: #f0f0f0;
 }
